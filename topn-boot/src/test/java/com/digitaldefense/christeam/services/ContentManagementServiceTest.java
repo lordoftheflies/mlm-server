@@ -362,7 +362,7 @@ public class ContentManagementServiceTest extends ChristeamServerApplicationTest
         duckReference.setTitle("Kacsa");
         duckReference.setParent(contentContainer2);
 //        textContentOne.setResourceType(ViewConstants.CONTENT_MANAGEMENT_WIDGET_TEXT);
-        duckReference.setContent("/content-tree/" + contentContainer.getId().toString());
+        duckReference.setContent(contentContainer.getId().toString());
         duckReferenceId = contentRepository.save(duckReference).getId();
 //
         ContentEntity libaFile = new ReferenceContentEntity();

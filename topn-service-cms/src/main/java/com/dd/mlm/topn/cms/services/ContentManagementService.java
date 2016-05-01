@@ -11,6 +11,7 @@ import com.dd.mlm.topn.cms.model.SectionDto;
 import com.dd.mlm.topn.common.ViewConstants;
 import com.dd.mlm.topn.exceptions.ContentNotFoundException;
 import com.dd.mlm.topn.persistence.dal.AccountRepository;
+import com.dd.mlm.topn.persistence.dal.ContainerContentRepository;
 import com.dd.mlm.topn.persistence.dal.ContentRepository;
 import com.dd.mlm.topn.persistence.dal.MailBoxRepository;
 import com.dd.mlm.topn.persistence.dal.MessageRepository;
@@ -23,12 +24,12 @@ import com.dd.mlm.topn.persistence.entities.TextContentEntity;
 import com.dd.mlm.topn.persistence.entities.VideoContentEntity;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -45,6 +46,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(path = "/content-management")
 public class ContentManagementService {
+
+    @Autowired
+    private ContainerContentRepository containerContentRepository;
 
     @Autowired
     private ContentRepository contentRepository;
@@ -297,6 +301,22 @@ public class ContentManagementService {
                 return message;
             }).collect(Collectors.toList()));
         }
+    }
+
+    @CrossOrigin
+    @RequestMapping(path = "/candidates",
+            method = RequestMethod.GET,
+            produces = {
+                MediaType.APPLICATION_JSON_VALUE
+            })
+    public List<PageDto> parentCandidates() {
+        List<PageDto> pages = containerContentRepository.findAll()
+                .stream()
+                .filter(e -> !e.getLeaf())
+                .map((ContainerContentEntity e) -> new PageDto(e.getId(), e.getTitle()))
+                .collect(Collectors.toList());
+        pages.add(new PageDto(null, "."));
+        return pages;
     }
 
     private static final Logger LOG = Logger.getLogger(ContentManagementService.class.getName());
