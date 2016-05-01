@@ -7,7 +7,6 @@ package com.dd.mlm.topn.persistence.config;
 
 import javax.sql.DataSource;
 import org.hibernate.dialect.PostgreSQL9Dialect;
-import org.hibernate.dialect.PostgreSQLDialect;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
