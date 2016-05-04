@@ -21,10 +21,14 @@ import com.dd.mlm.topn.persistence.entities.NetworkNodeEntity;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.velocity.app.VelocityEngine;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.MailSender;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,16 +44,19 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(
         path = "/authentication")
 public class AuthenticationService {
-    
+
     private static final Logger LOG = Logger.getLogger(AuthenticationService.class.getName());
-    
+
+    @Autowired
+    private UaaMailSender uaaMailer;
+
     @Autowired
     private AccountRepository accountRepository;
     @Autowired
     private NetworkTreeRepository networkRepository;
     @Autowired
     private MailBoxRepository mailBoxRepository;
-    
+
     private void apply(RegistrationDto dto, AccountEntity entity) {
         entity.setEmail(dto.getEmail());
         entity.setPassword(dto.getPassword());
@@ -60,7 +67,7 @@ public class AuthenticationService {
             entity.setId(UUID.randomUUID());
         }
     }
-    
+
     private void apply(AccountEntity entity, SessionDto dto) {
         dto.setUserName(entity.getName());
         dto.setToken(entity.getId().toString());
@@ -68,7 +75,21 @@ public class AuthenticationService {
         dto.setToken(entity.getId().toString());
         dto.setPreferredLanguage(entity.getPreferredLanguage());
     }
+
+    public static final String SYSTEM_SENDER_RECIPIENT = "topflavon@digitaldefense.hu";
+    public static final String ACTIVATION_CODE_MESSAGE = "topflavon@digitaldefense.hu";
+
+    @Value("${mail.passwordreset}")
+    private String passwordResetLink;
+
     
+
+    @Value("${mail.organization}")
+    private String organizationName;
+
+    @Value("${mail.application}")
+    private String applicationName;
+
     @CrossOrigin(origins = "*")
     @RequestMapping(
             path = "/signon",
@@ -84,24 +105,24 @@ public class AuthenticationService {
             AccountEntity accountEntity = new AccountEntity();
             apply(dto, accountEntity);
             accountEntity = accountRepository.save(accountEntity);
-            
+
             NetworkNodeEntity nodeEntity = new NetworkNodeEntity();
             nodeEntity.setActive(true);
             nodeEntity.setContact(accountEntity);
             networkRepository.save(nodeEntity);
-            
+
             accountEntity.setNode(nodeEntity);
             accountRepository.save(accountEntity);
-            
+
             MailBoxEntity mbEntity = new MailBoxEntity();
             mbEntity.setOwner(nodeEntity);
             mailBoxRepository.save(mbEntity);
-            
+
             nodeEntity.setMailBox(mbEntity);
             networkRepository.save(nodeEntity);
-            
+
             LOG.log(Level.INFO, "Sign-on principal user {0}", dto.toString());
-            
+
             return new ResponseEntity<>(new SessionDto(
                     networkRepository.isRoot(accountEntity.getId()),
                     networkRepository.findByAccount(accountEntity.getId()).getCodes(),
@@ -122,10 +143,10 @@ public class AuthenticationService {
             } else {
                 apply(dto, accountEntity);
                 accountRepository.save(accountEntity);
-                
+
                 nodeEntity.setActive(true);
                 networkRepository.save(nodeEntity);
-                
+
                 LOG.log(Level.INFO, "Sign-on user {0}", dto.getEmail());
                 return new ResponseEntity<>(new SessionDto(
                         networkRepository.isRoot(accountId),
@@ -137,7 +158,7 @@ public class AuthenticationService {
             }
         }
     }
-    
+
     @CrossOrigin(origins = "*")
     @RequestMapping(
             path = "/signin",
@@ -160,7 +181,7 @@ public class AuthenticationService {
             return new ResponseEntity<>(result, HttpStatus.OK);
         }
     }
-    
+
     @CrossOrigin(origins = "*")
     @RequestMapping(
             path = "/signout",
@@ -176,7 +197,28 @@ public class AuthenticationService {
         session.setToken(null);
         return new ResponseEntity<>(session, HttpStatus.UNAUTHORIZED);
     }
-    
+
+    @CrossOrigin(origins = "*")
+    @RequestMapping(
+            path = "/resetpassword",
+            consumes = {
+                MediaType.APPLICATION_JSON_VALUE
+            },
+            produces = {
+                MediaType.APPLICATION_JSON_VALUE
+            },
+            method = RequestMethod.POST)
+    public ResponseEntity resetPassword(@RequestBody(required = true) SessionDto session) {
+        LOG.log(Level.INFO, "Sign-out token {0}", session.getToken());
+        AccountEntity accountEntity = accountRepository.findOne(UUID.fromString(session.getToken()));
+        try {
+            uaaMailer.sendForgottenPasswordEmail(accountEntity.getEmail(), accountEntity.getName(), applicationName, organizationName, passwordResetLink, accountEntity.getPreferredLanguage());
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @CrossOrigin(origins = "*")
     @RequestMapping(
             path = "/session",
@@ -201,6 +243,6 @@ public class AuthenticationService {
             return new ResponseEntity<>(dto, HttpStatus.OK);
         }
     }
-    
+
     private static final String DEFAULT_TOKEN_EMPTY = "empty";
 }
