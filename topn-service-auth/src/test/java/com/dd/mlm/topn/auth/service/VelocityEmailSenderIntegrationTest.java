@@ -72,6 +72,6 @@ public class VelocityEmailSenderIntegrationTest {
     public static final String APPLICATION_NAME = "TopFlavon";
     public static final String USER_NAME = "Péczely Balázs";
     public static final String INVITER_NAME = "Hegedűs László";
-//    public static final String USER_EMAIL = "balazs.peczely@digitaldefense.hu";
-    public static final String USER_EMAIL = "heglas11@gmail.com";
+    public static final String USER_EMAIL = "peczely.balazs@digitaldefense.hu";
+//    public static final String USER_EMAIL = "heglas11@gmail.com";
 }

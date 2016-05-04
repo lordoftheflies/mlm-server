@@ -29,10 +29,10 @@ public class MailConfig {
 
     @Value("${mail.host}")
     private String host;
-
-    @Value("${mail.port}")
-    private String port;
-
+//
+//    @Value("${mail.port}")
+//    private String port;
+//
     @Value("${mail.from}")
     private String from;
 
@@ -55,8 +55,8 @@ public class MailConfig {
 
         javaMailSender.setHost(host);
 //        javaMailSender.setUsername("heglas11@gmail.com");
-        javaMailSender.setUsername("heglas11");
-        javaMailSender.setPassword("Apocalypse0");
+        javaMailSender.setUsername("ugyfel@digitaldefense.hu");
+        javaMailSender.setPassword("1Ugyfel2");
 //        javaMailSender.setPort(port);
 
         javaMailSender.setJavaMailProperties(getMailProperties());
@@ -77,25 +77,17 @@ public class MailConfig {
 
     private Properties getMailProperties() {
         Properties props = new Properties();
-//        properties.setProperty("mail.transport.protocol", "smtp");
-//        properties.setProperty("mail.smtp.auth", "true");
-//        properties.setProperty("mail.smtp.starttls.enable", "true");
-//        properties.setProperty("mail.smtp.starttls.enable", "true");
-//        properties.setProperty("mail.debug", "false");
-
-//        props.put("mail.smtp.user", "heglas11");
-//        props.put("mail.smtp.password", "Apocalypse0");
-//        props.put("mail.smtp.user", "heglas11");
-        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.setProperty("mail.transport.protocol", "smtp");
+//        props.put("mail.smtp.host", "mail.tonline.hu");
         props.put("mail.smtp.port", "25");
         props.put("mail.debug", "true");
         props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true");
+//        props.put("mail.smtp.starttls.enable", "true");
         props.put("mail.smtp.EnableSSL.enable", "true");
 
         props.setProperty("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-        props.setProperty("mail.smtp.socketFactory.fallbac k", "false");
-        props.setProperty("mail.smtp.port", "465");
+        props.setProperty("mail.smtp.socketFactory.fallback", "false");
+//        props.setProperty("mail.smtp.port", "465");
         props.setProperty("mail.smtp.socketFactory.port", "465");
 
         return props;
