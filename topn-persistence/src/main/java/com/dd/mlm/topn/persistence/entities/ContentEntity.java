@@ -64,6 +64,19 @@ public class ContentEntity implements Serializable {
     public void setLeaf(boolean leaf) {
         this.leaf = leaf;
     }
+    
+    @Basic
+    private boolean hasEmbeddedFile = false;
+
+    public boolean isHasEmbeddedFile() {
+        return hasEmbeddedFile;
+    }
+
+    public void setHasEmbeddedFile(boolean hasEmbeddedFile) {
+        this.hasEmbeddedFile = hasEmbeddedFile;
+    }
+    
+    
 
     @Column(name = "resource", insertable = false, updatable = false)
     private String resourceType;

@@ -321,6 +321,7 @@ public class ContentManagementServiceTest extends ChristeamServerApplicationTest
         ContainerContentEntity contentContainer = new ContainerContentEntity();
         contentContainer.setTitle("Cikk a kacsákról");
         contentContainer.setLeaf(true);
+        contentContainer.setHasEmbeddedFile(false);
 //        contentContainer.setResourceType(ViewConstants.CONTENT_MANAGEMENT_WIDGET_CONTAINER);
         containerContentId = contentRepository.save(contentContainer).getId();
 
@@ -354,7 +355,8 @@ public class ContentManagementServiceTest extends ChristeamServerApplicationTest
 
         ContainerContentEntity contentContainer2 = new ContainerContentEntity();
         contentContainer2.setTitle("Házi baromfik");
-        contentContainer2.setLeaf(true);
+        contentContainer2.setLeaf(false);
+        contentContainer2.setHasEmbeddedFile(false);
 //        contentContainer.setResourceType(ViewConstants.CONTENT_MANAGEMENT_WIDGET_CONTAINER);
         containerContentId2 = contentRepository.save(contentContainer2).getId();
 
@@ -365,9 +367,11 @@ public class ContentManagementServiceTest extends ChristeamServerApplicationTest
         duckReference.setContent(contentContainer.getId().toString());
         duckReferenceId = contentRepository.save(duckReference).getId();
 //
-        ContentEntity libaFile = new ReferenceContentEntity();
+        ContentEntity libaFile = new ContainerContentEntity();
         libaFile.setTitle("Liba");
-        libaFile.setContent("/file/liba.pdf");
+        libaFile.setContent("pirosfekete.pdf");
+        libaFile.setHasEmbeddedFile(true);
+        libaFile.setLeaf(true);
         libaFile.setParent(contentContainer2);
 //        imageContent.setResourceType(ViewConstants.CONTENT_MANAGEMENT_WIDGET_IMAGE);
         libaFileId = contentRepository.save(libaFile).getId();

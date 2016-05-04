@@ -23,13 +23,13 @@ public class PageDto {
     public PageDto(String title) {
         this.title = title;
     }
- 
+
     public PageDto(UUID id, String title, Collection<SectionDto> sections) {
         this.title = title;
         this.id = id;
         this.sections = new ArrayList<>(sections);
     }
-    
+
     public PageDto(UUID id, String title, SectionDto... sections) {
         this.title = title;
         this.id = id;
@@ -45,7 +45,7 @@ public class PageDto {
     public void setTitle(String title) {
         this.title = title;
     }
-    
+
     private boolean leaf;
 
     public boolean isLeaf() {
@@ -55,7 +55,7 @@ public class PageDto {
     public void setLeaf(boolean leaf) {
         this.leaf = leaf;
     }
-    
+
     private UUID id;
 
     public UUID getId() {
@@ -74,5 +74,25 @@ public class PageDto {
 
     public void setSections(List<SectionDto> sections) {
         this.sections = sections;
+    }
+
+    private boolean hasEmbeddedFile;
+
+    public boolean isHasEmbeddedFile() {
+        return hasEmbeddedFile;
+    }
+
+    public void setHasEmbeddedFile(boolean hasEmbeddedFile) {
+        this.hasEmbeddedFile = hasEmbeddedFile;
+    }
+
+    private String embeddedFileName;
+
+    public String getEmbeddedFileName() {
+        return embeddedFileName;
+    }
+
+    public void setEmbeddedFileName(String embeddedFileName) {
+        this.embeddedFileName = embeddedFileName;
     }
 }

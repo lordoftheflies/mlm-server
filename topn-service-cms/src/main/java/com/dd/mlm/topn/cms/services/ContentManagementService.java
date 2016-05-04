@@ -132,7 +132,8 @@ public class ContentManagementService {
                                 entity.getId().toString(),
                                 entity.getTitle(),
                                 entity.getResourceType(),
-                                entity.getContent()))
+                                entity.getContent(),
+                                entity.isHasEmbeddedFile()))
                         .collect(Collectors.toList()));
             } else {
                 LOG.log(Level.INFO, "{0} is not a container.", pageId);
@@ -182,6 +183,7 @@ public class ContentManagementService {
 
         if (ROOT_PSEUDO_ID.equals(pageId)) {
             dto.setLeaf(false);
+            dto.setHasEmbeddedFile(false);
             dto.setSections(contentRepository
                     .findRoots()
                     .stream()
@@ -189,24 +191,31 @@ public class ContentManagementService {
                             entity.getId().toString(),
                             entity.getTitle(),
                             entity.getResourceType(),
-                            entity.getId().toString()))
+                            entity.getId().toString(),
+                            entity.isHasEmbeddedFile()))
                     .collect(Collectors.toList()));
         } else if (!contentRepository.exists(UUID.fromString(pageId))) {
             throw new ContentNotFoundException();
         } else {
             ContentEntity container = contentRepository.findOne(UUID.fromString(pageId));
-            dto.setTitle(container.getTitle());
-            dto.setId(container.getId());
-            dto.setLeaf(container.getLeaf());
-            dto.setSections(contentRepository
-                    .findByParent(UUID.fromString(pageId))
-                    .stream()
-                    .map((ContentEntity entity) -> new SectionDto(
-                            entity.getId().toString(),
-                            entity.getTitle(),
-                            entity.getResourceType(),
-                            entity.getLeaf() ? entity.getContent() : "/content-tree/" + entity.getId().toString()))
-                    .collect(Collectors.toList()));
+            dto.setHasEmbeddedFile(container.isHasEmbeddedFile());
+            if (container.isHasEmbeddedFile()) {
+                dto.setEmbeddedFileName(container.getContent());
+            } else {
+                dto.setTitle(container.getTitle());
+                dto.setId(container.getId());
+                dto.setLeaf(container.getLeaf());
+                dto.setSections(contentRepository
+                        .findByParent(UUID.fromString(pageId))
+                        .stream()
+                        .map((ContentEntity entity) -> new SectionDto(
+                                entity.getId().toString(),
+                                entity.getTitle(),
+                                entity.getResourceType(),
+                                entity.getLeaf() ? entity.getContent() : entity.getId().toString(),
+                                entity.isHasEmbeddedFile()))
+                        .collect(Collectors.toList()));
+            }
 
         }
         return dto;
@@ -223,7 +232,7 @@ public class ContentManagementService {
         dto.setSections(new ArrayList<>());
         if (ROOT_PSEUDO_ID.equals(pageId)) {
             dto.setTitle(".");
-            dto.getSections().add(new SectionDto(null, ".", null, "ROOT"));
+            dto.getSections().add(new SectionDto(null, ".", null, "ROOT", false));
         } else if (!contentRepository.exists(UUID.fromString(pageId))) {
             throw new ContentNotFoundException();
         } else {
@@ -234,11 +243,12 @@ public class ContentManagementService {
                         item.getId().toString(),
                         item.getTitle(),
                         null,
-                        item.getId().toString()));
+                        item.getId().toString(),
+                        item.isHasEmbeddedFile()));
                 item = contentRepository.findByChild(item.getId());
 
             }
-            dto.getSections().add(new SectionDto("ROOT", ".", null, "ROOT"));
+            dto.getSections().add(new SectionDto("ROOT", ".", null, "ROOT", false));
             Collections.reverse(dto.getSections());
         }
         return dto;
@@ -254,32 +264,37 @@ public class ContentManagementService {
             })
     public void save(@RequestBody PageDto dto) {
         ContainerContentEntity container = factory.createContent(dto.getTitle(), null, null);
-        container.setLeaf(true);
-        LOG.log(Level.INFO, "Created new page[{0}].", container.getId());
-        dto.getSections().forEach(s -> {
-            ContentEntity ce;
-            switch (s.getType()) {
-                case "video":
-                case ViewConstants.CONTENT_MANAGEMENT_WIDGET_VIDEO:
-                    ce = factory.createVideo(s.getTitle(), s.getData(), container);
-                    break;
-                case "image":
-                case ViewConstants.CONTENT_MANAGEMENT_WIDGET_IMAGE:
-                    ce = factory.createImage(s.getTitle(), s.getData(), container);
-                    break;
-                case "link":
-                case ViewConstants.CONTENT_MANAGEMENT_WIDGET_LINK:
-                    ce = factory.createReference(s.getTitle(), s.getData(), container);
-                    break;
-                case "text":
-                case ViewConstants.CONTENT_MANAGEMENT_WIDGET_TEXT:
-                default:
-                    ce = factory.createText(s.getTitle(), s.getData(), container);
-                    break;
-            }
+        container.setLeaf(dto.isLeaf());
+        container.setHasEmbeddedFile(dto.isHasEmbeddedFile());
+        if (container.isHasEmbeddedFile()) {
+            container.setContent(dto.getEmbeddedFileName());
+        } else {
+            LOG.log(Level.INFO, "Created new assembled page[{0}].", container.getId());
+            dto.getSections().forEach(s -> {
+                ContentEntity ce;
+                switch (s.getType()) {
+                    case "video":
+                    case ViewConstants.CONTENT_MANAGEMENT_WIDGET_VIDEO:
+                        ce = factory.createVideo(s.getTitle(), s.getData(), container);
+                        break;
+                    case "image":
+                    case ViewConstants.CONTENT_MANAGEMENT_WIDGET_IMAGE:
+                        ce = factory.createImage(s.getTitle(), s.getData(), container);
+                        break;
+                    case "link":
+                    case ViewConstants.CONTENT_MANAGEMENT_WIDGET_LINK:
+                        ce = factory.createReference(s.getTitle(), s.getData(), container);
+                        break;
+                    case "text":
+                    case ViewConstants.CONTENT_MANAGEMENT_WIDGET_TEXT:
+                    default:
+                        ce = factory.createText(s.getTitle(), s.getData(), container);
+                        break;
+                }
 
-            LOG.log(Level.INFO, "Created new {0}-content[{1}].", new Object[]{s.getType(), ce.getId()});
-        });
+                LOG.log(Level.INFO, "Created new {0}-content[{1}].", new Object[]{s.getType(), ce.getId()});
+            });
+        }
     }
 
     @CrossOrigin

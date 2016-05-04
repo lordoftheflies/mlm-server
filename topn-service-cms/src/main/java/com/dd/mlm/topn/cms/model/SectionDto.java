@@ -18,11 +18,12 @@ public class SectionDto {
         this.type = type;
     }
 
-    public SectionDto(String name, String title, String type, String data) {
+    public SectionDto(String name, String title, String type, String data, boolean hasEmbeddedFile) {
         this.name = name;
         this.title = title;
         this.type = type;
         this.data = data;
+        this.hasEmbeddedFile = hasEmbeddedFile;
     }
     
     private String title;
@@ -63,5 +64,15 @@ public class SectionDto {
 
     public void setData(String data) {
         this.data = data;
+    }
+    
+    private boolean hasEmbeddedFile;
+
+    public boolean isHasEmbeddedFile() {
+        return hasEmbeddedFile;
+    }
+
+    public void setHasEmbeddedFile(boolean hasEmbeddedFile) {
+        this.hasEmbeddedFile = hasEmbeddedFile;
     }
 }
