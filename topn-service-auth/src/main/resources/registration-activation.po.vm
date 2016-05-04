@@ -1,5 +1,6 @@
 <html>
     <body>
+        <img src="http://185.51.67.30/images/topflavon_logo.png" />
         <h3>Drodzy $userName!</h3>
         <p>Zapraszamy do zastosowania $inviter $applicationName!</p>
         <p>
