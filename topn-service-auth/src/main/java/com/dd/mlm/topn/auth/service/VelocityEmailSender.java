@@ -60,12 +60,16 @@ public class VelocityEmailSender implements UaaMailSender {
 
         LOG.info("Send email ...");
         MimeMessagePreparator preparator = (MimeMessage mimeMessage) -> {
-            MimeMessageHelper message = new MimeMessageHelper(mimeMessage);
+            MimeMessageHelper message = new MimeMessageHelper(mimeMessage, "UTF-8");
             message.setTo(msg.getTo());
             message.setFrom(msg.getFrom());
             message.setSubject(msg.getSubject());
 
-            String body = VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, "/" + template + "." + language + ".vm", "UTF-8", hTemplateVariables);
+            String body = VelocityEngineUtils.mergeTemplateIntoString(
+                    velocityEngine, 
+                    "/" + template + "." + language + ".vm", 
+                    "UTF-8", 
+                    hTemplateVariables);
 
             LOG.log(Level.INFO, "Body: {0}", body);
 
