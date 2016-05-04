@@ -5,8 +5,8 @@
         <p>
             <label>Az alábbi módokon használhatja az alkalmazást:</label>
             <ul>
-                <li>A Számítógépe böngészőjén keresztül: <a href=""></a></li>
-                <li>Androidos okostelefonon: <a href=""></a> (Ebben az esetben a készülékén nyissa meg a linket!)</li>
+                <li>A Számítógépe böngészőjén keresztül: <a href="$webFrontendLink">$webFrontendLink</a></li>
+                <li>Androidos okostelefonon: <a href="$androidInstallerLink">$androidInstallerLink</a> (Ebben az esetben a készülékén nyissa meg a linket!)</li>
             </ul>
         </p>
         <p>Használati útmutatót a regisztráció követően a Profiljára kattintva az Útmutató menüpontban talál!</p>
