@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 import javax.mail.internet.MimeMessage;
 import org.apache.velocity.app.VelocityEngine;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -32,6 +33,9 @@ public class VelocityEmailSender implements UaaMailSender {
     private final JavaMailSender mailSender;
     private final SimpleMailMessage simpleMailMessage;
 
+    
+    
+    
     /**
      * Constructor
      *

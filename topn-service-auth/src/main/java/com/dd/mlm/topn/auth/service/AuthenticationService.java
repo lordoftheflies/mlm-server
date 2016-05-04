@@ -23,6 +23,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.velocity.app.VelocityEngine;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -47,10 +48,7 @@ public class AuthenticationService {
     private static final Logger LOG = Logger.getLogger(AuthenticationService.class.getName());
 
     @Autowired
-    private MailSender mailSender;
-
-    @Autowired
-    private VelocityEngine velocityEngine;
+    private UaaMailSender uaaMailer;
 
     @Autowired
     private AccountRepository accountRepository;
@@ -78,21 +76,23 @@ public class AuthenticationService {
         dto.setPreferredLanguage(entity.getPreferredLanguage());
     }
 
-    private void sendForgottenPasswordEmail(String toAddress, String fromAddress, String subject, String msgBody) {
-
-        SimpleMailMessage crunchifyMsg = new SimpleMailMessage();
-        crunchifyMsg.setFrom(SYSTEM_SENDER_RECIPIENT);
-        crunchifyMsg.setTo(toAddress);
-        crunchifyMsg.setSubject(subject);
-        crunchifyMsg.setText(msgBody);
-        mailSender.send(crunchifyMsg);
-    }
     public static final String SYSTEM_SENDER_RECIPIENT = "topflavon@digitaldefense.hu";
     public static final String ACTIVATION_CODE_MESSAGE = "topflavon@digitaldefense.hu";
 
-    private void sendRegistrationActivationEmail() {
+    @Value("${mail.passwordreset}")
+    private String passwordResetLink;
 
-    }
+    @Value("${mail.frontend.installer.web}")
+    private String webFrontentLink;
+
+    @Value("${mail.frontend.installer.android}")
+    private String androidInstallerLink;
+
+    @Value("${mail.organization}")
+    private String organizationName;
+
+    @Value("${mail.application}")
+    private String applicationName;
 
     @CrossOrigin(origins = "*")
     @RequestMapping(
@@ -200,6 +200,27 @@ public class AuthenticationService {
         LOG.log(Level.INFO, "Sign-out token {0}", session.getToken());
         session.setToken(null);
         return new ResponseEntity<>(session, HttpStatus.UNAUTHORIZED);
+    }
+
+    @CrossOrigin(origins = "*")
+    @RequestMapping(
+            path = "/resetpassword",
+            consumes = {
+                MediaType.APPLICATION_JSON_VALUE
+            },
+            produces = {
+                MediaType.APPLICATION_JSON_VALUE
+            },
+            method = RequestMethod.POST)
+    public ResponseEntity resetPassword(@RequestBody(required = true) SessionDto session) {
+        LOG.log(Level.INFO, "Sign-out token {0}", session.getToken());
+        AccountEntity accountEntity = accountRepository.findOne(UUID.fromString(session.getToken()));
+        try {
+            uaaMailer.sendForgottenPasswordEmail(accountEntity.getEmail(), accountEntity.getName(), applicationName, organizationName, passwordResetLink, accountEntity.getPreferredLanguage());
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @CrossOrigin(origins = "*")
