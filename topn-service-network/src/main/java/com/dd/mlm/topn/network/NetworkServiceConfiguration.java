@@ -5,6 +5,7 @@
  */
 package com.dd.mlm.topn.network;
 
+import com.dd.mlm.topn.auth.MailConfig;
 import com.dd.mlm.topn.persistence.config.DatabaseConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
@@ -21,6 +22,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
             "com.dd.mlm.topn.persistence.entities"
         },
         basePackageClasses = {
+            MailConfig.class,
             DatabaseConfiguration.class
         })
 @EnableJpaRepositories(basePackages = {

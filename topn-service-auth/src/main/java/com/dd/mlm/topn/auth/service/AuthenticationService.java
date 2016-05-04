@@ -82,11 +82,7 @@ public class AuthenticationService {
     @Value("${mail.passwordreset}")
     private String passwordResetLink;
 
-    @Value("${mail.frontend.installer.web}")
-    private String webFrontentLink;
-
-    @Value("${mail.frontend.installer.android}")
-    private String androidInstallerLink;
+    
 
     @Value("${mail.organization}")
     private String organizationName;

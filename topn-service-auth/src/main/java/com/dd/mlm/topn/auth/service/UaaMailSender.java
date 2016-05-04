@@ -9,7 +9,7 @@ package com.dd.mlm.topn.auth.service;
  *
  * @author lordoftheflies
  */
-interface UaaMailSender {
+public interface UaaMailSender {
     
     void sendForgottenPasswordEmail(String email, String userName, String applicationName, String organizationName, String passwordResetLink, String locale);
     

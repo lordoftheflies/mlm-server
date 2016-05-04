@@ -5,6 +5,7 @@
  */
 package com.dd.mlm.topn.network.service;
 
+import com.dd.mlm.topn.auth.service.UaaMailSender;
 import com.dd.mlm.topn.exceptions.AccountNotExistException;
 import com.dd.mlm.topn.exceptions.InsufficientCodesException;
 import com.dd.mlm.topn.network.model.ContactDto;
@@ -25,6 +26,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -53,6 +55,21 @@ public class AddressBookService {
 
     @Autowired
     private MailBoxRepository mbRepository;
+
+    @Autowired
+    private UaaMailSender mailSender;
+
+    @Value("${mail.frontend.installer.web}")
+    private String webFrontentLink;
+
+    @Value("${mail.frontend.installer.android}")
+    private String androidInstallerLink;
+
+    @Value("${mail.organization}")
+    private String organizationName;
+
+    @Value("${mail.application}")
+    private String applicationName;
 
     @RequestMapping(path = "/{id}/contacts",
             method = RequestMethod.GET)
@@ -197,11 +214,20 @@ public class AddressBookService {
             nodeEntity.setMailBox(mbEntity);
             networkTreeRepository.save(nodeEntity);
 
+            AccountEntity parentAccountEntity = accountRepository.findOne(dto.getParent());
+
             LOG.log(Level.INFO, "Created new member for {0}", dto.getEmail());
             LOG.log(Level.INFO, "\t- Account: {0}", accountEntity.getId());
             LOG.log(Level.INFO, "\t- Node: {0}", nodeEntity.getId());
             LOG.log(Level.INFO, "\t- Mail-box: {0}", mbEntity.getId());
 
+            mailSender.sendRegistrationActivationEmail(parentAccountEntity.getName(), accountEntity.getEmail(),
+                    accountEntity.getName() == null ? "Mr/Ms" : accountEntity.getName(),
+                    applicationName,
+                    organizationName, 
+                    webFrontentLink, 
+                    androidInstallerLink, 
+                    accountEntity.getPreferredLanguage());
         }
     }
 
@@ -260,7 +286,7 @@ public class AddressBookService {
             dto.getOwner()
         });
     }
-    
+
     @RequestMapping(path = "/demote",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             method = RequestMethod.POST)
