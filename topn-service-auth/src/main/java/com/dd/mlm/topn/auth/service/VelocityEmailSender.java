@@ -33,7 +33,8 @@ public class VelocityEmailSender implements UaaMailSender {
     private final JavaMailSender mailSender;
     private final SimpleMailMessage simpleMailMessage;
 
-    
+    @Value("${mail.logo}")
+    private String logo;
     
     
     /**
@@ -89,6 +90,7 @@ public class VelocityEmailSender implements UaaMailSender {
         props.put("applicationName", applicationName);
         props.put("passwordResetLink", passwordResetLink);
         props.put("organizationName", organizationName);
+        props.put("applicationLogo", logo);
         simpleMailMessage.setTo(email);
         simpleMailMessage.setSubject("Password reset from " + applicationName);
         this.send(simpleMailMessage, locale, "forgotten-password", props);
@@ -100,7 +102,7 @@ public class VelocityEmailSender implements UaaMailSender {
         props.put("userName", userName);
         props.put("applicationName", applicationName);
         props.put("inviter", inviter);
-        
+        props.put("applicationLogo", logo);
         props.put("webFrontendLink", webRegistrationActivationLink);
         props.put("androidInstallerLink", androidInstallerLink);
         props.put("organizationName", organizationName);
