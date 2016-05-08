@@ -25,6 +25,7 @@ import org.hibernate.annotations.GenericGenerator;
     @NamedQuery(name = "AccountEntity.findRootAccounts", query = "SELECT a FROM AccountEntity a WHERE a.node.parent IS NULL"),
     @NamedQuery(name = "AccountEntity.getParent", query = "SELECT n.parent.contact FROM NetworkNodeEntity n WHERE n.contact.id = :childId"),
     @NamedQuery(name = "AccountEntity.findByNetwork", query = "SELECT a FROM AccountEntity a WHERE a.node.id = :nodeId"),
+    @NamedQuery(name = "AccountEntity.findByEmail", query = "SELECT a FROM AccountEntity a WHERE a.email = :email"),
     @NamedQuery(name = "AccountEntity.findByCredentials", query = "SELECT a FROM AccountEntity a WHERE a.email = :email AND a.password = :password")
 })
 public class AccountEntity implements Serializable {

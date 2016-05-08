@@ -225,8 +225,8 @@ public class AddressBookService {
                     accountEntity.getName() == null ? "Mr/Ms" : accountEntity.getName(),
                     applicationName,
                     organizationName, 
-                    webFrontentLink, 
-                    androidInstallerLink, 
+                    String.format(webFrontentLink, accountEntity.getId().toString()), 
+                    String.format(androidInstallerLink, accountEntity.getId().toString()), 
                     accountEntity.getPreferredLanguage());
         }
     }

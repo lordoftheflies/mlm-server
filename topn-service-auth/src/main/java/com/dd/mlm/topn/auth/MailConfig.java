@@ -36,6 +36,9 @@ public class MailConfig {
     @Value("${mail.from}")
     private String from;
 
+    @Value("${mail.pass}")
+    private String password;
+
     @Value("${mail.organization}")
     private String organization;
 
@@ -55,8 +58,8 @@ public class MailConfig {
 
         javaMailSender.setHost(host);
 //        javaMailSender.setUsername("heglas11@gmail.com");
-        javaMailSender.setUsername("ugyfel@digitaldefense.hu");
-        javaMailSender.setPassword("1Ugyfel2");
+        javaMailSender.setUsername(from);
+        javaMailSender.setPassword(password);
 //        javaMailSender.setPort(port);
 
         javaMailSender.setJavaMailProperties(getMailProperties());
@@ -79,15 +82,15 @@ public class MailConfig {
         Properties props = new Properties();
         props.setProperty("mail.transport.protocol", "smtp");
 //        props.put("mail.smtp.host", "mail.tonline.hu");
-        props.put("mail.smtp.port", "25");
+//        props.put("mail.smtp.port", "25");
         props.put("mail.debug", "true");
         props.put("mail.smtp.auth", "true");
-//        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.starttls.enable", "true");
         props.put("mail.smtp.EnableSSL.enable", "true");
 
         props.setProperty("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
         props.setProperty("mail.smtp.socketFactory.fallback", "false");
-//        props.setProperty("mail.smtp.port", "465");
+        props.setProperty("mail.smtp.port", "465");
         props.setProperty("mail.smtp.socketFactory.port", "465");
 
         return props;

@@ -82,8 +82,6 @@ public class AuthenticationService {
     @Value("${mail.passwordreset}")
     private String passwordResetLink;
 
-    
-
     @Value("${mail.organization}")
     private String organizationName;
 
@@ -208,14 +206,20 @@ public class AuthenticationService {
                 MediaType.APPLICATION_JSON_VALUE
             },
             method = RequestMethod.POST)
-    public ResponseEntity resetPassword(@RequestBody(required = true) SessionDto session) {
-        LOG.log(Level.INFO, "Sign-out token {0}", session.getToken());
-        AccountEntity accountEntity = accountRepository.findOne(UUID.fromString(session.getToken()));
+    public ResponseEntity resetPassword(@RequestBody(required = true) PasswordResetDto model) {
+        AccountEntity accountEntity = accountRepository.findByEmail(model.getEmail());
+        LOG.log(Level.INFO, "Reset password for {0} [email={1}]", new Object[]{accountEntity.getName(), model.getEmail()});
         try {
-            uaaMailer.sendForgottenPasswordEmail(accountEntity.getEmail(), accountEntity.getName(), applicationName, organizationName, passwordResetLink, accountEntity.getPreferredLanguage());
+            uaaMailer.sendForgottenPasswordEmail(
+                    accountEntity.getEmail(), 
+                    accountEntity.getName(), 
+                    applicationName, 
+                    organizationName, 
+                    String.format(passwordResetLink, accountEntity.getId().toString()), 
+                    accountEntity.getPreferredLanguage());
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity(e, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
