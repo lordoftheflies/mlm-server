@@ -22,6 +22,7 @@ import org.hibernate.annotations.GenericGenerator;
  */
 @Entity
 @NamedQueries({
+    @NamedQuery(name = "AccountEntity.findRoleById", query = "SELECT a.node.state FROM AccountEntity a WHERE a.id = :id"),
     @NamedQuery(name = "AccountEntity.findRootAccounts", query = "SELECT a FROM AccountEntity a WHERE a.node.parent IS NULL"),
     @NamedQuery(name = "AccountEntity.getParent", query = "SELECT n.parent.contact FROM NetworkNodeEntity n WHERE n.contact.id = :childId"),
     @NamedQuery(name = "AccountEntity.findByNetwork", query = "SELECT a FROM AccountEntity a WHERE a.node.id = :nodeId"),

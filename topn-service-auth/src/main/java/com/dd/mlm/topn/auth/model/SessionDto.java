@@ -5,6 +5,7 @@
  */
 package com.dd.mlm.topn.auth.model;
 
+import com.dd.mlm.topn.persistence.entities.NetworkNodeType;
 import java.io.Serializable;
 
 /**
@@ -16,8 +17,9 @@ public class SessionDto implements Serializable {
     public SessionDto() {
     }
 
-    public SessionDto(boolean powerUser, int unused, String token, String userName, String preferredLanguage) {
-        this.powerUser = powerUser;
+    public SessionDto(NetworkNodeType nodeType, int unused, String token, String userName, String preferredLanguage) {
+        this.powerUser = NetworkNodeType.ADMIN == nodeType;
+        this.role = nodeType.name();
         this.unused = unused;
         this.token = token;
         this.userName = userName;
@@ -33,9 +35,16 @@ public class SessionDto implements Serializable {
     public void setPreferredLanguage(String preferredLanguage) {
         this.preferredLanguage = preferredLanguage;
     }
-    
-    
-    
+
+    private String role;
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
 
     private boolean powerUser;
 

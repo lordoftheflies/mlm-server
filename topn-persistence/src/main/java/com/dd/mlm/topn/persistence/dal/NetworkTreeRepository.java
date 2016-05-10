@@ -7,6 +7,7 @@ package com.dd.mlm.topn.persistence.dal;
 
 import com.dd.mlm.topn.persistence.entities.AccountEntity;
 import com.dd.mlm.topn.persistence.entities.NetworkNodeEntity;
+import com.dd.mlm.topn.persistence.entities.NetworkNodeType;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.data.repository.PagingAndSortingRepository;

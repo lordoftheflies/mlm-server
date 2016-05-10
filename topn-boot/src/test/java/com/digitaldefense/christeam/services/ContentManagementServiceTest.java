@@ -16,6 +16,7 @@ import com.dd.mlm.topn.persistence.entities.ContainerContentEntity;
 import com.dd.mlm.topn.persistence.entities.ContentEntity;
 import com.dd.mlm.topn.persistence.entities.ImageContentEntity;
 import com.dd.mlm.topn.persistence.entities.NetworkNodeEntity;
+import com.dd.mlm.topn.persistence.entities.NetworkNodeType;
 import com.dd.mlm.topn.persistence.entities.ReferenceContentEntity;
 import com.dd.mlm.topn.persistence.entities.TextContentEntity;
 import com.dd.mlm.topn.persistence.entities.VideoContentEntity;
@@ -189,12 +190,13 @@ public class ContentManagementServiceTest extends ChristeamServerApplicationTest
         NetworkNodeEntity heglasNode = new NetworkNodeEntity();
         heglasNode.setActive(true);
         heglasNode.setCodes(1);
+        heglasNode.setState(NetworkNodeType.ADMIN);
         heglasNode = networkRepo.save(heglasNode);
         heglas.setNode(heglasNode);
         heglas = accountRepo.save(heglas);
 
         AccountEntity balazspeczely = new AccountEntity();
-        balazspeczely.setEmail("balazs.peczely@digitaldefense.com");
+        balazspeczely.setEmail("peczely.balazs@digitaldefense.hu");
         balazspeczely.setName("Péczely Balázs");
         balazspeczely.setPassword("qwe123");
         balazspeczely.setPreferredLanguage("hu");
@@ -202,6 +204,7 @@ public class ContentManagementServiceTest extends ChristeamServerApplicationTest
         NetworkNodeEntity balazspeczelyNode = new NetworkNodeEntity();
         balazspeczelyNode.setActive(true);
         balazspeczelyNode.setCodes(2);
+        balazspeczelyNode.setState(NetworkNodeType.ADMIN);
         balazspeczelyNode = networkRepo.save(balazspeczelyNode);
         balazspeczely.setNode(balazspeczelyNode);
         balazspeczely = accountRepo.save(balazspeczely);
@@ -213,6 +216,7 @@ public class ContentManagementServiceTest extends ChristeamServerApplicationTest
         cseszkupopoveszku.setPreferredLanguage("po");
         cseszkupopoveszku = accountRepo.save(cseszkupopoveszku);
         NetworkNodeEntity cseszkupopoveszkuNode = new NetworkNodeEntity();
+        cseszkupopoveszkuNode.setState(NetworkNodeType.USER);
         cseszkupopoveszkuNode.setActive(true);
         cseszkupopoveszkuNode.setCodes(3);
         cseszkupopoveszkuNode = networkRepo.save(cseszkupopoveszkuNode);
@@ -228,6 +232,7 @@ public class ContentManagementServiceTest extends ChristeamServerApplicationTest
         NetworkNodeEntity parazitaNode = new NetworkNodeEntity();
         parazitaNode.setActive(true);
         parazitaNode.setCodes(4);
+        parazitaNode.setState(NetworkNodeType.USER);
         parazitaNode = networkRepo.save(parazitaNode);
         parazita.setNode(parazitaNode);
         parazita = accountRepo.save(parazita);
@@ -240,6 +245,7 @@ public class ContentManagementServiceTest extends ChristeamServerApplicationTest
         tesztelek = accountRepo.save(tesztelek);
         NetworkNodeEntity tesztelekNode = new NetworkNodeEntity();
         tesztelekNode.setActive(true);
+        tesztelekNode.setState(NetworkNodeType.USER);
         tesztelekNode.setCodes(5);
         tesztelekNode = networkRepo.save(tesztelekNode);
         tesztelek.setNode(tesztelekNode);
@@ -253,24 +259,24 @@ public class ContentManagementServiceTest extends ChristeamServerApplicationTest
         feriahegyrol.setPreferredLanguage("en");
         NetworkNodeEntity feriahegyrolNode = new NetworkNodeEntity();
         feriahegyrolNode.setActive(true);
+        feriahegyrolNode.setState(NetworkNodeType.USER);
         feriahegyrolNode.setCodes(6);
         feriahegyrolNode = networkRepo.save(feriahegyrolNode);
         feriahegyrol.setNode(feriahegyrolNode);
         feriahegyrol = accountRepo.save(feriahegyrol);
 
         AccountEntity romanok = new AccountEntity();
-        romanok.setEmail("heglas11@gmail.com");
         romanok.setName("Románia");
         romanok = accountRepo.save(romanok);
         NetworkNodeEntity romanokNode = new NetworkNodeEntity();
         romanokNode.setActive(true);
         romanokNode.setCodes(7);
+        romanokNode.setState(NetworkNodeType.GROUP);
         romanokNode = networkRepo.save(romanokNode);
         romanok.setNode(romanokNode);
         romanok = accountRepo.save(romanok);
 
         AccountEntity gorogok = new AccountEntity();
-        gorogok.setEmail("balazs.peczely@digitaldefense.com");
         gorogok.setName("Görögország");
         gorogok = accountRepo.save(gorogok);
         NetworkNodeEntity gorogokNode = new NetworkNodeEntity();
@@ -278,15 +284,16 @@ public class ContentManagementServiceTest extends ChristeamServerApplicationTest
         gorogokNode.setCodes(8);
         gorogokNode = networkRepo.save(gorogokNode);
         gorogok.setNode(gorogokNode);
+        gorogokNode.setState(NetworkNodeType.GROUP);
         gorogok = accountRepo.save(gorogok);
 
         AccountEntity magyarok = new AccountEntity();
-        magyarok.setEmail("heglas11@gmail.com");
         magyarok.setName("Magyarország");
         magyarok = accountRepo.save(magyarok);
         NetworkNodeEntity magyarokNode = new NetworkNodeEntity();
         magyarokNode.setActive(true);
         magyarokNode.setCodes(9);
+        magyarokNode.setState(NetworkNodeType.GROUP);
         magyarokNode = networkRepo.save(magyarokNode);
         magyarok.setNode(magyarokNode);
         magyarok = accountRepo.save(magyarok);

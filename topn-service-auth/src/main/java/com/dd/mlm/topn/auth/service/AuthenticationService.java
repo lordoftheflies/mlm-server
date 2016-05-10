@@ -18,6 +18,7 @@ import com.dd.mlm.topn.persistence.dal.NetworkTreeRepository;
 import com.dd.mlm.topn.persistence.entities.AccountEntity;
 import com.dd.mlm.topn.persistence.entities.MailBoxEntity;
 import com.dd.mlm.topn.persistence.entities.NetworkNodeEntity;
+import com.dd.mlm.topn.persistence.entities.NetworkNodeType;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -71,7 +72,7 @@ public class AuthenticationService {
     private void apply(AccountEntity entity, SessionDto dto) {
         dto.setUserName(entity.getName());
         dto.setToken(entity.getId().toString());
-        dto.setPowerUser(true);
+        dto.setPowerUser(NetworkNodeType.ADMIN == accountRepository.findRoleById(entity.getId()));
         dto.setToken(entity.getId().toString());
         dto.setPreferredLanguage(entity.getPreferredLanguage());
     }
@@ -122,7 +123,7 @@ public class AuthenticationService {
             LOG.log(Level.INFO, "Sign-on principal user {0}", dto.toString());
 
             return new ResponseEntity<>(new SessionDto(
-                    networkRepository.isRoot(accountEntity.getId()),
+                    accountRepository.findRoleById(accountEntity.getId()),
                     networkRepository.findByAccount(accountEntity.getId()).getCodes(),
                     accountEntity.getId().toString(),
                     accountEntity.getName(),
@@ -147,7 +148,7 @@ public class AuthenticationService {
 
                 LOG.log(Level.INFO, "Sign-on user {0}", dto.getEmail());
                 return new ResponseEntity<>(new SessionDto(
-                        networkRepository.isRoot(accountId),
+                        accountRepository.findRoleById(accountEntity.getId()),
                         networkRepository.findByAccount(accountEntity.getId()).getCodes(),
                         accountEntity.getId().toString(),
                         accountEntity.getName(),
