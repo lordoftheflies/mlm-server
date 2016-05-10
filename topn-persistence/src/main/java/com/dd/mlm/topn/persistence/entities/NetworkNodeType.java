@@ -17,8 +17,11 @@ public enum NetworkNodeType {
 
     private final String key;
 
+    public String getKey() {
+        return key;
+    }
+    
     private NetworkNodeType(String key) {
         this.key = key;
     }
-
 }
