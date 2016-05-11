@@ -5,11 +5,44 @@
  */
 package com.dd.mlm.topn.auth.model;
 
+import java.util.UUID;
+
 /**
  *
  * @author lordoftheflies
  */
 public class RegistrationDto {
+
+    public RegistrationDto() {
+    }
+
+    public RegistrationDto(UUID accountId, String phone, String name, String email, String password) {
+        this.phone = phone;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.accountId = accountId.toString();
+    }
+
+    private String accountId;
+
+    public String getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(String accountId) {
+        this.accountId = accountId;
+    }
+    
+    private String phone;
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
     private String name;
 

@@ -331,4 +331,18 @@ public class AddressBookService {
         });
     }
 
+    @RequestMapping(path = "/delete",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            method = RequestMethod.POST)
+    public void erase(@RequestBody PermissionChangeDto dto) throws InsufficientCodesException, AccountNotExistException {
+        NetworkNodeEntity destination = networkTreeRepository.findByAccount(dto.getSubject());
+        NetworkNodeEntity source = networkTreeRepository.findByAccount(dto.getOwner());
+        destination.setActive(false);
+        networkTreeRepository.save(destination);
+
+        LOG.log(Level.INFO, "{0} delete member {1}", new Object[]{
+            dto.getOwner(),
+            dto.getSubject()
+        });
+    }
 }

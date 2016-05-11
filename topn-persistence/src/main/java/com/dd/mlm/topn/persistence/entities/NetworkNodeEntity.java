@@ -27,13 +27,13 @@ import javax.persistence.OneToOne;
  */
 @Entity
 @NamedQueries({
-    @NamedQuery(name = "NetworkNodeEntity.findContactsOfRootNodes", query = "SELECT n.contact FROM NetworkNodeEntity n WHERE n.parent IS NULL"),
-    @NamedQuery(name = "NetworkNodeEntity.findContactsOfChildNodes", query = "SELECT n.contact FROM NetworkNodeEntity n WHERE n.parent.contact.id = :accountId"),
+    @NamedQuery(name = "NetworkNodeEntity.findContactsOfRootNodes", query = "SELECT n.contact FROM NetworkNodeEntity n WHERE n.parent IS NULL AND n.active = TRUE"),
+    @NamedQuery(name = "NetworkNodeEntity.findContactsOfChildNodes", query = "SELECT n.contact FROM NetworkNodeEntity n WHERE n.parent.contact.id = :accountId AND n.active = TRUE"),
     @NamedQuery(name = "NetworkNodeEntity.findByAccount", query = "SELECT n FROM NetworkNodeEntity n WHERE n.contact.id = :accountId"),
-    @NamedQuery(name = "NetworkNodeEntity.findChildrenNodes", query = "SELECT n FROM NetworkNodeEntity n WHERE n.parent.id = :nodeId"),
+    @NamedQuery(name = "NetworkNodeEntity.findChildrenNodes", query = "SELECT n FROM NetworkNodeEntity n WHERE n.parent.id = :nodeId AND n.active = TRUE"),
     @NamedQuery(name = "NetworkNodeEntity.isRoot", query = "SELECT CASE WHEN (COUNT(n) > 0) THEN TRUE ELSE FALSE END FROM NetworkNodeEntity n WHERE n.parent IS NULL AND n.contact.id = :accountId"),
     @NamedQuery(name = "NetworkNodeEntity.isRootNode", query = "SELECT CASE WHEN (COUNT(n) > 0) THEN TRUE ELSE FALSE END  FROM NetworkNodeEntity n WHERE n.parent.id = :nodeId"),
-    @NamedQuery(name = "NetworkNodeEntity.findChildren", query = "SELECT n FROM NetworkNodeEntity n WHERE n.parent.contact.id = :accountId")
+    @NamedQuery(name = "NetworkNodeEntity.findChildren", query = "SELECT n FROM NetworkNodeEntity n WHERE n.parent.contact.id = :accountId AND n.active = TRUE")
 
 })
 public class NetworkNodeEntity implements Serializable {

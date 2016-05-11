@@ -31,6 +31,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -91,6 +92,26 @@ public class AuthenticationService {
 
     @CrossOrigin(origins = "*")
     @RequestMapping(
+            path = "/{id}/profile",
+            produces = {
+                MediaType.APPLICATION_JSON_VALUE
+            },
+            method = RequestMethod.GET)
+    public ResponseEntity profile(@PathVariable("id") String id) {
+        try {
+            AccountEntity entity = accountRepository.findOne(UUID.fromString(id));
+
+            RegistrationDto dto = new RegistrationDto(entity.getId(), entity.getPhone(), entity.getName(), entity.getEmail(), null);
+
+            LOG.log(Level.INFO, "Get registration profile for user {0}", id);
+            return new ResponseEntity<>(dto, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @CrossOrigin(origins = "*")
+    @RequestMapping(
             path = "/signon",
             consumes = {
                 MediaType.APPLICATION_JSON_VALUE
@@ -137,9 +158,9 @@ public class AuthenticationService {
             UUID accountId = UUID.fromString(dto.getCode());
             AccountEntity accountEntity = accountRepository.findOne(accountId);
             NetworkNodeEntity nodeEntity = networkRepository.findByAccount(accountId);
-            if (nodeEntity.getActive()) {
-                throw new RegistrationCodeAlreadyUsedException();
-            } else {
+//            if (nodeEntity.getActive()) {
+//                throw new RegistrationCodeAlreadyUsedException();
+//            } else {
                 apply(dto, accountEntity);
                 accountRepository.save(accountEntity);
 
@@ -154,7 +175,7 @@ public class AuthenticationService {
                         accountEntity.getName(),
                         accountEntity.getPreferredLanguage()
                 ), HttpStatus.OK);
-            }
+//            }
         }
     }
 
@@ -212,11 +233,11 @@ public class AuthenticationService {
         LOG.log(Level.INFO, "Reset password for {0} [email={1}]", new Object[]{accountEntity.getName(), model.getEmail()});
         try {
             uaaMailer.sendForgottenPasswordEmail(
-                    accountEntity.getEmail(), 
-                    accountEntity.getName(), 
-                    applicationName, 
-                    organizationName, 
-                    String.format(passwordResetLink, accountEntity.getId().toString()), 
+                    accountEntity.getEmail(),
+                    accountEntity.getName(),
+                    applicationName,
+                    organizationName,
+                    String.format(passwordResetLink, accountEntity.getId().toString()),
                     accountEntity.getPreferredLanguage());
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
