@@ -328,12 +328,14 @@ public class ContentManagementServiceTest extends ChristeamServerApplicationTest
         ContainerContentEntity contentContainer = new ContainerContentEntity();
         contentContainer.setTitle("Cikk a kacsákról");
         contentContainer.setLeaf(true);
+        contentContainer.setOrderIndex(0);
         contentContainer.setHasEmbeddedFile(false);
 //        contentContainer.setResourceType(ViewConstants.CONTENT_MANAGEMENT_WIDGET_CONTAINER);
         containerContentId = contentRepository.save(contentContainer).getId();
 
         ContentEntity textContentOne = new TextContentEntity();
         textContentOne.setTitle("Mi a kacsa?");
+        textContentOne.setOrderIndex(3);
         textContentOne.setParent(contentContainer);
 //        textContentOne.setResourceType(ViewConstants.CONTENT_MANAGEMENT_WIDGET_TEXT);
         textContentOne.setContent("A házikacsa vagy röviden kacsa (Anas platyrhynchos domestica) a récefélék családjába tartozó baromfi, a tőkés réce (\"vadkacsa\") alfaja, háziasított változata.");
@@ -341,6 +343,7 @@ public class ContentManagementServiceTest extends ChristeamServerApplicationTest
 //
         ContentEntity imageContent = new ImageContentEntity();
         imageContent.setTitle("Így néz ki egy kacsa");
+        imageContent.setOrderIndex(1);
         imageContent.setContent("http://www.vicclap.hu/static/media/201002/pic87066.jpg");
         imageContent.setParent(contentContainer);
 //        imageContent.setResourceType(ViewConstants.CONTENT_MANAGEMENT_WIDGET_IMAGE);
@@ -349,6 +352,7 @@ public class ContentManagementServiceTest extends ChristeamServerApplicationTest
         ContentEntity textContentTwo = new TextContentEntity();
         textContentTwo.setTitle("Magyar kacsa");
         textContentTwo.setParent(contentContainer);
+        textContentTwo.setOrderIndex(2);
 //        textContentTwo.setResourceType(ViewConstants.CONTENT_MANAGEMENT_WIDGET_TEXT);
         textContentTwo.setContent("A 20. század elején a magyar parlagi kacsát már ősi magyar fajtaként említik, de származásáról biztos adataink ma sincsenek. A vízközeli falusi, tanyasi gazdaságok egyik legfontosabb baromfiféléje volt. Míg a gazdaasszony a libát eladásra nevelte, addig a kacsahús a család ellátására szolgált. A tájegységeknek kialakultak a saját típusaik. A leggyakoribb a fehér szín volt, amelyet a 20. század elején a pekingi kacsával akartak nemesíteni. A \"színes\", vagyis a tarka, vadas színű kacsa kisebb rangúnak számított, pedig ez a fajtaváltozat őrizte meg leginkább a magyar kacsa ősi formáját. Állománya erősen lecsökkent, Erdélyben és az alföldi tanyákon találhatóak kisebb állományai. Jelenleg a gödöllői Kisállattenyésztési Kutatóintézetben mindkét változatát tenyésztik. Nagyobb állománya található Szarvason is. 2004 óta a magyar kacsa a védett háziállataink közé tartozik.");
         textContentId = contentRepository.save(textContentTwo).getId();
@@ -357,18 +361,21 @@ public class ContentManagementServiceTest extends ChristeamServerApplicationTest
         videoContent.setTitle("Kacsatánc");
         videoContent.setContent("4KRw9sepREM");
         videoContent.setParent(contentContainer);
+        videoContent.setOrderIndex(0);
 //        videoContent.setResourceType(ViewConstants.CONTENT_MANAGEMENT_WIDGET_VIDEO);
         videoContentId = contentRepository.save(videoContent).getId();
 
         ContainerContentEntity contentContainer2 = new ContainerContentEntity();
         contentContainer2.setTitle("Házi baromfik");
         contentContainer2.setLeaf(false);
+        contentContainer2.setOrderIndex(1);
         contentContainer2.setHasEmbeddedFile(false);
 //        contentContainer.setResourceType(ViewConstants.CONTENT_MANAGEMENT_WIDGET_CONTAINER);
         containerContentId2 = contentRepository.save(contentContainer2).getId();
 
         ContentEntity duckReference = new ReferenceContentEntity();
         duckReference.setTitle("Kacsa");
+        duckReference.setOrderIndex(1);
         duckReference.setParent(contentContainer2);
 //        textContentOne.setResourceType(ViewConstants.CONTENT_MANAGEMENT_WIDGET_TEXT);
         duckReference.setContent(contentContainer.getId().toString());
@@ -379,6 +386,7 @@ public class ContentManagementServiceTest extends ChristeamServerApplicationTest
         libaFile.setContent("pirosfekete.pdf");
         libaFile.setHasEmbeddedFile(true);
         libaFile.setLeaf(true);
+        libaFile.setOrderIndex(0);
         libaFile.setParent(contentContainer2);
 //        imageContent.setResourceType(ViewConstants.CONTENT_MANAGEMENT_WIDGET_IMAGE);
         libaFileId = contentRepository.save(libaFile).getId();

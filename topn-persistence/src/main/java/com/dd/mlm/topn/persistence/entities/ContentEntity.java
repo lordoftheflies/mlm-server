@@ -33,7 +33,7 @@ import org.hibernate.annotations.GenericGenerator;
 @DiscriminatorColumn(name = "resource", discriminatorType = DiscriminatorType.STRING, length = 50)
 @DiscriminatorValue(value = "resource")
 @NamedQueries({
-    @NamedQuery(name = "ContentEntity.findByParent", query = "SELECT c FROM ContentEntity c WHERE c.parent.id = :parentId"),
+    @NamedQuery(name = "ContentEntity.findByParent", query = "SELECT c FROM ContentEntity c WHERE c.parent.id = :parentId ORDER BY c.orderIndex"),
     @NamedQuery(name = "ContentEntity.findRoots", query = "SELECT c FROM ContentEntity c WHERE c.parent IS NULL"),
     @NamedQuery(name = "ContentEntity.findByChild", query = "SELECT c.parent FROM ContentEntity c WHERE c.id = :childId AND c.parent IS NOT NULL")
 })
@@ -53,7 +53,18 @@ public class ContentEntity implements Serializable {
     public void setId(UUID id) {
         this.id = id;
     }
+    
+    @Basic(optional = false)
+    private Integer orderIndex;
 
+    public Integer getOrderIndex() {
+        return orderIndex;
+    }
+
+    public void setOrderIndex(Integer orderIndex) {
+        this.orderIndex = orderIndex;
+    }
+    
     @Basic
     private boolean leaf = true;
 
@@ -157,7 +168,7 @@ public class ContentEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "com.digitaldefense.christeam.entities.MessageEntity[ id=" + id + " ]";
+        return "com.digitaldefense.christeam.entities.ContentEntity[ id=" + id + " ]";
     }
 
 }
