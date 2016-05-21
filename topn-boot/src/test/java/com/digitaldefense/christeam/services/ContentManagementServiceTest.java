@@ -169,7 +169,7 @@ public class ContentManagementServiceTest extends ChristeamServerApplicationTest
 //        fail("The test case is a prototype.");
     }
 
-    @Test
+//    @Test
     public void atestCleanUp() {
         messageRepository.deleteAll();
         mailBoxRepository.deleteAll();

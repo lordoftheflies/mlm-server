@@ -187,6 +187,19 @@ public class ContentEntity implements Serializable {
         this.parent = parent;
     }
 
+//    @Basic(optional = false)
+//    private Boolean active = true;
+//
+//    public boolean isActive() {
+//        return active;
+//    }
+//
+//    public void setActive(boolean active) {
+//        this.active = active;
+//    }
+    
+    
+    
     @Override
     public int hashCode() {
         int hash = 0;
@@ -211,5 +224,4 @@ public class ContentEntity implements Serializable {
     public String toString() {
         return "com.digitaldefense.christeam.entities.ContentEntity[ id=" + id + " ]";
     }
-
 }

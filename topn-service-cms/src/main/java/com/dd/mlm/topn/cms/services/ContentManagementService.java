@@ -72,44 +72,46 @@ public class ContentManagementService {
             this.index = 0;
         }
 
-        private void initialSetup(ContentEntity entity, String title, String value, ContainerContentEntity parent) {
+        private void initialSetup(ContentEntity entity, String title, String value, ContainerContentEntity parent, UUID id) {
             entity.setContent(value);
+            entity.setId(id);
             entity.setTitle(title);
             entity.setParent(parent);
             entity.setOrderIndex(index++);
         }
 
-        public TextContentEntity createText(String title, String value, ContainerContentEntity parent) {
+        public TextContentEntity createText(String title, String value, ContainerContentEntity parent, UUID id) {
             TextContentEntity entity = new TextContentEntity();
-            initialSetup(entity, title, value, parent);
+            initialSetup(entity, title, value, parent, id);
 //            entity.setResourceType(ViewConstants.CONTENT_MANAGEMENT_WIDGET_TEXT);
             return contentRepository.save(entity);
         }
 
-        public VideoContentEntity createVideo(String title, String value, ContainerContentEntity parent) {
+        public VideoContentEntity createVideo(String title, String value, ContainerContentEntity parent, UUID id) {
             VideoContentEntity entity = new VideoContentEntity();
-            initialSetup(entity, title, value, parent);
+            initialSetup(entity, title, value, parent, id);
 //            entity.setResourceType(ViewConstants.CONTENT_MANAGEMENT_WIDGET_VIDEO);
             return contentRepository.save(entity);
         }
 
-        private ImageContentEntity createImage(String title, String value, ContainerContentEntity parent) {
+        private ImageContentEntity createImage(String title, String value, ContainerContentEntity parent, UUID id) {
             ImageContentEntity entity = new ImageContentEntity();
-            initialSetup(entity, title, value, parent);
+            initialSetup(entity, title, value, parent, id);
 //            entity.setResourceType(ViewConstants.CONTENT_MANAGEMENT_WIDGET_IMAGE);
             return contentRepository.save(entity);
         }
 
-        private ReferenceContentEntity createReference(String title, String value, ContainerContentEntity parent) {
+        private ReferenceContentEntity createReference(String title, String value, ContainerContentEntity parent, UUID id) {
             ReferenceContentEntity entity = new ReferenceContentEntity();
-            initialSetup(entity, title, value, parent);
+            initialSetup(entity, title, value, parent, id);
 //            entity.setResourceType(ViewConstants.CONTENT_MANAGEMENT_WIDGET_LINK);
             return contentRepository.save(entity);
         }
 
-        private ContainerContentEntity createContent(String title, String value, ContainerContentEntity parent, int index) {
+        private ContainerContentEntity createContent(String title, String value, ContainerContentEntity parent, int index, UUID id) {
             ContainerContentEntity entity = new ContainerContentEntity();
             entity.setContent(value);
+            entity.setId(id);
             entity.setTitle(title);
             entity.setParent(parent);
             entity.setOrderIndex(index);
@@ -274,36 +276,57 @@ public class ContentManagementService {
             })
     public void save(@RequestBody PageDto dto) {
         ContentEntityFactory factory = new ContentEntityFactory();
-        ContainerContentEntity container = factory.createContent(dto.getTitle(), null, null, 0);
+        ContainerContentEntity container = factory.createContent(dto.getTitle(), null, null, 0, dto.getId());
         container.setLeaf(dto.isLeaf());
         container.setHasEmbeddedFile(dto.isHasEmbeddedFile());
         if (container.isHasEmbeddedFile()) {
             container.setContent(dto.getEmbeddedFileName());
         } else {
             LOG.log(Level.INFO, "Created new assembled page[{0}].", container.getId());
+            if (dto.getSections().isEmpty()) {
+                dto.setLeaf(false);
+            }
             dto.getSections().forEach(s -> {
-                ContentEntity ce;
-                switch (s.getType()) {
-                    case "video":
-                    case ViewConstants.CONTENT_MANAGEMENT_WIDGET_VIDEO:
-                        ce = factory.createVideo(s.getTitle(), s.getData(), container);
-                        break;
-                    case "image":
-                    case ViewConstants.CONTENT_MANAGEMENT_WIDGET_IMAGE:
-                        ce = factory.createImage(s.getTitle(), s.getData(), container);
-                        break;
-                    case "link":
-                    case ViewConstants.CONTENT_MANAGEMENT_WIDGET_LINK:
-                        ce = factory.createReference(s.getTitle(), s.getData(), container);
-                        break;
-                    case "text":
-                    case ViewConstants.CONTENT_MANAGEMENT_WIDGET_TEXT:
-                    default:
-                        ce = factory.createText(s.getTitle(), s.getData(), container);
-                        break;
+                try {
+                    ContentEntity ce = null;
+                    UUID sectionId = null;
+                    try {
+                        sectionId = UUID.fromString(s.getName());
+                        LOG.log(Level.INFO, "Section id presented, modify {0} section", s.getType());
+                        ContentEntity sectionEntity = contentRepository.findOne(sectionId);
+                        sectionEntity.setContent(s.getData());
+                        sectionEntity.setTitle(s.getTitle());
+                        contentRepository.save(sectionEntity);
+                    } catch (IllegalArgumentException parseEx) {
+                        LOG.log(Level.INFO, "Section id not presented, create {0} section", s.getType());
+                        switch (s.getType()) {
+                            case "video":
+                            case ViewConstants.CONTENT_MANAGEMENT_WIDGET_VIDEO:
+
+                                ce = factory.createVideo(s.getTitle(), s.getData(), container, sectionId);
+                                break;
+                            case "image":
+                            case ViewConstants.CONTENT_MANAGEMENT_WIDGET_IMAGE:
+                                ce = factory.createImage(s.getTitle(), s.getData(), container, sectionId);
+                                break;
+                            case "link":
+                            case ViewConstants.CONTENT_MANAGEMENT_WIDGET_LINK:
+                                ce = factory.createReference(s.getTitle(), s.getData(), container, sectionId);
+                                dto.setLeaf(false);
+                                break;
+                            case "text":
+                            case ViewConstants.CONTENT_MANAGEMENT_WIDGET_TEXT:
+                            default:
+                                ce = factory.createText(s.getTitle(), s.getData(), container, sectionId);
+                                break;
+                        }
+
+                        LOG.log(Level.INFO, "Created new {0}-content[{1}].", new Object[]{s.getType(), ce.getId()});
+                    }
+                } catch (Exception ex) {
+                    LOG.log(Level.SEVERE, "Failed to persist section.", ex);
                 }
 
-                LOG.log(Level.INFO, "Created new {0}-content[{1}].", new Object[]{s.getType(), ce.getId()});
             });
         }
     }
@@ -330,7 +353,7 @@ public class ContentManagementService {
     }
 
     @CrossOrigin
-    @RequestMapping(path = "/candidates",
+    @RequestMapping(path = "/candidates/parent",
             method = RequestMethod.GET,
             produces = {
                 MediaType.APPLICATION_JSON_VALUE
@@ -338,13 +361,28 @@ public class ContentManagementService {
     public List<PageDto> parentCandidates() {
         List<PageDto> pages = containerContentRepository.findAll()
                 .stream()
-                .filter(e -> e.getLeaf())
+                .filter(e -> !e.getLeaf())
                 .map((ContainerContentEntity e) -> new PageDto(e.getId(), e.getTitle()))
                 .collect(Collectors.toList());
         pages.add(new PageDto(null, ROOT_PLACEHOLDER));
         return pages;
     }
-    
+
+    @CrossOrigin
+    @RequestMapping(path = "/candidates/child",
+            method = RequestMethod.GET,
+            produces = {
+                MediaType.APPLICATION_JSON_VALUE
+            })
+    public List<PageDto> childCandidates() {
+        List<PageDto> pages = containerContentRepository.findAll()
+                .stream()
+                .filter(e -> e.getLeaf())
+                .map((ContainerContentEntity e) -> new PageDto(e.getId(), e.getTitle()))
+                .collect(Collectors.toList());
+        return pages;
+    }
+
     private static final String ROOT_PLACEHOLDER = "Root";
 
     private static final Logger LOG = Logger.getLogger(ContentManagementService.class.getName());
