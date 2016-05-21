@@ -154,7 +154,7 @@ public class ContentManagementServiceTest extends ChristeamServerApplicationTest
     /**
      * Test of save method, of class ContentManagementService.
      */
-    @Test
+//    @Test
     public void testSave() {
 //        System.out.println("save");
 //        PageDto pageDto = new PageDto();
@@ -169,7 +169,7 @@ public class ContentManagementServiceTest extends ChristeamServerApplicationTest
 //        fail("The test case is a prototype.");
     }
 
-//    @Test
+    @Test
     public void atestCleanUp() {
         messageRepository.deleteAll();
         mailBoxRepository.deleteAll();
@@ -182,7 +182,7 @@ public class ContentManagementServiceTest extends ChristeamServerApplicationTest
     
     private NetworkNodeEntity balazspeczelyNode;
 
-//    @Test
+    @Test
     public void btestNetwork() {
 
         AccountEntity heglas = new AccountEntity();
@@ -324,7 +324,7 @@ public class ContentManagementServiceTest extends ChristeamServerApplicationTest
     /**
      * Test of publish method, of class ContentManagementService.
      */
-//    @Test
+    @Test
     public void ctestCustomArticle() throws Exception {
         System.out.println("publish");
 //        fail("The test case is a prototype.");

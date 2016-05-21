@@ -49,7 +49,6 @@ public class ChristeamServerApplicationTests {
         this.mockMvc = webAppContextSetup(webApplicationContext).build();
     }
 
-    
     @Test
     public void createContentWithBasicTypes() {
 //        mockMvc.perform(get("/" + userName + "/bookmarks"))
