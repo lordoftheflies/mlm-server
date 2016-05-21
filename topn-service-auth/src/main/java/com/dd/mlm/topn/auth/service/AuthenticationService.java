@@ -63,6 +63,8 @@ public class AuthenticationService {
         entity.setEmail(dto.getEmail());
         entity.setPassword(dto.getPassword());
         entity.setName(dto.getName());
+        entity.setPhone(dto.getPhone());
+        entity.setPreferredLanguage((dto.getLocale() == null) ? "en" : dto.getLocale());
         if (dto.getCode() != null && !"".equals(dto.getCode())) {
             entity.setId(UUID.fromString(dto.getCode()));
         } else {
@@ -128,6 +130,7 @@ public class AuthenticationService {
 
             NetworkNodeEntity nodeEntity = new NetworkNodeEntity();
             nodeEntity.setActive(true);
+            nodeEntity.setState(NetworkNodeType.ADMIN);
             nodeEntity.setContact(accountEntity);
             networkRepository.save(nodeEntity);
 
@@ -145,7 +148,7 @@ public class AuthenticationService {
 
             return new ResponseEntity<>(new SessionDto(
                     accountRepository.findRoleById(accountEntity.getId()),
-                    networkRepository.findByAccount(accountEntity.getId()).getCodes(),
+                    0,
                     accountEntity.getId().toString(),
                     accountEntity.getName(),
                     accountEntity.getPreferredLanguage()
@@ -161,20 +164,20 @@ public class AuthenticationService {
 //            if (nodeEntity.getActive()) {
 //                throw new RegistrationCodeAlreadyUsedException();
 //            } else {
-                apply(dto, accountEntity);
-                accountRepository.save(accountEntity);
+            apply(dto, accountEntity);
+            accountRepository.save(accountEntity);
 
-                nodeEntity.setActive(true);
-                networkRepository.save(nodeEntity);
+            nodeEntity.setActive(true);
+            networkRepository.save(nodeEntity);
 
-                LOG.log(Level.INFO, "Sign-on user {0}", dto.getEmail());
-                return new ResponseEntity<>(new SessionDto(
-                        accountRepository.findRoleById(accountEntity.getId()),
-                        networkRepository.findByAccount(accountEntity.getId()).getCodes(),
-                        accountEntity.getId().toString(),
-                        accountEntity.getName(),
-                        accountEntity.getPreferredLanguage()
-                ), HttpStatus.OK);
+            LOG.log(Level.INFO, "Sign-on user {0}", dto.getEmail());
+            return new ResponseEntity<>(new SessionDto(
+                    accountRepository.findRoleById(accountEntity.getId()),
+                    networkRepository.findByAccount(accountEntity.getId()).getCodes(),
+                    accountEntity.getId().toString(),
+                    accountEntity.getName(),
+                    accountEntity.getPreferredLanguage()
+            ), HttpStatus.OK);
 //            }
         }
     }
@@ -252,10 +255,14 @@ public class AuthenticationService {
                 MediaType.APPLICATION_JSON_VALUE
             },
             method = RequestMethod.GET)
-    public ResponseEntity<SessionDto> session(
+    public ResponseEntity session(
             @RequestParam(value = "token", required = false, defaultValue = DEFAULT_TOKEN_EMPTY) String token
     ) throws AccountNotFoundException, AccesDeniedException {
-        if (token == null || token.equals(DEFAULT_TOKEN_EMPTY)) {
+        if (accountRepository.count() == 0) {
+            SessionDto dto = new SessionDto();
+            dto.setToken(token);
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(dto);
+        } else if (token == null || token.equals(DEFAULT_TOKEN_EMPTY)) {
             LOG.log(Level.INFO, "Session fetching failed for {0}", token);
             throw new AccesDeniedException("Empty user token");
         } else if (!accountRepository.exists(UUID.fromString(token))) {
