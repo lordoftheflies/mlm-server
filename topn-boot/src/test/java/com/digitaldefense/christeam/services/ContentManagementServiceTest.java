@@ -177,8 +177,12 @@ public class ContentManagementServiceTest extends ChristeamServerApplicationTest
         accountRepo.deleteAll();
         networkRepo.deleteAll();
     }
+    
+    private NetworkNodeEntity heglasNode;
+    
+    private NetworkNodeEntity balazspeczelyNode;
 
-    @Test
+//    @Test
     public void btestNetwork() {
 
         AccountEntity heglas = new AccountEntity();
@@ -187,7 +191,7 @@ public class ContentManagementServiceTest extends ChristeamServerApplicationTest
         heglas.setPassword("qwe123");
         heglas.setPreferredLanguage("en");
         heglas = accountRepo.save(heglas);
-        NetworkNodeEntity heglasNode = new NetworkNodeEntity();
+        heglasNode = new NetworkNodeEntity();
         heglasNode.setActive(true);
         heglasNode.setCodes(1);
         heglasNode.setState(NetworkNodeType.ADMIN);
@@ -201,7 +205,7 @@ public class ContentManagementServiceTest extends ChristeamServerApplicationTest
         balazspeczely.setPassword("qwe123");
         balazspeczely.setPreferredLanguage("hu");
         balazspeczely = accountRepo.save(balazspeczely);
-        NetworkNodeEntity balazspeczelyNode = new NetworkNodeEntity();
+        balazspeczelyNode = new NetworkNodeEntity();
         balazspeczelyNode.setActive(true);
         balazspeczelyNode.setCodes(2);
         balazspeczelyNode.setState(NetworkNodeType.ADMIN);
@@ -320,7 +324,7 @@ public class ContentManagementServiceTest extends ChristeamServerApplicationTest
     /**
      * Test of publish method, of class ContentManagementService.
      */
-    @Test
+//    @Test
     public void ctestCustomArticle() throws Exception {
         System.out.println("publish");
 //        fail("The test case is a prototype.");
@@ -330,6 +334,8 @@ public class ContentManagementServiceTest extends ChristeamServerApplicationTest
         contentContainer.setLeaf(true);
         contentContainer.setOrderIndex(0);
         contentContainer.setHasEmbeddedFile(false);
+        contentContainer.setNode(heglasNode);
+        contentContainer.setDraft(true);
 //        contentContainer.setResourceType(ViewConstants.CONTENT_MANAGEMENT_WIDGET_CONTAINER);
         containerContentId = contentRepository.save(contentContainer).getId();
 
@@ -369,6 +375,8 @@ public class ContentManagementServiceTest extends ChristeamServerApplicationTest
         contentContainer2.setTitle("Házi baromfik");
         contentContainer2.setLeaf(false);
         contentContainer2.setOrderIndex(1);
+        contentContainer.setNode(balazspeczelyNode);
+        contentContainer.setDraft(false);
         contentContainer2.setHasEmbeddedFile(false);
 //        contentContainer.setResourceType(ViewConstants.CONTENT_MANAGEMENT_WIDGET_CONTAINER);
         containerContentId2 = contentRepository.save(contentContainer2).getId();

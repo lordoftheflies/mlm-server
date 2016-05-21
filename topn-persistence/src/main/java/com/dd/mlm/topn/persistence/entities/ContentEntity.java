@@ -34,7 +34,15 @@ import org.hibernate.annotations.GenericGenerator;
 @DiscriminatorValue(value = "resource")
 @NamedQueries({
     @NamedQuery(name = "ContentEntity.findByParent", query = "SELECT c FROM ContentEntity c WHERE c.parent.id = :parentId ORDER BY c.orderIndex"),
+    @NamedQuery(name = "ContentEntity.findDraftByParent", query = "SELECT c FROM ContentEntity c WHERE c.parent.id = :parentId AND c.node.contact.id = :accountId ORDER BY c.orderIndex"),
+    @NamedQuery(name = "ContentEntity.findPublicByParent", query = "SELECT c FROM ContentEntity c WHERE c.parent.id = :parentId AND c.draft = FALSE ORDER BY c.orderIndex"),
+    @NamedQuery(name = "ContentEntity.findPublishedByParent", query = "SELECT c FROM ContentEntity c WHERE c.parent.id = :parentId ORDER BY c.orderIndex"),
+    
     @NamedQuery(name = "ContentEntity.findRoots", query = "SELECT c FROM ContentEntity c WHERE c.parent IS NULL"),
+    @NamedQuery(name = "ContentEntity.findDraftRoots", query = "SELECT c FROM ContentEntity c WHERE c.parent IS NULL AND c.node.contact.id = :accountId"),
+    @NamedQuery(name = "ContentEntity.findPublicRoots", query = "SELECT c FROM ContentEntity c WHERE c.parent IS NULL AND c.draft = FALSE"),
+    @NamedQuery(name = "ContentEntity.findPublishedRoots", query = "SELECT c FROM ContentEntity c WHERE c.parent IS NULL"),
+    
     @NamedQuery(name = "ContentEntity.findByChild", query = "SELECT c.parent FROM ContentEntity c WHERE c.id = :childId AND c.parent IS NOT NULL")
 })
 public class ContentEntity implements Serializable {
@@ -99,7 +107,40 @@ public class ContentEntity implements Serializable {
     public void setResourceType(String resourceType) {
         this.resourceType = resourceType;
     }
+    
+    @Basic
+    private Boolean draft = true;
 
+    public boolean isDraft() {
+        return draft;
+    }
+
+    public void setDraft(boolean draft) {
+        this.draft = draft;
+    }
+    
+    @Basic
+    private Boolean publicIndicator = true;
+
+    public Boolean getPublicIndicator() {
+        return publicIndicator;
+    }
+
+    public void setPublicIndicator(Boolean publicIndicator) {
+        this.publicIndicator = publicIndicator;
+    }
+
+    @ManyToOne
+    private NetworkNodeEntity node;
+
+    public NetworkNodeEntity getNode() {
+        return node;
+    }
+
+    public void setNode(NetworkNodeEntity node) {
+        this.node = node;
+    }
+    
     @Basic
     @Column(length = 1000)
     private String title;

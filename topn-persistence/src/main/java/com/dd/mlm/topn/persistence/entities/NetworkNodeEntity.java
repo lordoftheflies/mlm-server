@@ -151,6 +151,17 @@ public class NetworkNodeEntity implements Serializable {
         this.mailBox = mailBox;
     }
     
+    @OneToMany(mappedBy = "node")
+    private List<ContentEntity> contents;
+
+    public List<ContentEntity> getContents() {
+        return contents;
+    }
+
+    public void setContents(List<ContentEntity> contents) {
+        this.contents = contents;
+    }
+    
     @OneToMany(mappedBy = "sender")
     private List<MessageEntity> sentMessages;
 
