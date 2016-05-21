@@ -46,72 +46,73 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(path = "/content-management")
 public class ContentManagementService {
-    
+
     @Autowired
     private ContainerContentRepository containerContentRepository;
-    
+
     @Autowired
     private ContentRepository contentRepository;
-    
+
     @Autowired
     private AccountRepository accountRepository;
     @Autowired
     private MessageRepository messageRepository;
     @Autowired
     private MailBoxRepository mailBoxRepository;
-    
+
     private class ContentEntityFactory {
-        
+
         private int index;
-        
+
         public ContentEntityFactory(int index) {
             this.index = index;
         }
-        
+
         public ContentEntityFactory() {
             this.index = 0;
         }
-        
+
         private void initialSetup(ContentEntity entity, String title, String value, ContainerContentEntity parent) {
             entity.setContent(value);
             entity.setTitle(title);
             entity.setParent(parent);
             entity.setOrderIndex(index++);
         }
-        
+
         public TextContentEntity createText(String title, String value, ContainerContentEntity parent) {
             TextContentEntity entity = new TextContentEntity();
             initialSetup(entity, title, value, parent);
 //            entity.setResourceType(ViewConstants.CONTENT_MANAGEMENT_WIDGET_TEXT);
             return contentRepository.save(entity);
         }
-        
+
         public VideoContentEntity createVideo(String title, String value, ContainerContentEntity parent) {
             VideoContentEntity entity = new VideoContentEntity();
             initialSetup(entity, title, value, parent);
 //            entity.setResourceType(ViewConstants.CONTENT_MANAGEMENT_WIDGET_VIDEO);
             return contentRepository.save(entity);
         }
-        
+
         private ImageContentEntity createImage(String title, String value, ContainerContentEntity parent) {
             ImageContentEntity entity = new ImageContentEntity();
             initialSetup(entity, title, value, parent);
 //            entity.setResourceType(ViewConstants.CONTENT_MANAGEMENT_WIDGET_IMAGE);
             return contentRepository.save(entity);
         }
-        
+
         private ReferenceContentEntity createReference(String title, String value, ContainerContentEntity parent) {
             ReferenceContentEntity entity = new ReferenceContentEntity();
             initialSetup(entity, title, value, parent);
 //            entity.setResourceType(ViewConstants.CONTENT_MANAGEMENT_WIDGET_LINK);
             return contentRepository.save(entity);
         }
-        
-        private ContainerContentEntity createContent(String title, String value, ContainerContentEntity parent) {
+
+        private ContainerContentEntity createContent(String title, String value, ContainerContentEntity parent, int index) {
             ContainerContentEntity entity = new ContainerContentEntity();
             entity.setContent(value);
             entity.setTitle(title);
             entity.setParent(parent);
+            entity.setOrderIndex(index);
 //            entity.setResourceType(ViewConstants.CONTENT_MANAGEMENT_WIDGET_CONTAINER);
             return contentRepository.save(entity);
         }
@@ -150,7 +151,7 @@ public class ContentManagementService {
             return dto;
         }
     }
-    
+
     @CrossOrigin
     @RequestMapping(path = "/toc/info",
             method = RequestMethod.GET,
@@ -162,9 +163,9 @@ public class ContentManagementService {
         if (ROOT_PSEUDO_ID.equals(pageId)) {
             dto.setTitle("");
             dto.setId(null);
-            
+
         } else {
-            
+
             UUID pageUuid = UUID.fromString(pageId);
             if (!contentRepository.exists(pageUuid)) {
                 throw new ContentNotFoundException();
@@ -174,11 +175,11 @@ public class ContentManagementService {
                 dto.setId(container.getId());
             }
         }
-        
+
         return dto;
-        
+
     }
-    
+
     @CrossOrigin
     @RequestMapping(path = "/toc",
             method = RequestMethod.GET,
@@ -189,7 +190,7 @@ public class ContentManagementService {
             @RequestParam(value = "tag", defaultValue = "public", required = false) String tag,
             @RequestParam(value = "pageId", defaultValue = "ROOT") String pageId) throws ContentNotFoundException {
         PageDto dto = new PageDto();
-        
+
         if (ROOT_PSEUDO_ID.equals(pageId)) {
             dto.setLeaf(false);
             dto.setHasEmbeddedFile(false);
@@ -225,11 +226,11 @@ public class ContentManagementService {
                                 entity.isHasEmbeddedFile()))
                         .collect(Collectors.toList()));
             }
-            
+
         }
         return dto;
     }
-    
+
     @CrossOrigin
     @RequestMapping(path = "/toc/path",
             method = RequestMethod.GET,
@@ -240,8 +241,8 @@ public class ContentManagementService {
         PageDto dto = new PageDto();
         dto.setSections(new ArrayList<>());
         if (ROOT_PSEUDO_ID.equals(pageId)) {
-            dto.setTitle(".");
-            dto.getSections().add(new SectionDto(null, ".", null, "ROOT", false));
+            dto.setTitle(ROOT_PLACEHOLDER);
+            dto.getSections().add(new SectionDto(null, ROOT_PLACEHOLDER, null, "ROOT", false));
         } else if (!contentRepository.exists(UUID.fromString(pageId))) {
             throw new ContentNotFoundException();
         } else {
@@ -255,16 +256,16 @@ public class ContentManagementService {
                         item.getId().toString(),
                         item.isHasEmbeddedFile()));
                 item = contentRepository.findByChild(item.getId());
-                
+
             }
-            dto.getSections().add(new SectionDto("ROOT", ".", null, "ROOT", false));
+            dto.getSections().add(new SectionDto("ROOT", ROOT_PLACEHOLDER, null, "ROOT", false));
             Collections.reverse(dto.getSections());
         }
         return dto;
     }
-    
+
     public static final String ROOT_PSEUDO_ID = "ROOT";
-    
+
     @CrossOrigin
     @RequestMapping(path = "/save",
             method = RequestMethod.POST,
@@ -273,9 +274,8 @@ public class ContentManagementService {
             })
     public void save(@RequestBody PageDto dto) {
         ContentEntityFactory factory = new ContentEntityFactory();
-        ContainerContentEntity container = factory.createContent(dto.getTitle(), null, null);
+        ContainerContentEntity container = factory.createContent(dto.getTitle(), null, null, 0);
         container.setLeaf(dto.isLeaf());
-        container.setOrderIndex(0);
         container.setHasEmbeddedFile(dto.isHasEmbeddedFile());
         if (container.isHasEmbeddedFile()) {
             container.setContent(dto.getEmbeddedFileName());
@@ -302,12 +302,12 @@ public class ContentManagementService {
                         ce = factory.createText(s.getTitle(), s.getData(), container);
                         break;
                 }
-                
+
                 LOG.log(Level.INFO, "Created new {0}-content[{1}].", new Object[]{s.getType(), ce.getId()});
             });
         }
     }
-    
+
     @CrossOrigin
     @RequestMapping(path = "/publish",
             method = RequestMethod.POST,
@@ -328,7 +328,7 @@ public class ContentManagementService {
             }).collect(Collectors.toList()));
         }
     }
-    
+
     @CrossOrigin
     @RequestMapping(path = "/candidates",
             method = RequestMethod.GET,
@@ -338,12 +338,14 @@ public class ContentManagementService {
     public List<PageDto> parentCandidates() {
         List<PageDto> pages = containerContentRepository.findAll()
                 .stream()
-                .filter(e -> !e.getLeaf())
+                .filter(e -> e.getLeaf())
                 .map((ContainerContentEntity e) -> new PageDto(e.getId(), e.getTitle()))
                 .collect(Collectors.toList());
-        pages.add(new PageDto(null, "."));
+        pages.add(new PageDto(null, ROOT_PLACEHOLDER));
         return pages;
     }
     
+    private static final String ROOT_PLACEHOLDER = "Root";
+
     private static final Logger LOG = Logger.getLogger(ContentManagementService.class.getName());
 }
