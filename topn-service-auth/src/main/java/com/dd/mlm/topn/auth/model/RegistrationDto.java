@@ -33,7 +33,7 @@ public class RegistrationDto {
     public void setAccountId(String accountId) {
         this.accountId = accountId;
     }
-    
+
     private String phone;
 
     public String getPhone() {
@@ -82,5 +82,15 @@ public class RegistrationDto {
 
     public void setCode(String activationCode) {
         this.code = activationCode;
+    }
+
+    private String locale;
+
+    public String getLocale() {
+        return locale;
+    }
+
+    public void setLocale(String preferredLanguage) {
+        this.locale = preferredLanguage;
     }
 }
