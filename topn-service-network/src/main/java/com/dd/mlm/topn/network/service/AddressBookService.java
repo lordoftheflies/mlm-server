@@ -229,13 +229,15 @@ public class AddressBookService {
             LOG.log(Level.INFO, "\t- Node: {0}", nodeEntity.getId());
             LOG.log(Level.INFO, "\t- Mail-box: {0}", mbEntity.getId());
 
-            mailSender.sendRegistrationActivationEmail(parentAccountEntity.getName(), accountEntity.getEmail(),
-                    accountEntity.getName() == null ? "Mr/Ms" : accountEntity.getName(),
-                    applicationName,
-                    organizationName,
-                    String.format(webFrontentLink, accountEntity.getId().toString()),
-                    String.format(androidInstallerLink, accountEntity.getId().toString()),
-                    accountEntity.getPreferredLanguage());
+            if (!NetworkNodeType.GROUP.equals(accountRepository.findRoleById(accountEntity.getId()))) {
+                mailSender.sendRegistrationActivationEmail(parentAccountEntity.getName(), accountEntity.getEmail(),
+                        accountEntity.getName() == null ? "Mr/Ms" : accountEntity.getName(),
+                        applicationName,
+                        organizationName,
+                        String.format(webFrontentLink, accountEntity.getId().toString()),
+                        String.format(androidInstallerLink, accountEntity.getId().toString()),
+                        accountEntity.getPreferredLanguage());
+            }
         }
     }
 
