@@ -15,29 +15,26 @@ import java.util.UUID;
  *
  * @author lordoftheflies
  */
-public class MessageDto extends PageDto {
+public class MessageDto {
 
-    public MessageDto() {
+    private UUID pageId;
+
+    public UUID getPageId() {
+        return pageId;
     }
 
-    public MessageDto(UUID id, String title, List<UUID> recipients, List<SectionDto> sections) {
-        super(id, title, sections);
-        this.recipients = recipients;
+    public void setPageId(UUID pageId) {
+        this.pageId = pageId;
     }
 
-    public MessageDto(UUID id, String title, List<UUID> recipients, SectionDto... sections) {
-        super(id, title, sections);
-        this.recipients = recipients;
+    private String message;
+
+    public String getMessage() {
+        return message;
     }
 
-    public MessageDto(UUID pageId, Collection<UUID> recipients) {
-        super(pageId, null, new ArrayList<>());
-        this.recipients = new ArrayList<>(recipients);
-    }
-
-    public MessageDto(UUID pageId, UUID... recipients) {
-        super(pageId, null, new ArrayList<>());
-        this.recipients = Arrays.asList(recipients);
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     private List<UUID> recipients;

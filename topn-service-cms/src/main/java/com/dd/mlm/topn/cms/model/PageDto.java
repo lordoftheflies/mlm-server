@@ -55,7 +55,17 @@ public class PageDto {
     public void setLeaf(boolean leaf) {
         this.leaf = leaf;
     }
+    
+    private boolean draft;
 
+    public boolean isDraft() {
+        return draft;
+    }
+
+    public void setDraft(boolean draft) {
+        this.draft = draft;
+    }
+    
     private UUID id;
 
     public UUID getId() {

@@ -18,14 +18,18 @@ public class SectionDto {
         this.type = type;
     }
 
-    public SectionDto(String name, String title, String type, String data, boolean hasEmbeddedFile) {
-        this.name = name;
+    public SectionDto(String name, String title, String type, String data, boolean hasEmbeddedFile, String justification, int fontSize, int width, int height) {
         this.title = title;
+        this.name = name;
         this.type = type;
         this.data = data;
         this.hasEmbeddedFile = hasEmbeddedFile;
+        this.justification = justification;
+        this.fontSize = fontSize;
+        this.width = width;
+        this.height = height;
     }
-    
+
     private String title;
 
     public String getTitle() {
@@ -55,7 +59,7 @@ public class SectionDto {
     public void setType(String type) {
         this.type = type;
     }
-    
+
     private String data;
 
     public String getData() {
@@ -65,7 +69,7 @@ public class SectionDto {
     public void setData(String data) {
         this.data = data;
     }
-    
+
     private boolean hasEmbeddedFile;
 
     public boolean isHasEmbeddedFile() {
@@ -75,4 +79,45 @@ public class SectionDto {
     public void setHasEmbeddedFile(boolean hasEmbeddedFile) {
         this.hasEmbeddedFile = hasEmbeddedFile;
     }
+
+    private String justification;
+
+    public String getJustification() {
+        return justification;
+    }
+
+    public void setJustification(String justification) {
+        this.justification = justification;
+    }
+
+    private int fontSize;
+
+    public int getFontSize() {
+        return fontSize;
+    }
+
+    public void setFontSize(int fontSize) {
+        this.fontSize = fontSize;
+    }
+
+    private int width;
+
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    private int height;
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
 }

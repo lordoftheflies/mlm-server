@@ -83,6 +83,52 @@ public class ContentEntity implements Serializable {
     public void setLeaf(boolean leaf) {
         this.leaf = leaf;
     }
+
+    @Basic
+    private int width;
+
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+    
+    @Basic
+    private int height;
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+    
+    @Basic
+    private int fontSize;
+
+    public int getFontSize() {
+        return fontSize;
+    }
+
+    public void setFontSize(int fontSize) {
+        this.fontSize = fontSize;
+    }
+    
+    @Basic
+    private String justification;
+
+    public String getJustification() {
+        return justification;
+    }
+
+    public void setJustification(String justification) {
+        this.justification = justification;
+    }
+    
+    
     
     @Basic
     private boolean hasEmbeddedFile = false;

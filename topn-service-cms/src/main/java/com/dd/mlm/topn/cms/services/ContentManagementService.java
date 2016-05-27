@@ -5,21 +5,24 @@
  */
 package com.dd.mlm.topn.cms.services;
 
-import com.dd.mlm.topn.cms.model.MessageDto;
 import com.dd.mlm.topn.cms.model.PageDto;
+import com.dd.mlm.topn.cms.model.PublisherDto;
 import com.dd.mlm.topn.cms.model.SectionDto;
 import com.dd.mlm.topn.common.ViewConstants;
 import com.dd.mlm.topn.exceptions.ContentNotFoundException;
 import com.dd.mlm.topn.persistence.dal.AccountRepository;
 import com.dd.mlm.topn.persistence.dal.ContainerContentRepository;
 import com.dd.mlm.topn.persistence.dal.ContentRepository;
+import com.dd.mlm.topn.persistence.dal.ImageContentRepository;
+import com.dd.mlm.topn.persistence.dal.LinkContentRepository;
 import com.dd.mlm.topn.persistence.dal.MailBoxRepository;
 import com.dd.mlm.topn.persistence.dal.MessageRepository;
 import com.dd.mlm.topn.persistence.dal.NetworkTreeRepository;
+import com.dd.mlm.topn.persistence.dal.TextContentRepository;
+import com.dd.mlm.topn.persistence.dal.VideoContentRepository;
 import com.dd.mlm.topn.persistence.entities.ContainerContentEntity;
 import com.dd.mlm.topn.persistence.entities.ContentEntity;
 import com.dd.mlm.topn.persistence.entities.ImageContentEntity;
-import com.dd.mlm.topn.persistence.entities.MessageEntity;
 import com.dd.mlm.topn.persistence.entities.NetworkNodeEntity;
 import com.dd.mlm.topn.persistence.entities.ReferenceContentEntity;
 import com.dd.mlm.topn.persistence.entities.TextContentEntity;
@@ -32,6 +35,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -54,6 +58,14 @@ public class ContentManagementService {
     
     @Autowired
     private ContentRepository contentRepository;
+    @Autowired
+    private TextContentRepository textRepository;
+    @Autowired
+    private VideoContentRepository videoRepository;
+    @Autowired
+    private ImageContentRepository imageRepository;
+    @Autowired
+    private LinkContentRepository linkRepository;
     
     @Autowired
     private AccountRepository accountRepository;
@@ -80,39 +92,53 @@ public class ContentManagementService {
             this.node = node;
         }
         
-        private void initialSetup(ContentEntity entity, String title, String value, ContainerContentEntity parent, UUID id) {
-            entity.setContent(value);
+        private void initialSetup(ContentEntity entity, SectionDto s, ContainerContentEntity parent, UUID id) {
+            entity.setContent(s.getData());
             entity.setId(id);
-            entity.setTitle(title);
+            entity.setTitle(s.getTitle());
+            entity.setJustification(s.getJustification());
+            entity.setWidth(s.getWidth());
+            entity.setHeight(s.getHeight());
+            entity.setFontSize(s.getFontSize());
             entity.setParent(parent);
             entity.setOrderIndex(index++);
             entity.setNode(node);
         }
         
-        public TextContentEntity createText(String title, String value, ContainerContentEntity parent, UUID id) {
-            TextContentEntity entity = new TextContentEntity();
-            initialSetup(entity, title, value, parent, id);
+        private <T extends ContentEntity> T safeGet(SectionDto s, CrudRepository<? extends T, UUID> repo, T newEntity) {
+            try {
+                T entity = repo.findOne(UUID.fromString(s.getName()));
+                return entity;
+            } catch (Exception e) {
+                return newEntity;
+            }
+        }
+        
+        public TextContentEntity createText(SectionDto s, ContainerContentEntity parent, UUID id) {
+            
+            TextContentEntity entity = safeGet(s, textRepository, new TextContentEntity());
+            initialSetup(entity, s, parent, id);
 //            entity.setResourceType(ViewConstants.CONTENT_MANAGEMENT_WIDGET_TEXT);
             return contentRepository.save(entity);
         }
         
-        public VideoContentEntity createVideo(String title, String value, ContainerContentEntity parent, UUID id) {
-            VideoContentEntity entity = new VideoContentEntity();
-            initialSetup(entity, title, value, parent, id);
+        public VideoContentEntity createVideo(SectionDto s, ContainerContentEntity parent, UUID id) {
+            VideoContentEntity entity = safeGet(s, videoRepository, new VideoContentEntity());
+            initialSetup(entity, s, parent, id);
 //            entity.setResourceType(ViewConstants.CONTENT_MANAGEMENT_WIDGET_VIDEO);
             return contentRepository.save(entity);
         }
         
-        private ImageContentEntity createImage(String title, String value, ContainerContentEntity parent, UUID id) {
-            ImageContentEntity entity = new ImageContentEntity();
-            initialSetup(entity, title, value, parent, id);
+        private ImageContentEntity createImage(SectionDto s, ContainerContentEntity parent, UUID id) {
+            ImageContentEntity entity = safeGet(s, imageRepository, new ImageContentEntity());
+            initialSetup(entity, s, parent, id);
 //            entity.setResourceType(ViewConstants.CONTENT_MANAGEMENT_WIDGET_IMAGE);
             return contentRepository.save(entity);
         }
         
-        private ReferenceContentEntity createReference(String title, String value, ContainerContentEntity parent, UUID id) {
-            ReferenceContentEntity entity = new ReferenceContentEntity();
-            initialSetup(entity, title, value, parent, id);
+        private ReferenceContentEntity createReference(SectionDto s, ContainerContentEntity parent, UUID id) {
+            ReferenceContentEntity entity = safeGet(s, linkRepository, new ReferenceContentEntity());
+            initialSetup(entity, s, parent, id);
 
 //            entity.setResourceType(ViewConstants.CONTENT_MANAGEMENT_WIDGET_LINK);
             return contentRepository.save(entity);
@@ -155,7 +181,11 @@ public class ContentManagementService {
                                 entity.getTitle(),
                                 entity.getResourceType(),
                                 entity.getContent(),
-                                entity.isHasEmbeddedFile()))
+                                entity.isHasEmbeddedFile(),
+                                entity.getJustification(),
+                                entity.getFontSize(),
+                                entity.getWidth(),
+                                entity.getHeight()))
                         .collect(Collectors.toList()));
             } else {
                 LOG.log(Level.INFO, "{0} is not a container.", pageId);
@@ -204,7 +234,11 @@ public class ContentManagementService {
                             entity.getTitle(),
                             entity.getResourceType(),
                             entity.getId().toString(),
-                            entity.isHasEmbeddedFile()))
+                            entity.isHasEmbeddedFile(),
+                            entity.getJustification(),
+                            entity.getFontSize(),
+                            entity.getWidth(),
+                            entity.getHeight()))
                     .collect(Collectors.toList()));
         } else if (!contentRepository.exists(UUID.fromString(pageId))) {
             throw new ContentNotFoundException();
@@ -225,7 +259,11 @@ public class ContentManagementService {
                                 entity.getTitle(),
                                 entity.getResourceType(),
                                 entity.getLeaf() ? entity.getContent() : entity.getId().toString(),
-                                entity.isHasEmbeddedFile()))
+                                entity.isHasEmbeddedFile(),
+                                entity.getJustification(),
+                                entity.getFontSize(),
+                                entity.getWidth(),
+                                entity.getHeight()))
                         .collect(Collectors.toList()));
             }
             
@@ -244,12 +282,17 @@ public class ContentManagementService {
                             entity.getTitle(),
                             entity.getResourceType(),
                             entity.getId().toString(),
-                            entity.isHasEmbeddedFile()))
+                            entity.isHasEmbeddedFile(),
+                            entity.getJustification(),
+                            entity.getFontSize(),
+                            entity.getWidth(),
+                            entity.getHeight()))
                     .collect(Collectors.toList()));
         } else if (!contentRepository.exists(UUID.fromString(pageId))) {
             throw new ContentNotFoundException();
         } else {
             ContentEntity container = contentRepository.findOne(UUID.fromString(pageId));
+            dto.setDraft(container.isDraft());
             dto.setHasEmbeddedFile(container.isHasEmbeddedFile());
             if (container.isHasEmbeddedFile()) {
                 dto.setEmbeddedFileName(container.getContent());
@@ -258,14 +301,18 @@ public class ContentManagementService {
                 dto.setId(container.getId());
                 dto.setLeaf(container.getLeaf());
                 dto.setSections(contentRepository
-                        .findDraftByParent(accountId, UUID.fromString(pageId))
+                        .findDraftByParent(UUID.fromString(pageId), accountId)
                         .stream()
                         .map((ContentEntity entity) -> new SectionDto(
                                 entity.getId().toString(),
                                 entity.getTitle(),
                                 entity.getResourceType(),
                                 entity.getLeaf() ? entity.getContent() : entity.getId().toString(),
-                                entity.isHasEmbeddedFile()))
+                                entity.isHasEmbeddedFile(),
+                                entity.getJustification(),
+                                entity.getFontSize(),
+                                entity.getWidth(),
+                                entity.getHeight()))
                         .collect(Collectors.toList()));
             }
             
@@ -284,7 +331,11 @@ public class ContentManagementService {
                             entity.getTitle(),
                             entity.getResourceType(),
                             entity.getId().toString(),
-                            entity.isHasEmbeddedFile()))
+                            entity.isHasEmbeddedFile(),
+                            entity.getJustification(),
+                            entity.getFontSize(),
+                            entity.getWidth(),
+                            entity.getHeight()))
                     .collect(Collectors.toList()));
         } else if (!contentRepository.exists(UUID.fromString(pageId))) {
             throw new ContentNotFoundException();
@@ -305,7 +356,11 @@ public class ContentManagementService {
                                 entity.getTitle(),
                                 entity.getResourceType(),
                                 entity.getLeaf() ? entity.getContent() : entity.getId().toString(),
-                                entity.isHasEmbeddedFile()))
+                                entity.isHasEmbeddedFile(),
+                                entity.getJustification(),
+                                entity.getFontSize(),
+                                entity.getWidth(),
+                                entity.getHeight()))
                         .collect(Collectors.toList()));
             }
             
@@ -350,7 +405,7 @@ public class ContentManagementService {
         dto.setSections(new ArrayList<>());
         if (ROOT_PSEUDO_ID.equals(pageId)) {
             dto.setTitle(ROOT_PLACEHOLDER);
-            dto.getSections().add(new SectionDto(null, ROOT_PLACEHOLDER, null, "ROOT", false));
+            dto.getSections().add(new SectionDto(null, ROOT_PLACEHOLDER, null, "ROOT", false, null, 0, 0, 0));
         } else if (!contentRepository.exists(UUID.fromString(pageId))) {
             throw new ContentNotFoundException();
         } else {
@@ -362,11 +417,15 @@ public class ContentManagementService {
                         item.getTitle(),
                         null,
                         item.getId().toString(),
-                        item.isHasEmbeddedFile()));
+                        item.isHasEmbeddedFile(),
+                        item.getJustification(),
+                        item.getFontSize(),
+                        item.getWidth(),
+                        item.getHeight()));
                 item = contentRepository.findByChild(item.getId());
                 
             }
-            dto.getSections().add(new SectionDto("ROOT", ROOT_PLACEHOLDER, null, "ROOT", false));
+            dto.getSections().add(new SectionDto("ROOT", ROOT_PLACEHOLDER, null, "ROOT", false, null, 0, 0, 0));
             Collections.reverse(dto.getSections());
         }
         return dto;
@@ -389,16 +448,18 @@ public class ContentManagementService {
         ContentEntityFactory factory = new ContentEntityFactory(node);
         ContainerContentEntity container = factory.createContent(dto.getTitle(), null, null, 0, dto.getId());
         container.setLeaf(dto.isLeaf());
-        container.setDraft(true);
+        container.setDraft(dto.isDraft());
         container.setNode(node);
         container.setHasEmbeddedFile(dto.isHasEmbeddedFile());
         if (container.isHasEmbeddedFile()) {
             container.setContent(dto.getEmbeddedFileName());
+            contentRepository.save(container);
         } else {
             LOG.log(Level.INFO, "Created new assembled page[{0}].", container.getId());
             if (dto.getSections().isEmpty()) {
                 dto.setLeaf(false);
             }
+            contentRepository.save(container);
             dto.getSections().forEach(s -> {
                 try {
                     ContentEntity ce = null;
@@ -410,6 +471,7 @@ public class ContentManagementService {
                         sectionEntity.setContent(s.getData());
                         sectionEntity.setTitle(s.getTitle());
                         sectionEntity.setNode(node);
+                        factory.initialSetup(sectionEntity, s, container, sectionId);
                         contentRepository.save(sectionEntity);
                     } catch (IllegalArgumentException parseEx) {
                         LOG.log(Level.INFO, "Section id not presented, create {0} section", s.getType());
@@ -417,21 +479,21 @@ public class ContentManagementService {
                             case "video":
                             case ViewConstants.CONTENT_MANAGEMENT_WIDGET_VIDEO:
                                 
-                                ce = factory.createVideo(s.getTitle(), s.getData(), container, sectionId);
+                                ce = factory.createVideo(s, container, sectionId);
                                 break;
                             case "image":
                             case ViewConstants.CONTENT_MANAGEMENT_WIDGET_IMAGE:
-                                ce = factory.createImage(s.getTitle(), s.getData(), container, sectionId);
+                                ce = factory.createImage(s, container, sectionId);
                                 break;
                             case "link":
                             case ViewConstants.CONTENT_MANAGEMENT_WIDGET_LINK:
-                                ce = factory.createReference(s.getTitle(), s.getData(), container, sectionId);
+                                ce = factory.createReference(s, container, sectionId);
                                 dto.setLeaf(false);
                                 break;
                             case "text":
                             case ViewConstants.CONTENT_MANAGEMENT_WIDGET_TEXT:
                             default:
-                                ce = factory.createText(s.getTitle(), s.getData(), container, sectionId);
+                                ce = factory.createText(s, container, sectionId);
                                 break;
                         }
                         
@@ -451,19 +513,28 @@ public class ContentManagementService {
             consumes = {
                 MediaType.APPLICATION_JSON_VALUE
             })
-    public void publish(MessageDto dto) throws ContentNotFoundException {
-        if (!contentRepository.exists(dto.getId())) {
-            throw new ContentNotFoundException();
-        } else {
-            ContentEntity contentEntity = contentRepository.findOne(dto.getId());
-            messageRepository.save(dto.getRecipients().stream().map((UUID recipientId) -> {
-                MessageEntity message = new MessageEntity();
-                message.setContent(contentEntity);
-                message.setMailBox(mailBoxRepository.findByRecipient(recipientId));
-                message.setRead(false);
-                return message;
-            }).collect(Collectors.toList()));
-        }
+    public void publish(@RequestBody PublisherDto dto) throws ContentNotFoundException {
+        NetworkNodeEntity entity = networkRepository.findByAccount(dto.getOwner());
+        
+        ContentEntity content = contentRepository.findOne(dto.getArticle());
+        LOG.log(Level.INFO, "Article {0} published by owner {1}", new Object[]{dto.getArticle(), dto.getOwner()});
+        content.setDraft(false);
+        contentRepository.save(content);
+    }
+    
+    @CrossOrigin
+    @RequestMapping(path = "/unpublish",
+            method = RequestMethod.POST,
+            consumes = {
+                MediaType.APPLICATION_JSON_VALUE
+            })
+    public void unpublish(@RequestBody PublisherDto dto) throws ContentNotFoundException {
+        NetworkNodeEntity entity = networkRepository.findByAccount(dto.getOwner());
+        
+        ContentEntity content = contentRepository.findOne(dto.getArticle());
+        LOG.log(Level.INFO, "Article {0} unpublished by owner {1}", new Object[]{dto.getArticle(), dto.getOwner()});
+        content.setDraft(true);
+        contentRepository.save(content);
     }
     
     @CrossOrigin
