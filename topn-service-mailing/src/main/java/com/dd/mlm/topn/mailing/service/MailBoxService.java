@@ -5,6 +5,7 @@
  */
 package com.dd.mlm.topn.mailing.service;
 
+import com.dd.mlm.topn.mailing.model.SharingDto;
 import com.dd.mlm.topn.mailing.model.NotificationDto;
 import com.dd.mlm.topn.persistence.dal.AccountRepository;
 import com.dd.mlm.topn.persistence.dal.ContentRepository;
@@ -22,8 +23,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
@@ -62,7 +65,8 @@ public class MailBoxService {
                         accountRepository.findOne(id).getName(),
                         e.getText(),
                         e.getContent().getTitle(),
-                        e.getContent().getId().toString()))
+                        e.getContent().getId().toString(),
+                        e.getText()))
                 .collect(Collectors.toList());
     }
 
@@ -77,12 +81,13 @@ public class MailBoxService {
                         accountRepository.findOne(id).getName(),
                         e.getText(),
                         e.getContent().getTitle(),
-                        e.getContent().getId().toString()))
+                        e.getContent().getId().toString(),
+                        e.getText()))
                 .collect(Collectors.toList());
     }
 
     @RequestMapping(path = "/{accountId}/send", method = RequestMethod.POST)
-    public ResponseEntity sendMessage(@PathVariable("accountId") String accountId, SharingDto model) {
+    public ResponseEntity sendMessage(@PathVariable("accountId") String accountId, @RequestBody SharingDto model) {
         try {
             UUID id = UUID.fromString(accountId);
             LOG.log(Level.INFO, "Recipient[{0}] send a message: {1}", new Object[]{
@@ -90,6 +95,7 @@ public class MailBoxService {
                 model.getMessage()
             });
             MessageEntity message = new MessageEntity();
+            message.setRead(false);
             message.setText(model.getMessage());
             message.setContent(contentRepository.findOne(model.getContentId()));
             message.setSender(networkTreeRepository.findByAccount(id));
@@ -98,7 +104,6 @@ public class MailBoxService {
             model.getRecipients().forEach(a -> {
                 try {
                     message.setMailBox(mailBoxRepository.findByRecipient(a));
-
                     MessageEntity newMessage = messageRepository.save(message);
                     LOG.log(Level.INFO, "Add message[{0}] to inbox of recipient[{1}]", new Object[]{
                         a,

@@ -35,7 +35,7 @@ import org.hibernate.annotations.GenericGenerator;
 @NamedQueries({
     @NamedQuery(name = "ContentEntity.findByParent", query = "SELECT c FROM ContentEntity c WHERE c.parent.id = :parentId ORDER BY c.orderIndex"),
     @NamedQuery(name = "ContentEntity.findDraftByParent", query = "SELECT c FROM ContentEntity c WHERE c.parent.id = :parentId AND c.node.contact.id = :accountId ORDER BY c.orderIndex"),
-    @NamedQuery(name = "ContentEntity.findPublicByParent", query = "SELECT c FROM ContentEntity c WHERE c.parent.id = :parentId AND c.draft = FALSE ORDER BY c.orderIndex"),
+    @NamedQuery(name = "ContentEntity.findPublicByParent", query = "SELECT c FROM ContentEntity c WHERE c.parent.id = :parentId AND c.parent.draft = FALSE ORDER BY c.orderIndex"),
     @NamedQuery(name = "ContentEntity.findPublishedByParent", query = "SELECT c FROM ContentEntity c WHERE c.parent.id = :parentId ORDER BY c.orderIndex"),
     
     @NamedQuery(name = "ContentEntity.findRoots", query = "SELECT c FROM ContentEntity c WHERE c.parent IS NULL"),

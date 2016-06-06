@@ -14,13 +14,24 @@ public class NotificationDto {
     public NotificationDto() {
     }
 
-    public NotificationDto(String id, String fromId, String fromName, String subject, String contentTitle, String contentId) {
+    public NotificationDto(String id, String fromId, String fromName, String subject, String contentTitle, String contentId, String msg) {
         this.id = id;
         this.fromId = fromId;
         this.fromName = fromName;
         this.subject = subject;
         this.contentTitle = contentTitle;
         this.contentId = contentId;
+        this.message = msg;
+    }
+
+    private String message;
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     private String id;
