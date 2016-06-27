@@ -22,9 +22,9 @@ import org.springframework.stereotype.Service;
  * @author lordoftheflies
  */
 @Service
-public class MessagingService {
+public class NotificationService {
 
-    private static final Logger LOG = Logger.getLogger(MessagingService.class.getName());
+    private static final Logger LOG = Logger.getLogger(NotificationService.class.getName());
 
     private String fcmServerKey = "AIzaSyBY6sCStgF8ucCSFIYpKJiPxMJ3VMT-28o";
     private String fcmSenderId = "522589320362";
@@ -34,7 +34,7 @@ public class MessagingService {
 
     private static FirebaseOptions options = null;
 
-    public MessagingService() {
+    public NotificationService() {
 
 //        try {
         if (options == null) {

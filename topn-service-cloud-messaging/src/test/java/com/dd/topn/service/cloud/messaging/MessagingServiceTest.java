@@ -5,12 +5,13 @@
  */
 package com.dd.topn.service.cloud.messaging;
 
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -47,14 +48,20 @@ public class MessagingServiceTest {
     }
 
     /**
-     * Test of send method, of class MessagingService.
+     * Test of send method, of class NotificationService.
      */
     @Test
     public void testSend() {
         System.out.println("send");
         String text = "message";
-        MessagingService instance = new MessagingService();
-        instance.send(text, SUBSCRIPTION_ID);
+        NotificationService instance = new NotificationService();
+        
+        Map<String, String> props = new HashMap<>();
+        props.put("article", "kajsdkasjdkjasd");
+        props.put("text", "Hahah");
+        props.put("sender", "me");
+        
+        instance.send(props, SUBSCRIPTION_ID);
         // TODO review the generated test code and remove the default call to fail.
 //        fail("The test case is a prototype.");
     }

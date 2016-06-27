@@ -11,7 +11,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 /**
- *
+ * Firebase Cloud Messaging sender.
  * @author lordoftheflies
  */
 public class FcmSender extends Sender {
