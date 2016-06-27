@@ -13,7 +13,10 @@ import com.dd.mlm.topn.persistence.dal.MailBoxRepository;
 import com.dd.mlm.topn.persistence.dal.MessageRepository;
 import com.dd.mlm.topn.persistence.dal.NetworkTreeRepository;
 import com.dd.mlm.topn.persistence.entities.MessageEntity;
+import com.dd.mlm.topn.persistence.entities.NetworkNodeEntity;
+import com.dd.topn.service.cloud.messaging.NotificationService;
 import java.net.URI;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 import java.util.logging.Level;
@@ -53,6 +56,9 @@ public class MailBoxService {
 
     @Autowired
     private RestTemplate restTemplate;
+
+    @Autowired
+    private NotificationService notificationService;
 
     @RequestMapping(path = "/{accountId}/inbox", method = RequestMethod.GET)
     public List<NotificationDto> inbox(@PathVariable("accountId") String accountId) {
@@ -98,7 +104,8 @@ public class MailBoxService {
             message.setRead(false);
             message.setText(model.getMessage());
             message.setContent(contentRepository.findOne(model.getContentId()));
-            message.setSender(networkTreeRepository.findByAccount(id));
+            final NetworkNodeEntity sender = networkTreeRepository.findByAccount(id);
+            message.setSender(sender);
 
             // Save a message to all inbox.
             model.getRecipients().forEach(a -> {
@@ -111,6 +118,7 @@ public class MailBoxService {
                     });
                     // TODO: push the notification.
 //                    restTemplate.postForObject(new URI(accountId), , responseType)
+                    notificationService.send(new HashMap<>(), sender.getId().toString());
                 } catch (Exception e) {
                     LOG.log(Level.INFO, "Message sending failed", e);
                 }

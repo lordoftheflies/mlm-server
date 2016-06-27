@@ -44,6 +44,11 @@
 	  <artifactId>topn-persistence</artifactId>
 	  <version>${project.version}</version>
 	 </dependency>
+	 <dependency>
+	  <groupId>com.dd</groupId>
+	  <artifactId>topn-service-cloud-messaging</artifactId>
+	  <version>1.0.0-SNAPSHOT</version>
+	 </dependency>
 	</dependencies>
 	
 	<build>

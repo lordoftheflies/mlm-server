@@ -1,6 +1,7 @@
 package com.dd.mlm.topn.mailing;
 
 import com.dd.mlm.topn.persistence.config.DatabaseConfiguration;
+import com.dd.topn.service.cloud.messaging.FcmConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -23,7 +24,8 @@ import org.springframework.web.client.RestTemplate;
             "com.dd.mlm.topn.persistence.entities"
         },
         basePackageClasses = {
-            DatabaseConfiguration.class
+            DatabaseConfiguration.class,
+            FcmConfiguration.class
         })
 @EnableJpaRepositories(basePackages = {
     "com.dd.mlm.topn.persistence.dal"

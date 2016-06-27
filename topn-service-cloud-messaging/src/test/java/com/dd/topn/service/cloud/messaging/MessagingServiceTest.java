@@ -23,7 +23,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = {
-    FcmApplication.class
+    FcmConfiguration.class
 })
 @WebAppConfiguration
 public class MessagingServiceTest {
