@@ -23,8 +23,8 @@ import javax.persistence.NamedQuery;
  */
 @Entity
 @NamedQueries({
-    @NamedQuery(name = "MessageEntity.inboxByRecipient", query ="SELECT m FROM MessageEntity m WHERE m.mailBox.owner.contact.id = :recipientId"),
-    @NamedQuery(name = "MessageEntity.outboxByRecipient", query ="SELECT m FROM MessageEntity m WHERE m.sender.contact.id = :senderId")
+    @NamedQuery(name = "MessageEntity.inboxByRecipient", query = "SELECT m FROM MessageEntity m WHERE m.mailBox.owner.contact.id = :recipientId"),
+    @NamedQuery(name = "MessageEntity.outboxByRecipient", query = "SELECT m FROM MessageEntity m WHERE m.sender.contact.id = :senderId")
 })
 public class MessageEntity implements Serializable {
 
@@ -73,7 +73,18 @@ public class MessageEntity implements Serializable {
     public void setRead(Boolean read) {
         this.read = read;
     }
-    
+
+    @Basic(optional = false)
+    private Boolean notified;
+
+    public Boolean getNotified() {
+        return notified;
+    }
+
+    public void setNotified(Boolean notified) {
+        this.notified = notified;
+    }
+
     @Basic
     @Column(length = 10000)
     private String text;
@@ -85,7 +96,7 @@ public class MessageEntity implements Serializable {
     public void setText(String text) {
         this.text = text;
     }
-    
+
     @ManyToOne
     private NetworkNodeEntity sender;
 
@@ -96,7 +107,7 @@ public class MessageEntity implements Serializable {
     public void setSender(NetworkNodeEntity sender) {
         this.sender = sender;
     }
-    
+
     @Override
     public int hashCode() {
         int hash = 0;

@@ -7,6 +7,7 @@ package com.dd.mlm.topn.persistence.entities;
 
 import java.io.Serializable;
 import java.util.UUID;
+import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -59,6 +60,17 @@ public class AccountEntity implements Serializable {
 
     public void setId(UUID id) {
         this.id = id;
+    }
+
+    @Basic(optional = true)
+    private String subscriptionId;
+
+    public String getSubscriptionId() {
+        return subscriptionId;
+    }
+
+    public void setSubscriptionId(String subscriptionId) {
+        this.subscriptionId = subscriptionId;
     }
 
     /**
