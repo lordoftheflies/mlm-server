@@ -12,6 +12,7 @@ import com.dd.mlm.topn.persistence.dal.ContentRepository;
 import com.dd.mlm.topn.persistence.dal.MailBoxRepository;
 import com.dd.mlm.topn.persistence.dal.MessageRepository;
 import com.dd.mlm.topn.persistence.dal.NetworkTreeRepository;
+import com.dd.mlm.topn.persistence.entities.MailBoxEntity;
 import com.dd.mlm.topn.persistence.entities.MessageEntity;
 import com.dd.mlm.topn.persistence.entities.NetworkNodeEntity;
 import com.dd.topn.service.cloud.messaging.NotificationService;
@@ -70,8 +71,8 @@ public class MailBoxService {
                         accountId,
                         accountRepository.findOne(id).getName(),
                         e.getText(),
-                        e.getContent().getTitle(),
-                        e.getContent().getId().toString(),
+                        (e.getContent() != null) ? e.getContent().getTitle() : null,
+                        (e.getContent() != null) ? e.getContent().getId().toString() : null,
                         e.getText()))
                 .collect(Collectors.toList());
     }
@@ -80,14 +81,14 @@ public class MailBoxService {
     public List<NotificationDto> outbox(@PathVariable("accountId") String accountId) {
         UUID id = UUID.fromString(accountId);
         LOG.log(Level.INFO, "Read outbox of recipient[{0}] ...", id);
-        return messageRepository.inboxByRecipient(id).stream()
+        return messageRepository.outboxByRecipient(id).stream()
                 .map((MessageEntity e) -> new NotificationDto(
                         e.getId().toString(),
                         accountId,
                         accountRepository.findOne(id).getName(),
                         e.getText(),
-                        e.getContent().getTitle(),
-                        e.getContent().getId().toString(),
+                        (e.getContent() != null) ? e.getContent().getTitle() : null,
+                        (e.getContent() != null) ? e.getContent().getId().toString() : null,
                         e.getText()))
                 .collect(Collectors.toList());
     }
@@ -103,14 +104,22 @@ public class MailBoxService {
             MessageEntity message = new MessageEntity();
             message.setRead(false);
             message.setText(model.getMessage());
-            message.setContent(contentRepository.findOne(model.getContentId()));
+
+            try {
+
+                message.setContent(contentRepository.findOne(model.getContentId()));
+            } catch (Exception ex) {
+                LOG.log(Level.WARNING, "Content not added.", ex);
+            }
+
             final NetworkNodeEntity sender = networkTreeRepository.findByAccount(id);
             message.setSender(sender);
 
             // Save a message to all inbox.
             model.getRecipients().forEach(a -> {
                 try {
-                    message.setMailBox(mailBoxRepository.findByRecipient(a));
+                    final MailBoxEntity recipientMalboxEntity = mailBoxRepository.findByRecipient(a);
+                    message.setMailBox(recipientMalboxEntity);
                     MessageEntity newMessage = messageRepository.save(message);
                     LOG.log(Level.INFO, "Add message[{0}] to inbox of recipient[{1}]", new Object[]{
                         a,
@@ -118,7 +127,13 @@ public class MailBoxService {
                     });
                     // TODO: push the notification.
 //                    restTemplate.postForObject(new URI(accountId), , responseType)
-                    notificationService.send(new HashMap<>(), sender.getId().toString());
+
+                    // Try notify users.
+                    try {
+                        notificationService.send(new HashMap<>(), sender.getId().toString());
+                    } catch (Exception ex) {
+                        LOG.log(Level.WARNING, "Cloud not notify recipient.", ex);
+                    }
                 } catch (Exception e) {
                     LOG.log(Level.INFO, "Message sending failed", e);
                 }

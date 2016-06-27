@@ -11,6 +11,7 @@
     <name>topn-boot</name>
     <description>Standalone server application for Christeam project.</description>
 
+
     
 
     <parent>
@@ -25,6 +26,11 @@
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>com.googlecode.json-simple</groupId>
+            <artifactId>json-simple</artifactId>
+        </dependency>
+        
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>

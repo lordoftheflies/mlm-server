@@ -22,7 +22,7 @@ import javax.persistence.OneToOne;
  */
 @Entity
 @NamedQueries({
-    @NamedQuery(name = "MailBoxEntity.findByRecipient", query = "SELECT mb FROM MailBoxEntity mb WHERE mb.owner.contact.id = :recipientId")
+    @NamedQuery(name = "MailBoxEntity.findByRecipient", query = "SELECT n.mailBox FROM NetworkNodeEntity n WHERE n.contact.id = :recipientId")
 })
 public class MailBoxEntity implements Serializable {
 

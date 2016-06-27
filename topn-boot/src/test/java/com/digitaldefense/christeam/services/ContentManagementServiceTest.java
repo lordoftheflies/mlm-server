@@ -15,6 +15,7 @@ import com.dd.mlm.topn.persistence.entities.AccountEntity;
 import com.dd.mlm.topn.persistence.entities.ContainerContentEntity;
 import com.dd.mlm.topn.persistence.entities.ContentEntity;
 import com.dd.mlm.topn.persistence.entities.ImageContentEntity;
+import com.dd.mlm.topn.persistence.entities.MailBoxEntity;
 import com.dd.mlm.topn.persistence.entities.NetworkNodeEntity;
 import com.dd.mlm.topn.persistence.entities.NetworkNodeType;
 import com.dd.mlm.topn.persistence.entities.ReferenceContentEntity;
@@ -172,14 +173,14 @@ public class ContentManagementServiceTest extends ChristeamServerApplicationTest
     @Test
     public void atestCleanUp() {
         messageRepository.deleteAll();
-        mailBoxRepository.deleteAll();
         contentRepository.deleteAll();
         accountRepo.deleteAll();
+        mailBoxRepository.deleteAll();
         networkRepo.deleteAll();
     }
-    
+
     private NetworkNodeEntity heglasNode;
-    
+
     private NetworkNodeEntity balazspeczelyNode;
 
     @Test
@@ -198,6 +199,9 @@ public class ContentManagementServiceTest extends ChristeamServerApplicationTest
         heglasNode = networkRepo.save(heglasNode);
         heglas.setNode(heglasNode);
         heglas = accountRepo.save(heglas);
+        MailBoxEntity heglasMb = new MailBoxEntity();
+        heglasMb.setOwner(heglasNode);
+        mailBoxRepository.save(heglasMb);
 
         AccountEntity balazspeczely = new AccountEntity();
         balazspeczely.setEmail("peczely.balazs@digitaldefense.hu");
@@ -212,6 +216,9 @@ public class ContentManagementServiceTest extends ChristeamServerApplicationTest
         balazspeczelyNode = networkRepo.save(balazspeczelyNode);
         balazspeczely.setNode(balazspeczelyNode);
         balazspeczely = accountRepo.save(balazspeczely);
+        MailBoxEntity balazspeczelyMb = new MailBoxEntity();
+        balazspeczelyMb.setOwner(balazspeczelyNode);
+        mailBoxRepository.save(balazspeczelyMb);
 
         AccountEntity cseszkupopoveszku = new AccountEntity();
         cseszkupopoveszku.setEmail("cseszku@popoveszku.com");
@@ -226,6 +233,9 @@ public class ContentManagementServiceTest extends ChristeamServerApplicationTest
         cseszkupopoveszkuNode = networkRepo.save(cseszkupopoveszkuNode);
         cseszkupopoveszku.setNode(cseszkupopoveszkuNode);
         cseszkupopoveszku = accountRepo.save(cseszkupopoveszku);
+        MailBoxEntity cseszkupopoveszkuMb = new MailBoxEntity();
+        cseszkupopoveszkuMb.setOwner(cseszkupopoveszkuNode);
+        mailBoxRepository.save(cseszkupopoveszkuMb);
 
         AccountEntity parazita = new AccountEntity();
         parazita.setEmail("zita.para@gmail.com");
@@ -240,6 +250,9 @@ public class ContentManagementServiceTest extends ChristeamServerApplicationTest
         parazitaNode = networkRepo.save(parazitaNode);
         parazita.setNode(parazitaNode);
         parazita = accountRepo.save(parazita);
+        MailBoxEntity parazitaMb = new MailBoxEntity();
+        parazitaMb.setOwner(parazitaNode);
+        mailBoxRepository.save(parazitaMb);
 
         AccountEntity tesztelek = new AccountEntity();
         tesztelek.setEmail("teszt.elek@gmail.com");
@@ -254,6 +267,9 @@ public class ContentManagementServiceTest extends ChristeamServerApplicationTest
         tesztelekNode = networkRepo.save(tesztelekNode);
         tesztelek.setNode(tesztelekNode);
         tesztelek = accountRepo.save(tesztelek);
+        MailBoxEntity tesztelekMb = new MailBoxEntity();
+        tesztelekMb.setOwner(tesztelekNode);
+        mailBoxRepository.save(tesztelekMb);
 
         AccountEntity feriahegyrol = new AccountEntity();
         feriahegyrol.setEmail("feriahegyrol@gmail.com");
@@ -268,6 +284,9 @@ public class ContentManagementServiceTest extends ChristeamServerApplicationTest
         feriahegyrolNode = networkRepo.save(feriahegyrolNode);
         feriahegyrol.setNode(feriahegyrolNode);
         feriahegyrol = accountRepo.save(feriahegyrol);
+        MailBoxEntity feriahegyrolMb = new MailBoxEntity();
+        feriahegyrolMb.setOwner(feriahegyrolNode);
+        mailBoxRepository.save(feriahegyrolMb);
 
         AccountEntity romanok = new AccountEntity();
         romanok.setName("Románia");
