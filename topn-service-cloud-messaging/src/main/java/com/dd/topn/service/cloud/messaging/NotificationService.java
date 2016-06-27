@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 /**
@@ -26,10 +27,17 @@ public class NotificationService {
 
     private static final Logger LOG = Logger.getLogger(NotificationService.class.getName());
 
+//    private String fcmServerKey = "AIzaSyBY6sCStgF8ucCSFIYpKJiPxMJ3VMT-28o";
+    @Value("${fcm.serverkey}")
     private String fcmServerKey = "AIzaSyBY6sCStgF8ucCSFIYpKJiPxMJ3VMT-28o";
+//    private String fcmSenderId = "522589320362";
+    @Value("${fcm.senderid}")
     private String fcmSenderId = "522589320362";
+//    private String cloudMessagingServer = "https://topflavon-paas.firebaseapp.com";
+    @Value("${fcm.server}")
     private String cloudMessagingServer = "https://topflavon-paas.firebaseapp.com";
-//    private String fileName = "topflavon-bedda879d0d7.json";
+//    private String fileName = "topflavon-909a071a2050.json";
+    @Value("${fcm.credentials}")
     private String fileName = "topflavon-909a071a2050.json";
 
     private static FirebaseOptions options = null;
@@ -50,35 +58,7 @@ public class NotificationService {
 
         }
     }
-
-//    public class HandleSendThread extends Thread {
-//
-//        public HandleSendThread(String message) {
-//        }
-//
-//        @Override
-//        public void run() {
-//            try {
-//                Sender sender = new FcmSender(fcmServerKey);
-//                Message message = new Message.Builder()
-//                        .collapseKey("message")
-//                        .timeToLive(3)
-//                        .delayWhileIdle(true)
-//                        .addData("message", "Notification from Java application")
-//                        .build();
-//
-//                // Use the same token(or registration id) that was earlier
-//                // used to send the message to the client directly from
-//                // Firebase Console's Notification tab.
-//                Result result = sender.send(message,
-//                        "APA91bFfIFjSCcSiJ111rbmkpnMkZY-Ej4RCpdBZFZN_mYgfHwFlx-M1UXS5FqDBcN8x1efrS2md8L9K_E9N21qB-PIHUqQwmF4p7Y3U-86nCGH7KNkZNjjz_P_qjcTR0TOrwXMh33vp",
-//                        1);
-//                System.out.println("Result: " + result.toString());
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//        }
-//    }
+    
     private void append(Message.Builder builder, String key, String value) {
         builder.collapseKey(key).addData(key, value);
     }
