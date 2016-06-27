@@ -1,14 +1,14 @@
 package com.dd.topn.service.cloud.messaging;
 
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.web.SpringBootServletInitializer;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 
-@SpringBootApplication
-@ComponentScan(basePackageClasses = {
-//    AuthConfig.class,
+//@SpringBootApplication
+@Configuration
+@ComponentScan(basePackageClasses = { //    AuthConfig.class,
 //    MailConfig.class,
 //    CmsConfiguration.class,
 //    MailingServiceConfig.class,
