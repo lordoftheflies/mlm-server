@@ -12,6 +12,7 @@ import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -122,7 +123,7 @@ public class NetworkNodeEntity implements Serializable {
         this.children = children;
     }
 
-    @OneToOne(mappedBy = "node")
+    @OneToOne(mappedBy = "node", fetch = FetchType.EAGER)
     private AccountEntity contact;
 
     public AccountEntity getContact() {
@@ -150,7 +151,7 @@ public class NetworkNodeEntity implements Serializable {
     public void setMailBox(MailBoxEntity mailBox) {
         this.mailBox = mailBox;
     }
-    
+
     @OneToMany(mappedBy = "node")
     private List<ContentEntity> contents;
 
@@ -161,7 +162,7 @@ public class NetworkNodeEntity implements Serializable {
     public void setContents(List<ContentEntity> contents) {
         this.contents = contents;
     }
-    
+
     @OneToMany(mappedBy = "sender")
     private List<MessageEntity> sentMessages;
 
@@ -172,7 +173,7 @@ public class NetworkNodeEntity implements Serializable {
     public void setSentMessages(List<MessageEntity> sentMessages) {
         this.sentMessages = sentMessages;
     }
-    
+
     @Override
     public int hashCode() {
         int hash = 0;
