@@ -21,5 +21,6 @@ public interface MessageRepository extends CrudRepository<MessageEntity, Long>{
     
     
     List<MessageEntity> inboxByRecipient(@Param("recipientId") UUID recipientId);
+    List<MessageEntity> notificationInboxByRecipient(@Param("subscriptionId") String subscriptionId);
     List<MessageEntity> outboxByRecipient(@Param("senderId") UUID senderId);
 }
