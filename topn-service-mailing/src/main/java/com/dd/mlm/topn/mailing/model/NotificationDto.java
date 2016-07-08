@@ -5,6 +5,8 @@
  */
 package com.dd.mlm.topn.mailing.model;
 
+import java.util.Date;
+
 /**
  *
  * @author lordoftheflies
@@ -14,7 +16,7 @@ public class NotificationDto {
     public NotificationDto() {
     }
 
-    public NotificationDto(String id, String fromId, String fromName, String subject, String contentTitle, String contentId, String msg) {
+    public NotificationDto(String id, String fromId, String fromName, String toName, Date ts, String subject, String contentTitle, String contentId, String msg) {
         this.id = id;
         this.fromId = fromId;
         this.fromName = fromName;
@@ -22,6 +24,8 @@ public class NotificationDto {
         this.contentTitle = contentTitle;
         this.contentId = contentId;
         this.message = msg;
+        this.toName = toName;
+        this.ts = ts;
     }
 
     private String message;
@@ -62,6 +66,26 @@ public class NotificationDto {
 
     public void setFromName(String fromName) {
         this.fromName = fromName;
+    }
+
+    private String toName;
+
+    public String getToName() {
+        return toName;
+    }
+
+    public void setToName(String toName) {
+        this.toName = toName;
+    }
+
+    private Date ts;
+
+    public Date getTs() {
+        return ts;
+    }
+
+    public void setTs(Date ts) {
+        this.ts = ts;
     }
 
     private String subject;

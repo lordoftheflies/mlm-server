@@ -19,6 +19,7 @@ import com.dd.mlm.topn.persistence.entities.MessageEntity;
 import com.dd.mlm.topn.persistence.entities.NetworkNodeEntity;
 import com.dd.topn.service.cloud.messaging.NotificationService;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
@@ -32,6 +33,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
@@ -71,6 +73,8 @@ public class MailBoxService {
                         e.getId().toString(),
                         accountId,
                         accountRepository.findOne(id).getName(),
+                        e.getMailBox().getOwner().getContact().getName(),
+                        e.getTs(),
                         e.getText(),
                         (e.getContent() != null) ? e.getContent().getTitle() : null,
                         (e.getContent() != null) ? e.getContent().getId().toString() : null,
@@ -87,11 +91,33 @@ public class MailBoxService {
                         e.getId().toString(),
                         accountId,
                         accountRepository.findOne(id).getName(),
+                        e.getMailBox().getOwner().getContact().getName(),
+                        e.getTs(),
                         e.getText(),
                         (e.getContent() != null) ? e.getContent().getTitle() : null,
                         (e.getContent() != null) ? e.getContent().getId().toString() : null,
                         e.getText()))
                 .collect(Collectors.toList());
+    }
+
+    @RequestMapping(path = "/notifications", method = RequestMethod.GET)
+    public ResponseEntity notifications(@RequestParam(value = "subscriptionId", defaultValue = "all", required = true) String subscriptionId) {
+        final List<MessageEntity> messages = messageRepository.notificationInboxByRecipient(subscriptionId);
+//        AccountEntity account = accountRepository.findBySubscriptionId(subscriptionId);
+        ResponseEntity response = ResponseEntity.ok(messages.stream().map((MessageEntity e) -> new NotificationDto(
+                e.getId().toString(),
+                e.getMailBox().getOwner().getContact().getId().toString(),
+                e.getMailBox().getOwner().getContact().getName(),
+                e.getMailBox().getOwner().getContact().getName(),
+                e.getTs(),
+                "Message received",
+                (e.getContent() != null) ? e.getContent().getTitle() : null,
+                (e.getContent() != null) ? e.getContent().getId().toString() : null,
+                e.getText()))
+                .collect(Collectors.toList()));
+        messages.stream().forEach((MessageEntity e) -> e.setNotified(true));
+        messageRepository.save(messages);
+        return response;
     }
 
     @RequestMapping(path = "/subscription", method = RequestMethod.POST)
@@ -136,7 +162,8 @@ public class MailBoxService {
                     message.setRead(false);
                     message.setNotified(false);
                     message.setText(model.getMessage());
-
+                    message.setTs(new Date());
+                    
                     if (model.getContentId() != null) {
                         try {
 

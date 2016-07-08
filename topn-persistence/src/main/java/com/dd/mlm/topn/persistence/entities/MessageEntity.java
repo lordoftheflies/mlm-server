@@ -6,6 +6,7 @@
 package com.dd.mlm.topn.persistence.entities;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,6 +17,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.Temporal;
 
 /**
  *
@@ -24,6 +26,7 @@ import javax.persistence.NamedQuery;
 @Entity
 @NamedQueries({
     @NamedQuery(name = "MessageEntity.inboxByRecipient", query = "SELECT m FROM MessageEntity m WHERE m.mailBox.owner.contact.id = :recipientId"),
+    @NamedQuery(name = "MessageEntity.notificationInboxByRecipient", query = "SELECT DISTINCT m FROM MessageEntity m WHERE m.mailBox.owner.contact.subscriptionId = :subscriptionId AND m.notified = FALSE"),
     @NamedQuery(name = "MessageEntity.outboxByRecipient", query = "SELECT m FROM MessageEntity m WHERE m.sender.contact.id = :senderId")
 })
 public class MessageEntity implements Serializable {
@@ -39,7 +42,7 @@ public class MessageEntity implements Serializable {
         this.content = content;
     }
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private MailBoxEntity mailBox;
 
     public MailBoxEntity getMailBox() {
@@ -63,6 +66,17 @@ public class MessageEntity implements Serializable {
         this.id = id;
     }
 
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date ts;
+
+    public Date getTs() {
+        return ts;
+    }
+
+    public void setTs(Date ts) {
+        this.ts = ts;
+    }
+    
     @Basic(optional = false)
     private Boolean read;
 

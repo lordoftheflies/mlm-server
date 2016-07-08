@@ -8,6 +8,7 @@ package com.dd.mlm.topn.persistence.entities;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -39,7 +40,7 @@ public class MailBoxEntity implements Serializable {
         this.id = id;
     }
     
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     private NetworkNodeEntity owner;
 
     public NetworkNodeEntity getOwner() {
