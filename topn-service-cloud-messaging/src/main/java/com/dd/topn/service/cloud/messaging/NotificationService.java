@@ -6,12 +6,14 @@
 package com.dd.topn.service.cloud.messaging;
 
 import com.google.android.gcm.server.Message;
+import com.google.android.gcm.server.MulticastResult;
 import com.google.android.gcm.server.Result;
 import com.google.android.gcm.server.Sender;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import static java.awt.SystemColor.text;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -84,7 +86,7 @@ public class NotificationService {
             // Use the same token(or registration id) that was earlier
             // used to send the message to the client directly from
             // Firebase Console's Notification tab.
-            Result result = sender.send(message, to[0], 1);
+            MulticastResult result = sender.send(message, Arrays.asList(to), 1);
             LOG.log(Level.INFO, "Result: {0}", result.toString());
         } catch (IOException ex) {
             LOG.log(Level.SEVERE, "Could not send message.", ex);
