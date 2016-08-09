@@ -84,14 +84,17 @@ public class MailConfig {
 //        props.put("mail.smtp.host", "mail.tonline.hu");
 //        props.put("mail.smtp.port", "25");
         props.put("mail.debug", "true");
-        props.put("mail.smtp.auth", "true");
+//        props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.ssl.trust", "box.cherubits.hu");
         props.put("mail.smtp.EnableSSL.enable", "true");
 
-        props.setProperty("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-        props.setProperty("mail.smtp.socketFactory.fallback", "false");
-        props.setProperty("mail.smtp.port", "465");
-        props.setProperty("mail.smtp.socketFactory.port", "465");
+//        props.setProperty("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+//        props.setProperty("mail.smtp.socketFactory.fallback", "false");
+        props.setProperty("mail.smtp.port", "587");
+//        props.setProperty("mail.smtp.port", "465");
+//        props.setProperty("mail.smtp.socketFactory.port", "465");
+        props.setProperty("mail.smtp.socketFactory.port", "587");
 
         return props;
     }

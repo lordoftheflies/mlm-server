@@ -51,7 +51,7 @@ public class VelocityEmailSenderIntegrationTest {
 //        sender.sendForgottenPasswordEmail(USER_EMAIL, USER_NAME, APPLICATION_NAME, ORGANOIZATION_NAME, PASSWORD_RESET_LINK, "hu");
 //        sender.sendForgottenPasswordEmail(USER_EMAIL, USER_NAME, APPLICATION_NAME, ORGANOIZATION_NAME, PASSWORD_RESET_LINK, "po");
     }
-    public static final String PASSWORD_RESET_LINK = "http://185.51.67.30/resetpassword?=c0a1f132-1220-11e6-a148-3e1d05defe78";
+    public static final String PASSWORD_RESET_LINK = "https://cherubits.hu/topflavon/resetpassword?account=%s";
 
     @Test
     public void testSendRegistrationActivationEmail() {
@@ -66,7 +66,7 @@ public class VelocityEmailSenderIntegrationTest {
 //        sender.sendRegistrationActivationEmail(INVITER_NAME, USER_EMAIL, USER_NAME, APPLICATION_NAME, ORGANOIZATION_NAME, REGISTRATION_LINK, ANDROID_INSTALLER_LINK, "hu");
         sender.sendRegistrationActivationEmail(INVITER_NAME, USER_EMAIL, USER_NAME, APPLICATION_NAME, ORGANOIZATION_NAME, REGISTRATION_LINK, ANDROID_INSTALLER_LINK, "po");
     }
-    public static final String REGISTRATION_LINK = "http://185.51.67.30/registrate?=3c6c3f77-1a8d-425e-b8e6-07c7a115b3a9";
+    public static final String REGISTRATION_LINK = "https://cherubits.hu/topflavon/registrate?code=%s";
     public static final String ANDROID_INSTALLER_LINK = "http://play.google.com/topflavon";
     public static final String ORGANOIZATION_NAME = "TopFlavon Team";
     public static final String APPLICATION_NAME = "TopFlavon";

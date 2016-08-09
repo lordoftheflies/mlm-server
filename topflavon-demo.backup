@@ -1,0 +1,124 @@
+﻿--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 9.5.3
+-- Dumped by pg_dump version 9.5.3
+
+-- Started on 2016-08-09 11:21:39 CEST
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+SET search_path = public, pg_catalog;
+
+--
+-- TOC entry 2189 (class 0 OID 16601)
+-- Dependencies: 187
+-- Data for Name: networknodeentity; Type: TABLE DATA; Schema: public; Owner: admin
+--
+
+INSERT INTO networknodeentity VALUES (661, true, 1, 'ADMIN', NULL);
+INSERT INTO networknodeentity VALUES (675, true, 9, 'GROUP', 661);
+INSERT INTO networknodeentity VALUES (663, true, 2, 'ADMIN', 661);
+INSERT INTO networknodeentity VALUES (673, true, 7, 'GROUP', 661);
+INSERT INTO networknodeentity VALUES (665, true, 3, 'USER', 673);
+INSERT INTO networknodeentity VALUES (674, true, 8, 'GROUP', 663);
+INSERT INTO networknodeentity VALUES (669, true, 5, 'USER', 663);
+INSERT INTO networknodeentity VALUES (671, true, 6, 'USER', 663);
+INSERT INTO networknodeentity VALUES (667, true, 4, 'USER', 663);
+
+
+--
+-- TOC entry 2184 (class 0 OID 16567)
+-- Dependencies: 182
+-- Data for Name: accountentity; Type: TABLE DATA; Schema: public; Owner: admin
+--
+
+INSERT INTO accountentity VALUES ('c305bfce-9a45-48be-860e-befd0b35060b', 'heglas11@gmail.com', 'Hegedűs László', 'qwe123', NULL, 'en', NULL, 661);
+INSERT INTO accountentity VALUES ('84e50830-575f-40cb-8e86-5cda43b6ebc2', 'peczely.balazs@digitaldefense.hu', 'Péczely Balázs', 'qwe123', NULL, 'hu', NULL, 663);
+INSERT INTO accountentity VALUES ('f2ea2793-cf76-4e74-b22e-b8db6420e473', 'cseszku@popoveszku.com', 'Cseszku popoveszku', 'qwe123', NULL, 'po', NULL, 665);
+INSERT INTO accountentity VALUES ('bcad9dd0-dea5-49ab-ab8a-0add8f49a749', 'zita.para@gmail.com', 'Para Zita', 'qwe123', NULL, 'hu', NULL, 667);
+INSERT INTO accountentity VALUES ('db3a5dee-dabf-424b-8528-8c50ab921793', 'teszt.elek@gmail.com', 'Teszt Elek', 'qwe123', NULL, 'hu', NULL, 669);
+INSERT INTO accountentity VALUES ('8021b2c3-41f1-4e8b-b2c5-3807877cfe00', 'feriahegyrol@gmail.com', 'Ferdinand Highlander', 'qwe123', NULL, 'en', NULL, 671);
+INSERT INTO accountentity VALUES ('e27543aa-7dcf-45d0-ac10-a67cb0a92d94', NULL, 'Románia', NULL, NULL, NULL, NULL, 673);
+INSERT INTO accountentity VALUES ('eacd8624-7305-4701-90bc-b63ee6054151', NULL, 'Görögország', NULL, NULL, NULL, NULL, 674);
+INSERT INTO accountentity VALUES ('7b1b8a54-958a-40a4-ab96-50693de08ffa', NULL, 'Magyarország', NULL, NULL, NULL, NULL, 675);
+
+
+--
+-- TOC entry 2185 (class 0 OID 16575)
+-- Dependencies: 183
+-- Data for Name: contententity; Type: TABLE DATA; Schema: public; Owner: admin
+--
+
+INSERT INTO contententity VALUES ('plutonium-cm-section', 'ae54c878-34e3-48a8-b696-73c54cb569bb', NULL, true, 0, false, 0, NULL, false, 1, true, 'Házi baromfik', 0, NULL, NULL);
+INSERT INTO contententity VALUES ('plutonium-cm-section', 'f17bd0f2-ba79-4a89-88aa-6334c68a1b0b', NULL, true, 0, false, 0, NULL, true, 0, true, 'Cikk a kacsákról', 0, NULL, NULL);
+INSERT INTO contententity VALUES ('plutonium-cm-section', '755074d9-90d7-4a70-b898-2e6e882cfd83', 'pirosfekete.pdf', true, 0, true, 0, NULL, true, 0, true, 'Liba', 0, NULL, 'ae54c878-34e3-48a8-b696-73c54cb569bb');
+INSERT INTO contententity VALUES ('plutonium-cm-editor-text', 'ee5ea1c7-1fbb-49fa-9c5d-921f030c7570', 'A 20. század elején a magyar parlagi kacsát már ősi magyar fajtaként említik, de származásáról biztos adataink ma sincsenek. A vízközeli falusi, tanyasi gazdaságok egyik legfontosabb baromfiféléje volt. Míg a gazdaasszony a libát eladásra nevelte, addig a kacsahús a család ellátására szolgált. A tájegységeknek kialakultak a saját típusaik. A leggyakoribb a fehér szín volt, amelyet a 20. század elején a pekingi kacsával akartak nemesíteni. A "színes", vagyis a tarka, vadas színű kacsa kisebb rangúnak számított, pedig ez a fajtaváltozat őrizte meg leginkább a magyar kacsa ősi formáját. Állománya erősen lecsökkent, Erdélyben és az alföldi tanyákon találhatóak kisebb állományai. Jelenleg a gödöllői Kisállattenyésztési Kutatóintézetben mindkét változatát tenyésztik. Nagyobb állománya található Szarvason is. 2004 óta a magyar kacsa a védett háziállataink közé tartozik.', true, 0, false, 0, NULL, true, 2, true, 'Magyar kacsa', 0, NULL, 'f17bd0f2-ba79-4a89-88aa-6334c68a1b0b');
+INSERT INTO contententity VALUES ('plutonium-cm-editor-link', 'c169f465-3e70-4443-97d0-16774186a2d3', 'f17bd0f2-ba79-4a89-88aa-6334c68a1b0b', true, 0, false, 0, NULL, true, 1, true, 'Kacsa', 0, NULL, 'ae54c878-34e3-48a8-b696-73c54cb569bb');
+INSERT INTO contententity VALUES ('plutonium-cm-editor-text', '5b28f613-21e2-4574-8f5c-3ac0d0ca61aa', 'A házikacsa vagy röviden kacsa (Anas platyrhynchos domestica) a récefélék családjába tartozó baromfi, a tőkés réce ("vadkacsa") alfaja, háziasított változata.', true, 0, false, 0, NULL, true, 3, true, 'Mi a kacsa?', 0, NULL, 'f17bd0f2-ba79-4a89-88aa-6334c68a1b0b');
+INSERT INTO contententity VALUES ('plutonium-cm-editor-video', '8a162f2a-8654-43ac-906c-c2a03d26053c', '4KRw9sepREM', true, 0, false, 0, NULL, true, 0, true, 'Kacsatánc', 0, NULL, 'f17bd0f2-ba79-4a89-88aa-6334c68a1b0b');
+INSERT INTO contententity VALUES ('plutonium-cm-editor-image', '6bc55d12-8f00-4fe4-8029-fa271d34e9dc', 'http://www.vicclap.hu/static/media/201002/pic87066.jpg', true, 0, false, 0, NULL, true, 1, true, 'Így néz ki egy kacsa', 0, NULL, 'f17bd0f2-ba79-4a89-88aa-6334c68a1b0b');
+
+
+--
+-- TOC entry 2195 (class 0 OID 0)
+-- Dependencies: 181
+-- Name: hibernate_sequence; Type: SEQUENCE SET; Schema: public; Owner: admin
+--
+
+SELECT pg_catalog.setval('hibernate_sequence', 675, true);
+
+
+--
+-- TOC entry 2186 (class 0 OID 16583)
+-- Dependencies: 184
+-- Data for Name: localeentity; Type: TABLE DATA; Schema: public; Owner: admin
+--
+
+INSERT INTO localeentity VALUES ('en', 'English');
+INSERT INTO localeentity VALUES ('po', 'Polskie');
+INSERT INTO localeentity VALUES ('hu', 'Magyar');
+
+
+--
+-- TOC entry 2187 (class 0 OID 16588)
+-- Dependencies: 185
+-- Data for Name: mailboxentity; Type: TABLE DATA; Schema: public; Owner: admin
+--
+
+INSERT INTO mailboxentity VALUES (662, 661);
+INSERT INTO mailboxentity VALUES (664, 663);
+INSERT INTO mailboxentity VALUES (666, 665);
+INSERT INTO mailboxentity VALUES (668, 667);
+INSERT INTO mailboxentity VALUES (670, 669);
+INSERT INTO mailboxentity VALUES (672, 671);
+
+
+--
+-- TOC entry 2188 (class 0 OID 16593)
+-- Dependencies: 186
+-- Data for Name: messageentity; Type: TABLE DATA; Schema: public; Owner: admin
+--
+
+
+
+--
+-- TOC entry 2190 (class 0 OID 16606)
+-- Dependencies: 188
+-- Data for Name: resourceentity; Type: TABLE DATA; Schema: public; Owner: admin
+--
+
+
+
+-- Completed on 2016-08-09 11:21:39 CEST
+
+--
+-- PostgreSQL database dump complete
+--
+

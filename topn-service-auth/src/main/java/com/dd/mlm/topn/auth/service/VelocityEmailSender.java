@@ -42,6 +42,7 @@ public class VelocityEmailSender implements UaaMailSender {
      *
      * @param velocityEngine
      * @param mailSender
+     * @param simpleMailMessage
      */
     @Autowired
     public VelocityEmailSender(VelocityEngine velocityEngine, JavaMailSender mailSender, SimpleMailMessage simpleMailMessage) {
