@@ -121,7 +121,8 @@
                 <configuration>
                     <modules-path>
                         <paths>
-                            <jboss-home>/home/lordoftheflies/wildfly-9.0.2.Final</jboss-home>
+                            <jboss-home>/otp/wildfly</jboss-home>
+                            <!--<jboss-home>/home/lordoftheflies/wildfly-9.0.2.Final</jboss-home>-->
                         </paths>
                     </modules-path>
                 </configuration>
