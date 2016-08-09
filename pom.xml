@@ -32,6 +32,17 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     
+    <scm>
+        <developerConnection>scm:git:git@github.com:lordoftheflies/mlm-server.git</developerConnection>
+    </scm>
+    
+    <!--    <distributionManagement>
+        <repository>
+            <id>artifact-repository</id>
+            <url>git@github.com:lordoftheflies/mlm-server.git</url>
+        </repository>
+    </distributionManagement>-->
+    
     <dependencyManagement>
         <dependencies>
             <!--Swagger-->
@@ -56,4 +67,19 @@
     </dependencyManagement>
     
     <name>topn</name>
+    
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.5.3</version>
+                <configuration>
+                    <!--<tagNameFormat>v@{project.version}</tagNameFormat>-->
+                    <releaseProfiles>release</releaseProfiles>
+                </configuration>
+                <!--<releaseProfiles>release</releaseProfiles>-->
+            </plugin>
+        </plugins>
+    </build>
 </project>
