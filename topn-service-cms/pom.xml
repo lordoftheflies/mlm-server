@@ -4,7 +4,7 @@
 
 	<groupId>com.dd.mlm</groupId>
 	<artifactId>topn-service-cms</artifactId>
-	<version>1.0.0</version>
+	<version>1.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>topn-service-cms</name>
@@ -53,10 +53,4 @@
                     </plugin>-->
 		</plugins>
 	</build>
-	
-
-
-  <scm>
-    <tag>v1.0.1</tag>
-  </scm>
 </project>

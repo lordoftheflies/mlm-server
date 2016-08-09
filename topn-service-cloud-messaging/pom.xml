@@ -8,7 +8,7 @@
     <!--</parent>-->
     <artifactId>topn-service-cloud-messaging</artifactId>
     <packaging>jar</packaging>
-    <version>1.0.0</version>
+    <version>1.0.1-SNAPSHOT</version>
         
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -49,8 +49,4 @@
             <version>3.0.0</version>
         </dependency>
     </dependencies>
-
-  <scm>
-    <tag>v1.0.1</tag>
-  </scm>
 </project>

@@ -4,7 +4,7 @@
 
 	<groupId>com.dd.mlm</groupId>
 	<artifactId>topn-service-mailing</artifactId>
-	<version>1.0.0</version>
+	<version>1.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>topn-service-mailing</name>
@@ -46,7 +46,7 @@
 	 <dependency>
 	  <groupId>com.dd</groupId>
 	  <artifactId>topn-service-cloud-messaging</artifactId>
-	  <version>1.0.0</version>
+	  <version>1.0.1-SNAPSHOT</version>
 	 </dependency>
 	</dependencies>
 	
@@ -58,10 +58,4 @@
 			</plugin>-->
 		</plugins>
 	</build>
-	
-
-
-  <scm>
-    <tag>v1.0.1</tag>
-  </scm>
 </project>

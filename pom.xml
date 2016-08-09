@@ -4,7 +4,7 @@
     
     <groupId>com.dd</groupId>
     <artifactId>topn</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2-SNAPSHOT</version>
     <packaging>pom</packaging>
     
     <parent>
@@ -34,7 +34,7 @@
     
     <scm>
         <developerConnection>scm:git:git@github.com:lordoftheflies/mlm-server.git</developerConnection>
-      <tag>v1.0.1</tag>
+      <tag>HEAD</tag>
   </scm>
     
     <!--    <distributionManagement>
