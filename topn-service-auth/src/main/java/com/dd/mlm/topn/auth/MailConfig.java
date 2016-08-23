@@ -29,10 +29,10 @@ public class MailConfig {
 
     @Value("${mail.host}")
     private String host;
-//
-//    @Value("${mail.port}")
-//    private String port;
-//
+
+    @Value("${mail.port}")
+    private String port;
+
     @Value("${mail.from}")
     private String from;
 
@@ -86,15 +86,15 @@ public class MailConfig {
         props.put("mail.debug", "true");
 //        props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.ssl.trust", "box.cherubits.hu");
+        props.put("mail.smtp.ssl.trust", host);
         props.put("mail.smtp.EnableSSL.enable", "true");
 
 //        props.setProperty("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
 //        props.setProperty("mail.smtp.socketFactory.fallback", "false");
-        props.setProperty("mail.smtp.port", "587");
+        props.setProperty("mail.smtp.port", port);
 //        props.setProperty("mail.smtp.port", "465");
 //        props.setProperty("mail.smtp.socketFactory.port", "465");
-        props.setProperty("mail.smtp.socketFactory.port", "587");
+        props.setProperty("mail.smtp.socketFactory.port", port);
 
         return props;
     }
