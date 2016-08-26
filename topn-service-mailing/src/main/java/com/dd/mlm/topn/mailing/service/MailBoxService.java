@@ -123,7 +123,15 @@ public class MailBoxService {
     @RequestMapping(path = "/subscription", method = RequestMethod.POST)
     public ResponseEntity synchronizeSubscription(@RequestBody SubscriptionDto model) {
         try {
-            AccountEntity account = accountRepository.findOne(model.getAccountId());
+            AccountEntity account = null;
+            if (model.getAccountId() != null) {
+                account = accountRepository.findOne(model.getAccountId());
+            } else if (model.getEmail() != null) {
+                account = accountRepository.findByEmail(model.getEmail());    
+            } else {
+                account = new AccountEntity();
+            }
+            
             String oldSubscriptionId = account.getSubscriptionId();
             account.setSubscriptionId(model.getSubscriptionId());
             accountRepository.save(account);
