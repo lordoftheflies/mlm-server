@@ -5,6 +5,7 @@
  */
 package com.dd.mlm.topn.auth.service;
 
+import com.dd.mlm.topn.auth.model.PasswordResetDto;
 import com.dd.mlm.topn.auth.model.CredentialsDto;
 import com.dd.mlm.topn.auth.model.RegistrationDto;
 import com.dd.mlm.topn.auth.model.SessionDto;
