@@ -2,9 +2,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     
-    <groupId>com.dd</groupId>
-    <artifactId>topn</artifactId>
-    <version>1.0.2-SNAPSHOT</version>
+    <groupId>hu.cherubits</groupId>
+    <artifactId>wonderjam</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     
     <parent>
@@ -22,7 +22,7 @@
         <module>topn-service-cms</module>
         <module>topn-service-mailing</module>
         <module>topn-service-network</module>
-        <module>topn-service-cloud-messaging</module>
+        <module>wonderjam-cloud-messaging</module>
     </modules>
     
     <properties>
@@ -34,8 +34,8 @@
     
     <scm>
         <developerConnection>scm:git:git@github.com:lordoftheflies/mlm-server.git</developerConnection>
-      <tag>HEAD</tag>
-  </scm>
+        <tag>HEAD</tag>
+    </scm>
     
     <!--    <distributionManagement>
         <repository>
@@ -67,7 +67,7 @@
         </dependencies>
     </dependencyManagement>
     
-    <name>topn</name>
+    <name>Wonderjam</name>
     
     <build>
         <plugins>

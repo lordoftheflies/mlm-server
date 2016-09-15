@@ -1,4 +1,4 @@
-package com.dd.topn.service.cloud.messaging;
+package hu.cherubits.wonderjam.cloud.messaging;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;

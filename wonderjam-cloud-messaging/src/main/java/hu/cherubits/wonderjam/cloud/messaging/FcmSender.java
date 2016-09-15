@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.dd.topn.service.cloud.messaging;
+package hu.cherubits.wonderjam.cloud.messaging;
 
 import com.google.android.gcm.server.Sender;
 import java.io.IOException;

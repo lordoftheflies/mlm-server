@@ -5,6 +5,8 @@
  */
 package com.dd.topn.service.cloud.messaging;
 
+import hu.cherubits.wonderjam.cloud.messaging.NotificationService;
+import hu.cherubits.wonderjam.cloud.messaging.FcmConfiguration;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.After;

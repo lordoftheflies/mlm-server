@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.dd.topn.service.cloud.messaging;
+package hu.cherubits.wonderjam.cloud.messaging;
 
 import com.google.android.gcm.server.Message;
 import com.google.android.gcm.server.MulticastResult;
@@ -29,18 +29,17 @@ public class NotificationService {
 
     private static final Logger LOG = Logger.getLogger(NotificationService.class.getName());
 
-//    private String fcmServerKey = "AIzaSyBY6sCStgF8ucCSFIYpKJiPxMJ3VMT-28o";
     @Value("${fcm.serverkey}")
-    private String fcmServerKey = "AIzaSyBY6sCStgF8ucCSFIYpKJiPxMJ3VMT-28o";
-//    private String fcmSenderId = "522589320362";
+    private String fcmServerKey;
+
     @Value("${fcm.senderid}")
-    private String fcmSenderId = "522589320362";
-//    private String cloudMessagingServer = "https://topflavon-paas.firebaseapp.com";
+    private String fcmSenderId;
+
     @Value("${fcm.server}")
-    private String cloudMessagingServer = "https://topflavon-paas.firebaseapp.com";
-//    private String fileName = "topflavon-909a071a2050.json";
+    private String cloudMessagingServer;
+
     @Value("${fcm.credentials}")
-    private String fileName = "topflavon-909a071a2050.json";
+    private String fileName;
 
     private static FirebaseOptions options = null;
 

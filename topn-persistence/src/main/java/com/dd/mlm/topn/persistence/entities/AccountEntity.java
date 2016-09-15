@@ -73,7 +73,18 @@ public class AccountEntity implements Serializable {
     public void setSubscriptionId(String subscriptionId) {
         this.subscriptionId = subscriptionId;
     }
+    
+    @Basic(optional = true)
+    private String homeUrl;
 
+    public String getHomeUrl() {
+        return homeUrl;
+    }
+
+    public void setHomeUrl(String homeUrl) {
+        this.homeUrl = homeUrl;
+    }
+    
     /**
      * Generate UNIQUE entity key.
      */
