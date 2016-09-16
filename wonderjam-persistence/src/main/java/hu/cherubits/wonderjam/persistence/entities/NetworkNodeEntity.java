@@ -89,18 +89,6 @@ public class NetworkNodeEntity implements Serializable {
         this.active = active;
     }
 
-    @Basic
-    @Enumerated(EnumType.STRING)
-    private NetworkNodeType state = NetworkNodeType.USER;
-
-    public NetworkNodeType getState() {
-        return state;
-    }
-
-    public void setState(NetworkNodeType state) {
-        this.state = state;
-    }
-
     @ManyToOne
     private NetworkNodeEntity parent;
 

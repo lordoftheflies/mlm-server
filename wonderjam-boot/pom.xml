@@ -8,15 +8,13 @@
     <packaging>war</packaging>
 
     <name>Wonderjam Boot</name>
-    <description>Standalone server application for Christeam project.</description>
-
-
-    
+    <description>Standalone server application for Wonderjam project.</description>
 
     <parent>
-        <groupId>com.dd</groupId>
-        <artifactId>topn</artifactId>
-        <version>1.0.2-SNAPSHOT</version>
+        <groupId>hu.cherubits</groupId>
+        <artifactId>wonderjam</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+        <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
     <properties>
@@ -31,8 +29,22 @@
         </dependency>
         
         <dependency>
+            <groupId>org.springframework.session</groupId>
+            <artifactId>spring-session</artifactId>
+            <!--<version>1.0.0.RELEASE</version>-->
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-redis</artifactId>
+        </dependency>
+        
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -74,34 +86,34 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.dd.mlm</groupId>
-            <artifactId>topn-common</artifactId>
-            <version>1.0.1-SNAPSHOT</version>
+            <groupId>hu.cherubits</groupId>
+            <artifactId>wonderjam-common</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>com.dd.mlm</groupId>
-            <artifactId>topn-persistence</artifactId>
-            <version>1.0.1-SNAPSHOT</version>
+            <groupId>hu.cherubits</groupId>
+            <artifactId>wonderjam-persistence</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>com.dd.mlm</groupId>
-            <artifactId>topn-service-auth</artifactId>
-            <version>1.0.1-SNAPSHOT</version>
+            <groupId>hu.cherubits</groupId>
+            <artifactId>wonderjam-security</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>com.dd.mlm</groupId>
-            <artifactId>topn-service-cms</artifactId>
-            <version>1.0.1-SNAPSHOT</version>
+            <groupId>hu.cherubits</groupId>
+            <artifactId>wonderjam-cms</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>com.dd.mlm</groupId>
-            <artifactId>topn-service-network</artifactId>
-            <version>1.0.1-SNAPSHOT</version>
+            <groupId>hu.cherubits</groupId>
+            <artifactId>wonderjam-membership</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>com.dd.mlm</groupId>
-            <artifactId>topn-service-mailing</artifactId>
-            <version>1.0.1-SNAPSHOT</version>
+            <groupId>hu.cherubits</groupId>
+            <artifactId>wonderjam-mailing</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
 	

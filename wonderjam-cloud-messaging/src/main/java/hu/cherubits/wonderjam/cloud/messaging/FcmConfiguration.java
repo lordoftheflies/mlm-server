@@ -1,24 +1,35 @@
 package hu.cherubits.wonderjam.cloud.messaging;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 
 //@SpringBootApplication
 @Configuration
-@ComponentScan(basePackageClasses = { //    AuthConfig.class,
-//    MailConfig.class,
-//    CmsConfiguration.class,
-//    MailingServiceConfig.class,
-//    NetworkServiceConfiguration.class,
-//    SwaggerConfiguration.class
-})
-//public class FcmConfiguration extends SpringBootServletInitializer {
+@EnableAutoConfiguration
+@ComponentScan
 public class FcmConfiguration {
 
+    @Value("${fcm.serverkey}")
+    private String fcmServerKey;
+
+    @Value("${fcm.senderid}")
+    private String fcmSenderId;
+
+    @Value("${fcm.server}")
+    private String cloudMessagingServer;
+
+    @Value("${fcm.credentials}")
+    private String fileName;
+    
     @Bean
+    @Autowired
     public NotificationService notificationService() {
-        return new NotificationService();
+        return new NotificationService(cloudMessagingServer, fileName, fcmServerKey, fcmSenderId);
     }
 
 //    @Override

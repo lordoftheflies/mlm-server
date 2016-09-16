@@ -5,14 +5,14 @@
  */
 package hu.cherubits.wonderjam.services;
 
-import com.dd.mlm.topn.exceptions.AccountNotExistException;
-import com.dd.mlm.topn.persistence.dal.AccountRepository;
-import com.dd.mlm.topn.persistence.dal.NetworkTreeRepository;
-import com.dd.mlm.topn.persistence.entities.AccountEntity;
-import com.dd.mlm.topn.persistence.entities.NetworkNodeEntity;
 import hu.cherubits.wonderjam.model.NetworkDto;
-import com.dd.mlm.topn.network.model.ContactDto;
+import hu.cherubits.wonderjam.exceptions.AccountNotExistException;
+import hu.cherubits.wonderjam.membership.model.ContactDto;
 import hu.cherubits.wonderjam.model.ChristeamDto;
+import hu.cherubits.wonderjam.persistence.dal.AccountRepository;
+import hu.cherubits.wonderjam.persistence.dal.NetworkTreeRepository;
+import hu.cherubits.wonderjam.persistence.entities.AccountEntity;
+import hu.cherubits.wonderjam.persistence.entities.NetworkNodeEntity;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;

@@ -5,13 +5,13 @@
  */
 package hu.cherubits.wonderjam.services;
 
-import com.dd.mlm.topn.persistence.dal.AccountRepository;
-import com.dd.mlm.topn.persistence.dal.LocaleRepository;
-import com.dd.mlm.topn.persistence.dal.ResourceRepository;
-import com.dd.mlm.topn.persistence.entities.AccountEntity;
-import com.dd.mlm.topn.persistence.entities.LocaleEntity;
 import hu.cherubits.wonderjam.model.LocaleDto;
 import hu.cherubits.wonderjam.model.ChangeLanguageDto;
+import hu.cherubits.wonderjam.persistence.dal.AccountRepository;
+import hu.cherubits.wonderjam.persistence.dal.LocaleRepository;
+import hu.cherubits.wonderjam.persistence.dal.ResourceRepository;
+import hu.cherubits.wonderjam.persistence.entities.AccountEntity;
+import hu.cherubits.wonderjam.persistence.entities.LocaleEntity;
 import java.util.List;
 import java.util.UUID;
 import java.util.logging.Logger;

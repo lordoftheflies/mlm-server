@@ -5,8 +5,8 @@
  */
 package hu.cherubits.wonderjam.services;
 
-import com.dd.mlm.topn.exceptions.AccesDeniedException;
-import com.dd.mlm.topn.exceptions.CredentialsException;
+import hu.cherubits.wonderjam.exceptions.AccesDeniedException;
+import hu.cherubits.wonderjam.exceptions.CredentialsException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

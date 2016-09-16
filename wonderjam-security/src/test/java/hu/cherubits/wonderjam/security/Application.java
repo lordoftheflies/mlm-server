@@ -13,10 +13,6 @@ import org.springframework.context.annotation.ComponentScan;
             DatabaseConfiguration.class,
             AuthConfig.class,
             MailConfig.class
-        },
-        basePackages = {
-            "hu.cherubits.wonderjam.persistence.entities",
-            "hu.cherubits.wonderjam.persistence.dal"
         })
 public class Application {
 

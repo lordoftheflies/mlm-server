@@ -18,16 +18,16 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
  */
 @Configuration
 @ComponentScan(
-        basePackages = {
-            "com.dd.mlm.topn.persistence.entities"
-        },
+//        basePackages = {
+//            "com.dd.mlm.topn.persistence.entities"
+//        },
         basePackageClasses = {
             MailConfig.class,
             DatabaseConfiguration.class
         })
-@EnableJpaRepositories(basePackages = {
-    "com.dd.mlm.topn.persistence.dal"
-})
+//@EnableJpaRepositories(basePackages = {
+//    "com.dd.mlm.topn.persistence.dal"
+//})
 @EnableAutoConfiguration
 public class NetworkServiceConfiguration {
 

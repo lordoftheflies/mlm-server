@@ -7,11 +7,9 @@ package hu.cherubits.wonderjam.cloud.messaging;
 
 import com.google.android.gcm.server.Message;
 import com.google.android.gcm.server.MulticastResult;
-import com.google.android.gcm.server.Result;
 import com.google.android.gcm.server.Sender;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
-import static java.awt.SystemColor.text;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Map;
@@ -31,25 +29,19 @@ public class NotificationService {
 
     private static final Logger LOG = Logger.getLogger(NotificationService.class.getName());
 
-    @Value("${fcm.serverkey}")
-    private String fcmServerKey;
+    private final String fcmServerKey;
 
-    @Value("${fcm.senderid}")
-    private String fcmSenderId;
-
-    @Value("${fcm.server}")
-    private String cloudMessagingServer;
-
-    @Value("${fcm.credentials}")
-    private String fileName;
+    private final String fcmSenderId;
 
     private static FirebaseOptions options = null;
 
-    public NotificationService() {
-    }
-
-    @PostConstruct
-    public void startUp() {
+    public NotificationService(String cloudMessagingServer, String fileName, String fcmServerKey, String fcmSenderId) {
+        this.fcmSenderId = fcmSenderId;
+        this.fcmServerKey = fcmServerKey;
+//    }
+//
+//    @PostConstruct
+//    public void startUp() {
 
 //        try {
         if (options == null) {

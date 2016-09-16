@@ -3,25 +3,25 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.digitaldefense.christeam.services;
+package hu.cherubits.wonderjam;
 
-import com.dd.mlm.topn.cms.services.ContentManagementService;
-import com.dd.mlm.topn.persistence.dal.AccountRepository;
-import com.dd.mlm.topn.persistence.dal.ContentRepository;
-import com.dd.mlm.topn.persistence.dal.MailBoxRepository;
-import com.dd.mlm.topn.persistence.dal.MessageRepository;
-import com.dd.mlm.topn.persistence.dal.NetworkTreeRepository;
-import com.dd.mlm.topn.persistence.entities.AccountEntity;
-import com.dd.mlm.topn.persistence.entities.ContainerContentEntity;
-import com.dd.mlm.topn.persistence.entities.ContentEntity;
-import com.dd.mlm.topn.persistence.entities.ImageContentEntity;
-import com.dd.mlm.topn.persistence.entities.MailBoxEntity;
-import com.dd.mlm.topn.persistence.entities.NetworkNodeEntity;
-import com.dd.mlm.topn.persistence.entities.NetworkNodeType;
-import com.dd.mlm.topn.persistence.entities.ReferenceContentEntity;
-import com.dd.mlm.topn.persistence.entities.TextContentEntity;
-import com.dd.mlm.topn.persistence.entities.VideoContentEntity;
-import com.digitaldefense.christeam.ChristeamServerApplicationTests;
+import hu.cherubits.wonderjam.ChristeamServerApplicationTests;
+import hu.cherubits.wonderjam.cms.services.ContentManagementService;
+import hu.cherubits.wonderjam.persistence.dal.AccountRepository;
+import hu.cherubits.wonderjam.persistence.dal.ContentRepository;
+import hu.cherubits.wonderjam.persistence.dal.MailBoxRepository;
+import hu.cherubits.wonderjam.persistence.dal.MessageRepository;
+import hu.cherubits.wonderjam.persistence.dal.NetworkTreeRepository;
+import hu.cherubits.wonderjam.persistence.entities.AccountEntity;
+import hu.cherubits.wonderjam.persistence.entities.ContainerContentEntity;
+import hu.cherubits.wonderjam.persistence.entities.ContentEntity;
+import hu.cherubits.wonderjam.persistence.entities.ImageContentEntity;
+import hu.cherubits.wonderjam.persistence.entities.MailBoxEntity;
+import hu.cherubits.wonderjam.persistence.entities.NetworkNodeEntity;
+import hu.cherubits.wonderjam.persistence.entities.NetworkNodeType;
+import hu.cherubits.wonderjam.persistence.entities.ReferenceContentEntity;
+import hu.cherubits.wonderjam.persistence.entities.TextContentEntity;
+import hu.cherubits.wonderjam.persistence.entities.VideoContentEntity;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.UUID;
@@ -42,15 +42,15 @@ import org.junit.runners.MethodSorters;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ContentManagementServiceTest extends ChristeamServerApplicationTests {
 
-    @Autowired
-    private WebApplicationContext webApplicationContext;
+//    @Autowired
+//    private WebApplicationContext webApplicationContext;
+//
+//    @Autowired
+//    private ContentManagementService contentManagementServiceMock;
 
-    @Autowired
-    private ContentManagementService contentManagementServiceMock;
-
-    private MediaType contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
-            MediaType.APPLICATION_JSON.getSubtype(),
-            Charset.forName("utf8"));
+//    private MediaType contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
+//            MediaType.APPLICATION_JSON.getSubtype(),
+//            Charset.forName("utf8"));
 
     @Autowired
     private ContentRepository contentRepository;
@@ -77,19 +77,19 @@ public class ContentManagementServiceTest extends ChristeamServerApplicationTest
     private UUID duckReferenceId;
     private UUID libaFileId;
 
-    @Autowired
-    void setConverters(HttpMessageConverter<?>[] converters) {
+//    @Autowired
+//    void setConverters(HttpMessageConverter<?>[] converters) {
+//
+//        this.mappingJackson2HttpMessageConverter = Arrays.asList(converters).stream().filter(
+//                hmc -> hmc instanceof MappingJackson2HttpMessageConverter).findAny().get();
+//
+//        Assert.assertNotNull("the JSON message converter must not be null",
+//                this.mappingJackson2HttpMessageConverter);
+//    }
 
-        this.mappingJackson2HttpMessageConverter = Arrays.asList(converters).stream().filter(
-                hmc -> hmc instanceof MappingJackson2HttpMessageConverter).findAny().get();
-
-        Assert.assertNotNull("the JSON message converter must not be null",
-                this.mappingJackson2HttpMessageConverter);
-    }
-
-//    @Before
-    public void setUp() throws Exception {
-        super.setup();
+////    @Before
+//    public void setUp() throws Exception {
+//        super.setup();
 //
 //        ContainerContentEntity contentContainer = new ContainerContentEntity();
 //        contentContainer.setContent("test-container-content");
@@ -130,12 +130,12 @@ public class ContentManagementServiceTest extends ChristeamServerApplicationTest
 ////        textContent.setResourceType(ViewConstants.CONTENT_MANAGEMENT_WIDGET_TEXT);
 //        textContent.setContent("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod , sunt in culpa qui officia deserunt mollit anim id est laborum.");
 //        textContentId = contentRepository.save(textContent).getId();
-    }
+//    }C
 
-//    @After
-    public void tearDown() {
-//        contentRepository.deleteAll();
-    }
+////    @After
+//    public void tearDown() {
+////        contentRepository.deleteAll();
+//    }
 
     /**
      * Test of page method, of class ContentManagementService.
@@ -195,7 +195,7 @@ public class ContentManagementServiceTest extends ChristeamServerApplicationTest
         heglasNode = new NetworkNodeEntity();
         heglasNode.setActive(true);
         heglasNode.setCodes(1);
-        heglasNode.setState(NetworkNodeType.ADMIN);
+        heglas.setState(NetworkNodeType.ADMIN);
         heglasNode = networkRepo.save(heglasNode);
         heglas.setNode(heglasNode);
         heglas = accountRepo.save(heglas);
@@ -212,7 +212,7 @@ public class ContentManagementServiceTest extends ChristeamServerApplicationTest
         balazspeczelyNode = new NetworkNodeEntity();
         balazspeczelyNode.setActive(true);
         balazspeczelyNode.setCodes(2);
-        balazspeczelyNode.setState(NetworkNodeType.ADMIN);
+        balazspeczely.setState(NetworkNodeType.ADMIN);
         balazspeczelyNode = networkRepo.save(balazspeczelyNode);
         balazspeczely.setNode(balazspeczelyNode);
         balazspeczely = accountRepo.save(balazspeczely);
@@ -227,7 +227,7 @@ public class ContentManagementServiceTest extends ChristeamServerApplicationTest
         cseszkupopoveszku.setPreferredLanguage("po");
         cseszkupopoveszku = accountRepo.save(cseszkupopoveszku);
         NetworkNodeEntity cseszkupopoveszkuNode = new NetworkNodeEntity();
-        cseszkupopoveszkuNode.setState(NetworkNodeType.USER);
+        cseszkupopoveszku.setState(NetworkNodeType.USER);
         cseszkupopoveszkuNode.setActive(true);
         cseszkupopoveszkuNode.setCodes(3);
         cseszkupopoveszkuNode = networkRepo.save(cseszkupopoveszkuNode);
@@ -246,7 +246,7 @@ public class ContentManagementServiceTest extends ChristeamServerApplicationTest
         NetworkNodeEntity parazitaNode = new NetworkNodeEntity();
         parazitaNode.setActive(true);
         parazitaNode.setCodes(4);
-        parazitaNode.setState(NetworkNodeType.USER);
+        parazita.setState(NetworkNodeType.USER);
         parazitaNode = networkRepo.save(parazitaNode);
         parazita.setNode(parazitaNode);
         parazita = accountRepo.save(parazita);
@@ -262,7 +262,7 @@ public class ContentManagementServiceTest extends ChristeamServerApplicationTest
         tesztelek = accountRepo.save(tesztelek);
         NetworkNodeEntity tesztelekNode = new NetworkNodeEntity();
         tesztelekNode.setActive(true);
-        tesztelekNode.setState(NetworkNodeType.USER);
+        tesztelek.setState(NetworkNodeType.USER);
         tesztelekNode.setCodes(5);
         tesztelekNode = networkRepo.save(tesztelekNode);
         tesztelek.setNode(tesztelekNode);
@@ -279,7 +279,7 @@ public class ContentManagementServiceTest extends ChristeamServerApplicationTest
         feriahegyrol.setPreferredLanguage("en");
         NetworkNodeEntity feriahegyrolNode = new NetworkNodeEntity();
         feriahegyrolNode.setActive(true);
-        feriahegyrolNode.setState(NetworkNodeType.USER);
+        feriahegyrol.setState(NetworkNodeType.USER);
         feriahegyrolNode.setCodes(6);
         feriahegyrolNode = networkRepo.save(feriahegyrolNode);
         feriahegyrol.setNode(feriahegyrolNode);
@@ -294,7 +294,7 @@ public class ContentManagementServiceTest extends ChristeamServerApplicationTest
         NetworkNodeEntity romanokNode = new NetworkNodeEntity();
         romanokNode.setActive(true);
         romanokNode.setCodes(7);
-        romanokNode.setState(NetworkNodeType.GROUP);
+        romanok.setState(NetworkNodeType.GROUP);
         romanokNode = networkRepo.save(romanokNode);
         romanok.setNode(romanokNode);
         romanok = accountRepo.save(romanok);
@@ -307,7 +307,7 @@ public class ContentManagementServiceTest extends ChristeamServerApplicationTest
         gorogokNode.setCodes(8);
         gorogokNode = networkRepo.save(gorogokNode);
         gorogok.setNode(gorogokNode);
-        gorogokNode.setState(NetworkNodeType.GROUP);
+        gorogok.setState(NetworkNodeType.GROUP);
         gorogok = accountRepo.save(gorogok);
 
         AccountEntity magyarok = new AccountEntity();
@@ -316,7 +316,7 @@ public class ContentManagementServiceTest extends ChristeamServerApplicationTest
         NetworkNodeEntity magyarokNode = new NetworkNodeEntity();
         magyarokNode.setActive(true);
         magyarokNode.setCodes(9);
-        magyarokNode.setState(NetworkNodeType.GROUP);
+        magyarok.setState(NetworkNodeType.GROUP);
         magyarokNode = networkRepo.save(magyarokNode);
         magyarok.setNode(magyarokNode);
         magyarok = accountRepo.save(magyarok);

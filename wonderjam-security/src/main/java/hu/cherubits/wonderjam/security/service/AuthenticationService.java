@@ -127,11 +127,11 @@ public class AuthenticationService {
 
             NetworkNodeEntity nodeEntity = new NetworkNodeEntity();
             nodeEntity.setActive(true);
-            nodeEntity.setState(NetworkNodeType.ADMIN);
             nodeEntity.setContact(accountEntity);
             networkRepository.save(nodeEntity);
 
             accountEntity.setNode(nodeEntity);
+            accountEntity.setState(NetworkNodeType.ADMIN);
             accountRepository.save(accountEntity);
 
             MailBoxEntity mbEntity = new MailBoxEntity();

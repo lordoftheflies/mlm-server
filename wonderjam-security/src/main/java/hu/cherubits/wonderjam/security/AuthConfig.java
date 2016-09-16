@@ -21,7 +21,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
             DatabaseConfiguration.class
         })
 @EnableAutoConfiguration
-
 public class AuthConfig {
 
 }

@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.digitaldefense.christeam.services;
+package hu.cherubits.wonderjam;
 
-import com.dd.mlm.topn.persistence.dal.LocaleRepository;
-import com.dd.mlm.topn.persistence.dal.ResourceRepository;
-import com.dd.mlm.topn.persistence.entities.LocaleEntity;
-import com.digitaldefense.christeam.ChristeamServerApplicationTests;
+import hu.cherubits.wonderjam.ChristeamServerApplicationTests;
+import hu.cherubits.wonderjam.persistence.dal.LocaleRepository;
+import hu.cherubits.wonderjam.persistence.dal.ResourceRepository;
+import hu.cherubits.wonderjam.persistence.entities.LocaleEntity;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.FixMethodOrder;

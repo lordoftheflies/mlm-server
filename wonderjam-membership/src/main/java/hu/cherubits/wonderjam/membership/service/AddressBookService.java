@@ -199,7 +199,7 @@ public class AddressBookService {
             nodeEntity.setActive(true);
             nodeEntity.setContact(accountEntity);
             nodeEntity.setCodes(dto.getCodes());
-            nodeEntity.setState(NetworkNodeType.valueOf(dto.getRole()));
+            accountEntity.setState(NetworkNodeType.valueOf(dto.getRole()));
             networkTreeRepository.save(nodeEntity);
 
             NetworkNodeEntity parentEntity = networkTreeRepository.findByAccount(dto.getParent());
@@ -278,17 +278,19 @@ public class AddressBookService {
 
         // Retrieve entities from database.
         NetworkNodeEntity source = networkTreeRepository.findByAccount(dto.getOwner());
+        AccountEntity sourceEntity = accountRepository.findOne(dto.getOwner());
         NetworkNodeEntity destination = networkTreeRepository.findByAccount(dto.getSubject());
+        AccountEntity destinationEntity = accountRepository.findOne(dto.getSubject());
 
-        if (!destination.getActive() || NetworkNodeType.GROUP.equals(destination.getState())) {
+        if (!destination.getActive() || NetworkNodeType.GROUP.equals(destinationEntity.getState())) {
             throw new IllegalArgumentException("Group could not be promoted to admin.");
         }
 
-        if (!source.getActive() || !NetworkNodeType.ADMIN.equals(source.getState())) {
+        if (!source.getActive() || !NetworkNodeType.ADMIN.equals(sourceEntity.getState())) {
             throw new IllegalArgumentException("No permission to promote user.");
         }
 
-        destination.setState(NetworkNodeType.ADMIN);
+        destinationEntity.setState(NetworkNodeType.ADMIN);
         networkTreeRepository.save(destination);
 
         LOG.log(Level.INFO, "Promote user {0} to admin by {1}", new Object[]{
@@ -315,16 +317,18 @@ public class AddressBookService {
         // Retrieve entities from database.
         NetworkNodeEntity source = networkTreeRepository.findByAccount(dto.getOwner());
         NetworkNodeEntity destination = networkTreeRepository.findByAccount(dto.getSubject());
+        AccountEntity sourceEntity = accountRepository.findOne(dto.getOwner());
+        AccountEntity destinationEntity = accountRepository.findOne(dto.getSubject());
 
-        if (!destination.getActive() || NetworkNodeType.GROUP.equals(destination.getState())) {
+        if (!destination.getActive() || NetworkNodeType.GROUP.equals(destinationEntity.getState())) {
             throw new IllegalArgumentException("Group could not be demoted to user.");
         }
 
-        if (!source.getActive() || !NetworkNodeType.ADMIN.equals(source.getState())) {
+        if (!source.getActive() || !NetworkNodeType.ADMIN.equals(sourceEntity.getState())) {
             throw new IllegalArgumentException("No permission to demote admin.");
         }
 
-        destination.setState(NetworkNodeType.USER);
+        destinationEntity.setState(NetworkNodeType.USER);
         networkTreeRepository.save(destination);
 
         LOG.log(Level.INFO, "Demote user {0} to user by {1}", new Object[]{

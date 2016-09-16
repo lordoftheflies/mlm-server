@@ -5,11 +5,13 @@
  */
 package hu.cherubits.wonderjam.persistence.entities;
 
+import org.springframework.security.core.GrantedAuthority;
+
 /**
  *
  * @author lordoftheflies
  */
-public enum NetworkNodeType {
+public enum NetworkNodeType implements GrantedAuthority {
 
     GROUP("group"),
     USER("user"),
@@ -23,5 +25,10 @@ public enum NetworkNodeType {
     
     private NetworkNodeType(String key) {
         this.key = key;
+    }
+
+    @Override
+    public String getAuthority() {
+        return key;
     }
 }

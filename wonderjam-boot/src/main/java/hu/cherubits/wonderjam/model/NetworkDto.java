@@ -5,7 +5,7 @@
  */
 package hu.cherubits.wonderjam.model;
 
-import com.dd.mlm.topn.network.model.ContactDto;
+import hu.cherubits.wonderjam.membership.model.ContactDto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;

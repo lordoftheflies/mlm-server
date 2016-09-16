@@ -6,9 +6,14 @@
 package hu.cherubits.wonderjam.persistence.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.UUID;
 import javax.persistence.Basic;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -16,6 +21,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 /**
  *
@@ -23,7 +30,7 @@ import org.hibernate.annotations.GenericGenerator;
  */
 @Entity
 @NamedQueries({
-    @NamedQuery(name = "AccountEntity.findRoleById", query = "SELECT a.node.state FROM AccountEntity a WHERE a.id = :id"),
+    @NamedQuery(name = "AccountEntity.findRoleById", query = "SELECT a.state FROM AccountEntity a WHERE a.id = :id"),
     @NamedQuery(name = "AccountEntity.findRootAccounts", query = "SELECT a FROM AccountEntity a WHERE a.node.parent IS NULL"),
     @NamedQuery(name = "AccountEntity.findBySubscriptionId", query = "SELECT a FROM AccountEntity a WHERE a.subscriptionId = :subscriptionId"),
     @NamedQuery(name = "AccountEntity.getParent", query = "SELECT n.parent.contact FROM NetworkNodeEntity n WHERE n.contact.id = :childId"),
@@ -31,7 +38,7 @@ import org.hibernate.annotations.GenericGenerator;
     @NamedQuery(name = "AccountEntity.findByEmail", query = "SELECT a FROM AccountEntity a WHERE a.email = :email"),
     @NamedQuery(name = "AccountEntity.findByCredentials", query = "SELECT a FROM AccountEntity a WHERE a.email = :email AND a.password = :password")
 })
-public class AccountEntity implements Serializable {
+public class AccountEntity implements Serializable, UserDetails {
 
     private static final long serialVersionUID = 1L;
 
@@ -73,7 +80,7 @@ public class AccountEntity implements Serializable {
     public void setSubscriptionId(String subscriptionId) {
         this.subscriptionId = subscriptionId;
     }
-    
+
     @Basic(optional = true)
     private String homeUrl;
 
@@ -84,7 +91,7 @@ public class AccountEntity implements Serializable {
     public void setHomeUrl(String homeUrl) {
         this.homeUrl = homeUrl;
     }
-    
+
     /**
      * Generate UNIQUE entity key.
      */
@@ -137,6 +144,7 @@ public class AccountEntity implements Serializable {
 
     private String password;
 
+    @Override
     public String getPassword() {
         return password;
     }
@@ -153,6 +161,18 @@ public class AccountEntity implements Serializable {
 
     public void setPreferredLanguage(String preferredLanguage) {
         this.preferredLanguage = preferredLanguage;
+    }
+
+    @Basic
+    @Enumerated(EnumType.STRING)
+    private NetworkNodeType state = NetworkNodeType.USER;
+
+    public NetworkNodeType getState() {
+        return state;
+    }
+
+    public void setState(NetworkNodeType state) {
+        this.state = state;
     }
 
     @Override
@@ -178,6 +198,44 @@ public class AccountEntity implements Serializable {
     @Override
     public String toString() {
         return "com.digitaldefense.christeam.entities.AccountEntity[ id=" + id + " ]";
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        ArrayList<? extends GrantedAuthority> auhorities = new ArrayList<GrantedAuthority>();
+        switch (this.state) {
+            case USER:
+                return Arrays.asList(NetworkNodeType.USER);
+            case ADMIN:
+                return Arrays.asList(NetworkNodeType.USER, NetworkNodeType.ADMIN);
+            default:
+                return new ArrayList<GrantedAuthority>();
+        }
+    }
+
+    @Override
+    public String getUsername() {
+        return this.email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 
 }
