@@ -70,9 +70,9 @@ public class AuthenticationService {
     }
 
     private void apply(AccountEntity entity, SessionDto dto) {
-        dto.setUserName(entity.getName());
+        dto.setDisplayName(entity.getName());
         dto.setToken(entity.getId().toString());
-        dto.setPowerUser(NetworkNodeType.ADMIN == accountRepository.findRoleById(entity.getId()));
+//        dto.setPowerUser(NetworkNodeType.ADMIN == accountRepository.findRoleById(entity.getId()));
         dto.setToken(entity.getId().toString());
         dto.setPreferredLanguage(entity.getPreferredLanguage());
     }

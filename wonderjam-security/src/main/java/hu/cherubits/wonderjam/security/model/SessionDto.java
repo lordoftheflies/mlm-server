@@ -7,22 +7,26 @@ package hu.cherubits.wonderjam.security.model;
 
 import hu.cherubits.wonderjam.persistence.entities.NetworkNodeType;
 import java.io.Serializable;
+import java.util.List;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 /**
  *
  * @author lordoftheflies
  */
-public class SessionDto implements Serializable {
+public class SessionDto implements Serializable, UserDetails {
 
     public SessionDto() {
     }
 
+    public SessionDto(UserDetails user) {
+    }
+
     public SessionDto(NetworkNodeType nodeType, int unused, String token, String userName, String preferredLanguage) {
-        this.powerUser = NetworkNodeType.ADMIN == nodeType;
         this.role = nodeType.name();
-        this.unused = unused;
         this.token = token;
-        this.userName = userName;
+        this.displayName = userName;
         this.preferredLanguage = preferredLanguage;
     }
 
@@ -46,25 +50,7 @@ public class SessionDto implements Serializable {
         this.role = role;
     }
 
-    private boolean powerUser;
-
-    public boolean isPowerUser() {
-        return powerUser;
-    }
-
-    public void setPowerUser(boolean powerUser) {
-        this.powerUser = powerUser;
-    }
-
-    private int unused;
-
-    public int getUnused() {
-        return unused;
-    }
-
-    public void setUnused(int unused) {
-        this.unused = unused;
-    }
+    
 
     private String token;
 
@@ -76,13 +62,66 @@ public class SessionDto implements Serializable {
         this.token = token;
     }
 
-    private String userName;
+    private List<? extends GrantedAuthority> authorities;
 
-    public String getUserName() {
-        return userName;
+    @Override
+    public List<? extends GrantedAuthority> getAuthorities() {
+        return authorities;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setAuthorities(List<? extends GrantedAuthority> authorities) {
+        this.authorities = authorities;
+    }
+
+    private String password;
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    private String username;
+
+    @Override
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    private String displayName;
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
+    
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }

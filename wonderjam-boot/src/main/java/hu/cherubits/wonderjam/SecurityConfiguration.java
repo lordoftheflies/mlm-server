@@ -105,11 +105,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         };
     }
 
-    private static final String WEBJARS = "/webjars/**";
-    private static final String SWAGGER_UI = "/swagger-ui.html";
-    private static final String SWAGGER_RESOURCES = "/swagger-resources";
-    private static final String SWAGGER_CONFIGURATION = "/configuration/**";
-    private static final String SWAGGER_API = "/v2/**";
+    private static final String WEBJARS = "/backend/webjars/**";
+    private static final String SWAGGER_UI = "/backend/swagger-ui.html";
+    private static final String SWAGGER_RESOURCES = "/backend/swagger-resources";
+    private static final String SWAGGER_CONFIGURATION = "/backend/configuration/**";
+    private static final String SWAGGER_API = "/backend/v2/**";
     private static final String BASE_URL = "/";
     private static final String LOGIN_URL = "/login";
     private static final String MANIFEST_FILE = "/manifest.json";
