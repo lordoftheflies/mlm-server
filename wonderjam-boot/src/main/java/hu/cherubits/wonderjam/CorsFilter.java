@@ -1,4 +1,4 @@
-package com.dd.topn;
+package hu.cherubits.wonderjam;
 
 import java.io.IOException;
 import javax.servlet.Filter;

@@ -17,6 +17,8 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -44,6 +46,10 @@ public class NotificationService {
     private static FirebaseOptions options = null;
 
     public NotificationService() {
+    }
+
+    @PostConstruct
+    public void startUp() {
 
 //        try {
         if (options == null) {
@@ -59,7 +65,7 @@ public class NotificationService {
 
         }
     }
-    
+
     private void append(Message.Builder builder, String key, String value) {
         builder.collapseKey(key).addData(key, value);
     }
@@ -77,9 +83,9 @@ public class NotificationService {
             Message.Builder builder = new Message.Builder()
                     .timeToLive(3)
                     .delayWhileIdle(true);
-            
+
             props.forEach((String key, String value) -> append(builder, key, value));
-            
+
             Message message = builder.build();
 
             // Use the same token(or registration id) that was earlier

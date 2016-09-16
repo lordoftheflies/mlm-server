@@ -15,14 +15,14 @@
     </parent>
     
     <modules>
-        <module>topn-boot</module>
-        <module>topn-persistence</module>
-        <module>topn-common</module>
-        <module>topn-service-auth</module>
-        <module>topn-service-cms</module>
-        <module>topn-service-mailing</module>
-        <module>topn-service-network</module>
         <module>wonderjam-cloud-messaging</module>
+        <module>wonderjam-membership</module>
+        <module>wonderjam-security</module>
+        <module>wonderjam-mailing</module>
+        <module>wonderjam-common</module>
+        <module>wonderjam-persistence</module>
+        <module>wonderjam-cms</module>
+        <module>wonderjam-boot</module>
     </modules>
     
     <properties>

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.dd.mlm.topn.cms.services;
+package hu.cherubits.wonderjam.cms.services;
 
 import java.io.BufferedOutputStream;
 import java.io.File;

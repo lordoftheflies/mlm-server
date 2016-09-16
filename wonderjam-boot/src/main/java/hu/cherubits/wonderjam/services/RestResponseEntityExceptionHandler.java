@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.dd.topn.services;
+package hu.cherubits.wonderjam.services;
 
 import com.dd.mlm.topn.exceptions.AccesDeniedException;
 import com.dd.mlm.topn.exceptions.CredentialsException;

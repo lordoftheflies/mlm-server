@@ -3,15 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.dd.topn.services;
+package hu.cherubits.wonderjam.services;
 
 import com.dd.mlm.topn.persistence.dal.AccountRepository;
 import com.dd.mlm.topn.persistence.dal.LocaleRepository;
 import com.dd.mlm.topn.persistence.dal.ResourceRepository;
 import com.dd.mlm.topn.persistence.entities.AccountEntity;
 import com.dd.mlm.topn.persistence.entities.LocaleEntity;
-import com.dd.topn.model.LocaleDto;
-import com.dd.topn.model.ChangeLanguageDto;
+import hu.cherubits.wonderjam.model.LocaleDto;
+import hu.cherubits.wonderjam.model.ChangeLanguageDto;
 import java.util.List;
 import java.util.UUID;
 import java.util.logging.Logger;

@@ -1,13 +1,12 @@
-package com.dd.mlm.topn.auth.service;
+package hu.cherubits.wonderjam.security;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-import com.dd.mlm.topn.auth.AuthConfig;
-import com.dd.mlm.topn.auth.MailConfig;
-import com.dd.mlm.topn.persistence.config.DatabaseConfiguration;
+import hu.cherubits.wonderjam.persistence.config.DatabaseConfiguration;
+import hu.cherubits.wonderjam.security.service.UaaMailSender;
 import java.util.logging.Logger;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -37,10 +36,10 @@ public class VelocityEmailSenderIntegrationTest {
     private static final Logger LOG = Logger.getLogger(VelocityEmailSenderIntegrationTest.class.getName());
 
     @Autowired
-    private final UaaMailSender sender = null;
+    private UaaMailSender sender;
 
     @Autowired
-    private final SimpleMailMessage msg = null;
+    private SimpleMailMessage msg;
 
     @Test
     public void testSendForgottenPasswordEmail() {

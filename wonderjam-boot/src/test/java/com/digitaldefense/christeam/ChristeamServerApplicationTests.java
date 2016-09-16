@@ -1,6 +1,6 @@
 package com.digitaldefense.christeam;
 
-import com.dd.topn.ChristeamServerApplication;
+import hu.cherubits.wonderjam.Application;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 import org.junit.Assert;
@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 import org.springframework.web.context.WebApplicationContext;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = ChristeamServerApplication.class)
+@SpringApplicationConfiguration(classes = Application.class)
 @WebAppConfiguration
 public class ChristeamServerApplicationTests {
 

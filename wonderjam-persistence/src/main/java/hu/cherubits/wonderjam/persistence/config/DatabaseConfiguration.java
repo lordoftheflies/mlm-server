@@ -3,14 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.dd.mlm.topn.persistence.config;
+package hu.cherubits.wonderjam.persistence.config;
 
 import javax.sql.DataSource;
 import org.hibernate.dialect.PostgreSQL9Dialect;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -22,6 +25,14 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
  * @author lordoftheflies
  */
 @Configuration
+@EnableJpaRepositories(basePackages = {
+    "hu.cherubits.wonderjam.persistence.dal"
+})
+@EnableAutoConfiguration
+@ComponentScan(basePackages = {
+    "hu.cherubits.wonderjam.persistence.entities",
+    "hu.cherubits.wonderjam.persistence.dal"
+})
 public class DatabaseConfiguration {
 
     @Value("${db.host}")
@@ -57,11 +68,11 @@ public class DatabaseConfiguration {
 
         LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
         factory.setJpaVendorAdapter(vendorAdapter);
-        factory.setPackagesToScan("com.dd.mlm.topn.persistence.entities");
+        factory.setPackagesToScan("hu.cherubits.wonderjam.persistence.entities");
         factory.setDataSource(dataSource());
         factory.getJpaPropertyMap().put("hibernate.dialect", PostgreSQL9Dialect.class.getCanonicalName());
 //        factory.getJpaPropertyMap().put("spring.jpa.hibernate.ddl-auto", "create");
-        
+
         return factory;
     }
 

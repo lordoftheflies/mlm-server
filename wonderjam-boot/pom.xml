@@ -2,12 +2,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.digitaldefense</groupId>
-    <artifactId>topn-boot</artifactId>
-    <version>1.0.2-SNAPSHOT</version>
+    <groupId>hu.cherubits</groupId>
+    <artifactId>wonderjam-boot</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
     <packaging>war</packaging>
 
-    <name>topn-boot</name>
+    <name>Wonderjam Boot</name>
     <description>Standalone server application for Christeam project.</description>
 
 

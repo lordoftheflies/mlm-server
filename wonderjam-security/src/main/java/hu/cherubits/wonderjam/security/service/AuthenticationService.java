@@ -3,34 +3,31 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.dd.mlm.topn.auth.service;
+package hu.cherubits.wonderjam.security.service;
 
-import com.dd.mlm.topn.auth.model.PasswordResetDto;
-import com.dd.mlm.topn.auth.model.CredentialsDto;
-import com.dd.mlm.topn.auth.model.RegistrationDto;
-import com.dd.mlm.topn.auth.model.SessionDto;
-import com.dd.mlm.topn.exceptions.AccesDeniedException;
-import com.dd.mlm.topn.exceptions.AccountNotFoundException;
-import com.dd.mlm.topn.exceptions.CredentialsException;
-import com.dd.mlm.topn.exceptions.RegistrationCodeAlreadyUsedException;
-import com.dd.mlm.topn.persistence.dal.AccountRepository;
-import com.dd.mlm.topn.persistence.dal.MailBoxRepository;
-import com.dd.mlm.topn.persistence.dal.NetworkTreeRepository;
-import com.dd.mlm.topn.persistence.entities.AccountEntity;
-import com.dd.mlm.topn.persistence.entities.MailBoxEntity;
-import com.dd.mlm.topn.persistence.entities.NetworkNodeEntity;
-import com.dd.mlm.topn.persistence.entities.NetworkNodeType;
+import hu.cherubits.wonderjam.security.model.PasswordResetDto;
+import hu.cherubits.wonderjam.security.model.CredentialsDto;
+import hu.cherubits.wonderjam.security.model.RegistrationDto;
+import hu.cherubits.wonderjam.security.model.SessionDto;
+import hu.cherubits.wonderjam.exceptions.AccesDeniedException;
+import hu.cherubits.wonderjam.exceptions.CredentialsException;
+import hu.cherubits.wonderjam.exceptions.RegistrationCodeAlreadyUsedException;
+import hu.cherubits.wonderjam.persistence.dal.AccountRepository;
+import hu.cherubits.wonderjam.persistence.dal.MailBoxRepository;
+import hu.cherubits.wonderjam.persistence.dal.NetworkTreeRepository;
+import hu.cherubits.wonderjam.persistence.entities.AccountEntity;
+import hu.cherubits.wonderjam.persistence.entities.MailBoxEntity;
+import hu.cherubits.wonderjam.persistence.entities.NetworkNodeEntity;
+import hu.cherubits.wonderjam.persistence.entities.NetworkNodeType;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.apache.velocity.app.VelocityEngine;
+import javax.security.auth.login.AccountNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mail.MailSender;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -44,8 +41,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author lordoftheflies
  */
 @RestController
-@RequestMapping(
-        path = "/authentication")
+@RequestMapping(path = "/authentication")
 public class AuthenticationService {
 
     private static final Logger LOG = Logger.getLogger(AuthenticationService.class.getName());

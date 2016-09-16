@@ -2,13 +2,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.dd.mlm</groupId>
-    <artifactId>topn-service-network</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
+    <groupId>hu.cherubits</groupId>
+    <artifactId>wonderjam-membership</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>topn-service-network</name>
-    <description>Demo project for Spring Boot</description>
+    <name>Wonderjam Membership</name>
+    <description>Membership microservice.</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -34,19 +34,19 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>topn-common</artifactId>
-            <version>${project.version}</version>
+            <groupId>hu.cherubits</groupId>
+            <artifactId>wonderjam-common</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>topn-persistence</artifactId>
-            <version>${project.version}</version>
+            <groupId>hu.cherubits</groupId>
+            <artifactId>wonderjam-persistence</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>topn-service-auth</artifactId>
-            <version>${project.version}</version>
+            <groupId>hu.cherubits</groupId>
+            <artifactId>wonderjam-security</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
 	

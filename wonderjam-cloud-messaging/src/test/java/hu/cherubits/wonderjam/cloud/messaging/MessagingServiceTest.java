@@ -3,10 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.dd.topn.service.cloud.messaging;
+package hu.cherubits.wonderjam.cloud.messaging;
 
-import hu.cherubits.wonderjam.cloud.messaging.NotificationService;
-import hu.cherubits.wonderjam.cloud.messaging.FcmConfiguration;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.After;
@@ -15,9 +13,10 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 
 /**
  *
@@ -27,8 +26,12 @@ import org.springframework.test.context.web.WebAppConfiguration;
 @SpringApplicationConfiguration(classes = {
     FcmConfiguration.class
 })
-@WebAppConfiguration
+@PropertySource("classpath:test.properties")
+//@WebAppConfiguration
 public class MessagingServiceTest {
+    
+    @Autowired
+    NotificationService instance;
     
     public MessagingServiceTest() {
     }
@@ -56,7 +59,6 @@ public class MessagingServiceTest {
     public void testSend() {
         System.out.println("send");
         String text = "message";
-        NotificationService instance = new NotificationService();
         
         Map<String, String> props = new HashMap<>();
         props.put("article", "kajsdkasjdkjasd");

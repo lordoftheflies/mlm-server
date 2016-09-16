@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.dd.mlm.topn.persistence.entities;
+package hu.cherubits.wonderjam.persistence.entities;
 
-import com.dd.mlm.topn.common.ViewConstants;
+import hu.cherubits.wonderjam.common.ViewConstants;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 

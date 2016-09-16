@@ -3,21 +3,21 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.dd.mlm.topn.mailing.service;
+package hu.cherubits.wonderjam.mailing.service;
 
-import com.dd.mlm.topn.mailing.model.SharingDto;
-import com.dd.mlm.topn.mailing.model.NotificationDto;
-import com.dd.mlm.topn.mailing.model.SubscriptionDto;
-import com.dd.mlm.topn.persistence.dal.AccountRepository;
-import com.dd.mlm.topn.persistence.dal.ContentRepository;
-import com.dd.mlm.topn.persistence.dal.MailBoxRepository;
-import com.dd.mlm.topn.persistence.dal.MessageRepository;
-import com.dd.mlm.topn.persistence.dal.NetworkTreeRepository;
-import com.dd.mlm.topn.persistence.entities.AccountEntity;
-import com.dd.mlm.topn.persistence.entities.MailBoxEntity;
-import com.dd.mlm.topn.persistence.entities.MessageEntity;
-import com.dd.mlm.topn.persistence.entities.NetworkNodeEntity;
-import com.dd.topn.service.cloud.messaging.NotificationService;
+import hu.cherubits.wonderjam.mailing.model.SharingDto;
+import hu.cherubits.wonderjam.mailing.model.NotificationDto;
+import hu.cherubits.wonderjam.mailing.model.SubscriptionDto;
+import hu.cherubits.wonderjam.cloud.messaging.NotificationService;
+import hu.cherubits.wonderjam.persistence.dal.AccountRepository;
+import hu.cherubits.wonderjam.persistence.dal.ContentRepository;
+import hu.cherubits.wonderjam.persistence.dal.MailBoxRepository;
+import hu.cherubits.wonderjam.persistence.dal.MessageRepository;
+import hu.cherubits.wonderjam.persistence.dal.NetworkTreeRepository;
+import hu.cherubits.wonderjam.persistence.entities.AccountEntity;
+import hu.cherubits.wonderjam.persistence.entities.MailBoxEntity;
+import hu.cherubits.wonderjam.persistence.entities.MessageEntity;
+import hu.cherubits.wonderjam.persistence.entities.NetworkNodeEntity;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;

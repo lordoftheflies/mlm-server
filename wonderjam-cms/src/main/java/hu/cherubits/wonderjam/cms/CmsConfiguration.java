@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.dd.mlm.topn.cms;
+package hu.cherubits.wonderjam.cms;
 
-import com.dd.mlm.topn.persistence.config.DatabaseConfiguration;
+import hu.cherubits.wonderjam.persistence.config.DatabaseConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.dd.topn;
+package hu.cherubits.wonderjam;
 
 import com.fasterxml.classmate.TypeResolver;
 import java.lang.reflect.WildcardType;

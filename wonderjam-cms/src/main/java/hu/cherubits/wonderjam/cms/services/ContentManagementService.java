@@ -3,30 +3,30 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.dd.mlm.topn.cms.services;
+package hu.cherubits.wonderjam.cms.services;
 
-import com.dd.mlm.topn.cms.model.PageDto;
-import com.dd.mlm.topn.cms.model.PublisherDto;
-import com.dd.mlm.topn.cms.model.SectionDto;
-import com.dd.mlm.topn.common.ViewConstants;
-import com.dd.mlm.topn.exceptions.ContentNotFoundException;
-import com.dd.mlm.topn.persistence.dal.AccountRepository;
-import com.dd.mlm.topn.persistence.dal.ContainerContentRepository;
-import com.dd.mlm.topn.persistence.dal.ContentRepository;
-import com.dd.mlm.topn.persistence.dal.ImageContentRepository;
-import com.dd.mlm.topn.persistence.dal.LinkContentRepository;
-import com.dd.mlm.topn.persistence.dal.MailBoxRepository;
-import com.dd.mlm.topn.persistence.dal.MessageRepository;
-import com.dd.mlm.topn.persistence.dal.NetworkTreeRepository;
-import com.dd.mlm.topn.persistence.dal.TextContentRepository;
-import com.dd.mlm.topn.persistence.dal.VideoContentRepository;
-import com.dd.mlm.topn.persistence.entities.ContainerContentEntity;
-import com.dd.mlm.topn.persistence.entities.ContentEntity;
-import com.dd.mlm.topn.persistence.entities.ImageContentEntity;
-import com.dd.mlm.topn.persistence.entities.NetworkNodeEntity;
-import com.dd.mlm.topn.persistence.entities.ReferenceContentEntity;
-import com.dd.mlm.topn.persistence.entities.TextContentEntity;
-import com.dd.mlm.topn.persistence.entities.VideoContentEntity;
+import hu.cherubits.wonderjam.cms.model.PageDto;
+import hu.cherubits.wonderjam.cms.model.PublisherDto;
+import hu.cherubits.wonderjam.cms.model.SectionDto;
+import hu.cherubits.wonderjam.common.ViewConstants;
+import hu.cherubits.wonderjam.exceptions.ContentNotFoundException;
+import hu.cherubits.wonderjam.persistence.dal.AccountRepository;
+import hu.cherubits.wonderjam.persistence.dal.ContainerContentRepository;
+import hu.cherubits.wonderjam.persistence.dal.ContentRepository;
+import hu.cherubits.wonderjam.persistence.dal.ImageContentRepository;
+import hu.cherubits.wonderjam.persistence.dal.LinkContentRepository;
+import hu.cherubits.wonderjam.persistence.dal.MailBoxRepository;
+import hu.cherubits.wonderjam.persistence.dal.MessageRepository;
+import hu.cherubits.wonderjam.persistence.dal.NetworkTreeRepository;
+import hu.cherubits.wonderjam.persistence.dal.TextContentRepository;
+import hu.cherubits.wonderjam.persistence.dal.VideoContentRepository;
+import hu.cherubits.wonderjam.persistence.entities.ContainerContentEntity;
+import hu.cherubits.wonderjam.persistence.entities.ContentEntity;
+import hu.cherubits.wonderjam.persistence.entities.ImageContentEntity;
+import hu.cherubits.wonderjam.persistence.entities.NetworkNodeEntity;
+import hu.cherubits.wonderjam.persistence.entities.ReferenceContentEntity;
+import hu.cherubits.wonderjam.persistence.entities.TextContentEntity;
+import hu.cherubits.wonderjam.persistence.entities.VideoContentEntity;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

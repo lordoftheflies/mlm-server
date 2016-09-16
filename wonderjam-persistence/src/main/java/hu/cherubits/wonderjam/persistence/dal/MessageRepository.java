@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.dd.mlm.topn.persistence.dal;
+package hu.cherubits.wonderjam.persistence.dal;
 
-import com.dd.mlm.topn.persistence.entities.MessageEntity;
+import hu.cherubits.wonderjam.persistence.entities.MessageEntity;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.data.repository.CrudRepository;

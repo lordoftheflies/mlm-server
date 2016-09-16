@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.dd.mlm.topn.auth.model;
+package hu.cherubits.wonderjam.security.model;
 
 import java.util.UUID;
 

@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.dd.mlm.topn.network.model;
+package hu.cherubits.wonderjam.membership.model;
 
-import com.dd.mlm.topn.persistence.entities.NetworkNodeType;
+import hu.cherubits.wonderjam.persistence.entities.NetworkNodeType;
 import java.util.UUID;
 import javax.xml.bind.annotation.XmlRootElement;
 

@@ -1,7 +1,7 @@
-package com.dd.mlm.topn.mailing;
+package hu.cherubits.wonderjam.mailing;
 
-import com.dd.mlm.topn.persistence.config.DatabaseConfiguration;
-import com.dd.topn.service.cloud.messaging.FcmConfiguration;
+import hu.cherubits.wonderjam.cloud.messaging.FcmConfiguration;
+import hu.cherubits.wonderjam.persistence.config.DatabaseConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;

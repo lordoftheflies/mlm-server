@@ -3,20 +3,22 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.dd.mlm.topn.persistence.dal;
+package hu.cherubits.wonderjam.persistence.dal;
 
-import com.dd.mlm.topn.persistence.entities.ContainerContentEntity;
-import com.dd.mlm.topn.persistence.entities.ContentEntity;
+import hu.cherubits.wonderjam.persistence.entities.ContainerContentEntity;
+import hu.cherubits.wonderjam.persistence.entities.ContentEntity;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 /**
  *
  * @author lordoftheflies
  */
+@Repository
 public interface ContainerContentRepository extends PagingAndSortingRepository<ContainerContentEntity, UUID> {
 
     @Override

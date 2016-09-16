@@ -3,16 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.dd.topn.services;
+package hu.cherubits.wonderjam.services;
 
 import com.dd.mlm.topn.exceptions.AccountNotExistException;
 import com.dd.mlm.topn.persistence.dal.AccountRepository;
 import com.dd.mlm.topn.persistence.dal.NetworkTreeRepository;
 import com.dd.mlm.topn.persistence.entities.AccountEntity;
 import com.dd.mlm.topn.persistence.entities.NetworkNodeEntity;
-import com.dd.topn.model.NetworkDto;
+import hu.cherubits.wonderjam.model.NetworkDto;
 import com.dd.mlm.topn.network.model.ContactDto;
-import com.dd.topn.model.ChristeamDto;
+import hu.cherubits.wonderjam.model.ChristeamDto;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.dd.topn.model;
+package hu.cherubits.wonderjam.model;
 
 import com.dd.mlm.topn.network.model.ContactDto;
 
