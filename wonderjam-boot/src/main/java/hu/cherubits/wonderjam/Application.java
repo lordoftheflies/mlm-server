@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @SpringBootApplication
 @ComponentScan(basePackageClasses = {
@@ -42,8 +43,8 @@ import org.springframework.web.bind.annotation.RestController;
         produces = {
             MediaType.APPLICATION_JSON_VALUE
         })
-
 @EnableRedisHttpSession
+@EnableWebMvc
 public class Application extends SpringBootServletInitializer {
 
     @RequestMapping(path = "/login", method = RequestMethod.POST)
