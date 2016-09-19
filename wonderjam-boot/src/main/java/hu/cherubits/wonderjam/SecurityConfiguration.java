@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -39,8 +40,9 @@ import org.springframework.session.web.http.HttpSessionStrategy;
  * @author lordoftheflies
  */
 @Configuration
+@EnableAutoConfiguration
 @ComponentScan(basePackageClasses = DatabaseConfiguration.class)
-@EnableWebSecurity
+@EnableWebSecurity(debug = true)
 @EnableRedisHttpSession
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
@@ -60,6 +62,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .antMatcher("/**")
+                
                 .httpBasic().authenticationEntryPoint((HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) -> {
                     String requestedBy = request.getHeader(X_REQUESTED_BY_HEADER);
                     LOG.log(Level.INFO, "X-Requested-By: {0}", requestedBy);
@@ -73,6 +77,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         httpResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, authException.getMessage());
                     }
                 }).and()
+                
                 .authorizeRequests().antMatchers(
                         INDEX_FILE,
                         BOWER_COMPONENTS_DIRECTORY,
@@ -80,18 +85,22 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         IMAGES_DIRECTORY,
                         MANIFEST_FILE,
                         LOGIN_URL,
-                        TOKEN_URL,
+//                        TOKEN_URL,
                         BASE_URL,
                         SERVICE_WORKER,
                         WEBJARS,
                         SWAGGER_CONFIGURATION,
                         SWAGGER_RESOURCES,
                         SWAGGER_UI,
-                        SWAGGER_API).permitAll().anyRequest().authenticated().and()
-                .logout().permitAll().deleteCookies(REMEMBER_ME_TOKEN, XXSRFTOKEN2).and()
+                        SWAGGER_API).permitAll()
+                .anyRequest().authenticated().and()
+                
+                .logout().permitAll().logoutSuccessUrl(BASE_URL).logoutUrl(LOGOUT_URL).deleteCookies(REMEMBER_ME_TOKEN, XXSRFTOKEN2).and()
                 //                .and().formLogin().loginPage("/login-view").loginProcessingUrl(LOGIN_URL).usernameParameter("userName").passwordParameter("password").defaultSuccessUrl(BASE_URL)
+                
                 .rememberMe().rememberMeServices(rememberMeServices).and()
                 //                .rememberMeParameter(REMEMBER_ME_TOKEN).rememberMeServices(rememberMeServices).tokenValiditySeconds(3600)
+                
                 .csrf().csrfTokenRepository(csrfTokenRepository()).and()
                 .addFilterAfter(new CsrfHeaderFilter(), CsrfFilter.class);
     }
@@ -103,22 +112,22 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return repository;
     }
 
-    @Bean
-    public JedisConnectionFactory connectionFactory() {
-        return new JedisConnectionFactory();
-    }
-
-    @Bean
-    public HttpSessionStrategy httpSessionStrategy() {
-        return new HeaderHttpSessionStrategy();
-    }
+//    @Bean
+//    public JedisConnectionFactory connectionFactory() {
+//        return new JedisConnectionFactory();
+//    }
+//
+//    @Bean
+//    public HttpSessionStrategy httpSessionStrategy() {
+//        return new HeaderHttpSessionStrategy();
+//    }
 
     @Bean
     WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurerAdapter() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/backend")
+                registry.addMapping("/")
                         .allowedOrigins("*")
                         .allowedMethods("POST, GET, OPTIONS, DELETE ,PUT")
                         .allowedHeaders(AUTHORIZATION_HEADER, CONTENT_TYPE_HEADER, X_REQUESTED_WITH_HEADER, ACCEPT_HEADER, ORIGIN_HEADER,
@@ -142,8 +151,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private static final String SWAGGER_CONFIGURATION = "/configuration/**";
     private static final String SWAGGER_API = "/v2/**";
     private static final String BASE_URL = "/";
-    private static final String BACKEND_URL = "/backend/**";
+//    private static final String BACKEND_URL = "/backend/**";
     private static final String LOGIN_URL = "/login";
+    private static final String LOGOUT_URL = "/logout";
     private static final String TOKEN_URL = "/token";
     private static final String MANIFEST_FILE = "/manifest.json";
     private static final String INDEX_FILE = "/index.html";

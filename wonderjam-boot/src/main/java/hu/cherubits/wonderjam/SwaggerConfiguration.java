@@ -28,7 +28,10 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  */
 @Configuration
 @EnableSwagger2
-@ComponentScan("hu.cherubits.wonderjam.services")
+@ComponentScan(basePackages = {
+    "hu.cherubits.wonderjam",
+    "hu.cherubits.wonderjam.services"
+})
 public class SwaggerConfiguration {
 
     @Bean

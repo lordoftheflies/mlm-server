@@ -51,5 +51,4 @@ public class JpaUserDetailsService implements UserDetailsService {
             return result;
         }
     }
-
 }
