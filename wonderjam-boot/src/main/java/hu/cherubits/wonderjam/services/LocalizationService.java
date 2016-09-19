@@ -7,11 +7,11 @@ package hu.cherubits.wonderjam.services;
 
 import hu.cherubits.wonderjam.model.LocaleDto;
 import hu.cherubits.wonderjam.model.ChangeLanguageDto;
-import hu.cherubits.wonderjam.persistence.dal.AccountRepository;
-import hu.cherubits.wonderjam.persistence.dal.LocaleRepository;
-import hu.cherubits.wonderjam.persistence.dal.ResourceRepository;
-import hu.cherubits.wonderjam.persistence.entities.AccountEntity;
-import hu.cherubits.wonderjam.persistence.entities.LocaleEntity;
+import hu.cherubits.wonderjam.dal.AccountRepository;
+import hu.cherubits.wonderjam.dal.LocaleRepository;
+import hu.cherubits.wonderjam.dal.ResourceRepository;
+import hu.cherubits.wonderjam.entities.AccountEntity;
+import hu.cherubits.wonderjam.entities.LocaleEntity;
 import java.util.List;
 import java.util.UUID;
 import java.util.logging.Logger;

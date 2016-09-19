@@ -6,9 +6,9 @@
 package hu.cherubits.wonderjam;
 
 import hu.cherubits.wonderjam.ChristeamServerApplicationTests;
-import hu.cherubits.wonderjam.persistence.dal.LocaleRepository;
-import hu.cherubits.wonderjam.persistence.dal.ResourceRepository;
-import hu.cherubits.wonderjam.persistence.entities.LocaleEntity;
+import hu.cherubits.wonderjam.dal.LocaleRepository;
+import hu.cherubits.wonderjam.dal.ResourceRepository;
+import hu.cherubits.wonderjam.entities.LocaleEntity;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.FixMethodOrder;

@@ -1,11 +1,5 @@
 package hu.cherubits.wonderjam;
 
-import hu.cherubits.wonderjam.cloud.messaging.FcmConfiguration;
-import hu.cherubits.wonderjam.cms.CmsConfiguration;
-import hu.cherubits.wonderjam.mailing.MailingServiceConfig;
-import hu.cherubits.wonderjam.membership.NetworkServiceConfiguration;
-import hu.cherubits.wonderjam.security.AuthConfig;
-import hu.cherubits.wonderjam.security.MailConfig;
 import java.security.Principal;
 import java.util.Collections;
 import java.util.Map;
@@ -36,25 +30,30 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
     SecurityConfiguration.class
 })
 @RestController
-@RequestMapping(
-        consumes = {
-            MediaType.APPLICATION_JSON_VALUE
-        },
-        produces = {
-            MediaType.APPLICATION_JSON_VALUE
-        })
-@EnableRedisHttpSession
+@RequestMapping
 @EnableWebMvc
 public class Application extends SpringBootServletInitializer {
 
-    @RequestMapping(path = "/login", method = RequestMethod.POST)
+    @RequestMapping(path = "/login", method = RequestMethod.POST, consumes = {
+        MediaType.APPLICATION_JSON_VALUE,
+        MediaType.APPLICATION_FORM_URLENCODED_VALUE
+    },
+            produces = {
+                MediaType.APPLICATION_JSON_VALUE
+            })
     public Principal user(Principal user) {
         return user;
     }
 
-    @CrossOrigin(origins = "*", allowedHeaders = {"Access-Control-Allow-Origin"}, exposedHeaders = {"Access-Control-Allow-Origin"})
+//    @CrossOrigin(origins = "*", allowedHeaders = {"Access-Control-Allow-Origin"}, exposedHeaders = {"Access-Control-Allow-Origin"})
     @ResponseBody
-    @RequestMapping(path = "/token", method = RequestMethod.GET)
+    @RequestMapping(path = "/token", method = RequestMethod.GET,
+            consumes = {
+                MediaType.APPLICATION_JSON_VALUE
+            },
+            produces = {
+                MediaType.APPLICATION_JSON_VALUE
+            })
     public Map<String, String> token(HttpSession session) {
         return Collections.singletonMap("token", (session.getId() == null) ? "" : session.getId());
     }

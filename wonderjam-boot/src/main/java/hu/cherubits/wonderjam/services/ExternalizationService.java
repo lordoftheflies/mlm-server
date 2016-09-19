@@ -7,12 +7,12 @@ package hu.cherubits.wonderjam.services;
 
 import hu.cherubits.wonderjam.model.NetworkDto;
 import hu.cherubits.wonderjam.exceptions.AccountNotExistException;
-import hu.cherubits.wonderjam.membership.model.ContactDto;
+import hu.cherubits.wonderjam.model.ContactDto;
 import hu.cherubits.wonderjam.model.ChristeamDto;
-import hu.cherubits.wonderjam.persistence.dal.AccountRepository;
-import hu.cherubits.wonderjam.persistence.dal.NetworkTreeRepository;
-import hu.cherubits.wonderjam.persistence.entities.AccountEntity;
-import hu.cherubits.wonderjam.persistence.entities.NetworkNodeEntity;
+import hu.cherubits.wonderjam.dal.AccountRepository;
+import hu.cherubits.wonderjam.dal.NetworkTreeRepository;
+import hu.cherubits.wonderjam.entities.AccountEntity;
+import hu.cherubits.wonderjam.entities.NetworkNodeEntity;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;

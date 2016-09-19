@@ -5,7 +5,6 @@
  */
 package hu.cherubits.wonderjam.model;
 
-import hu.cherubits.wonderjam.membership.model.ContactDto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
