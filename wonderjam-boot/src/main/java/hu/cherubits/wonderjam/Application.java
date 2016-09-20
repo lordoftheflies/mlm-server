@@ -29,7 +29,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
     FcmConfiguration.class,
     MailingServiceConfig.class,
     NetworkServiceConfiguration.class,
-//    SecurityConfiguration.class
+    SecurityConfiguration.class
 })
 @RestController
 @RequestMapping
