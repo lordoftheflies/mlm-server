@@ -99,7 +99,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         SWAGGER_UI,
                         SWAGGER_API).permitAll()
                 .anyRequest().authenticated().and()
-                .logout().permitAll().logoutSuccessUrl(BASE_URL).logoutUrl(LOGOUT_URL).deleteCookies(REMEMBER_ME_TOKEN, XXSRFTOKEN2).and()
+                .logout().permitAll().logoutSuccessUrl(BASE_URL).logoutUrl(BACKEND_URL + LOGOUT_URL).deleteCookies(REMEMBER_ME_TOKEN, XXSRFTOKEN2).and()
                 //                .and().formLogin().loginPage("/login-view").loginProcessingUrl(LOGIN_URL).usernameParameter("userName").passwordParameter("password").defaultSuccessUrl(BASE_URL)
 
                 .rememberMe().rememberMeServices(rememberMeServices).and()
@@ -171,7 +171,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private static final String SWAGGER_CONFIGURATION = "/configuration/**";
     private static final String SWAGGER_API = "/v2/**";
     private static final String BASE_URL = "/";
-//    private static final String BACKEND_URL = "/backend/**";
+    private static final String BACKEND_URL = "/backend";
     private static final String LOGIN_URL = "/login";
     private static final String LOGOUT_URL = "/logout";
     private static final String TOKEN_URL = "/token";
