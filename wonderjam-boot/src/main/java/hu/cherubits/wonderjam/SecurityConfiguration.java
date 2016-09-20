@@ -12,18 +12,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.RememberMeServices;
-import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -31,9 +32,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.csrf.CsrfFilter;
+import org.springframework.security.web.session.HttpSessionEventPublisher;
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
-import org.springframework.session.web.http.HeaderHttpSessionStrategy;
-import org.springframework.session.web.http.HttpSessionStrategy;
+import org.springframework.session.web.http.CookieSerializer;
+import org.springframework.session.web.http.DefaultCookieSerializer;
 
 /**
  *
@@ -44,6 +48,7 @@ import org.springframework.session.web.http.HttpSessionStrategy;
 @ComponentScan(basePackageClasses = DatabaseConfiguration.class)
 @EnableWebSecurity(debug = true)
 @EnableRedisHttpSession
+@Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private static final Logger LOG = Logger.getLogger(SecurityConfiguration.class.getName());
@@ -52,7 +57,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private JpaUserDetailsService userDetailsService;
 
     @Autowired
-    private RememberMeServices rememberMeServices;
+    private TokenBasedRememberMeServices rememberMeServices;
 
     @Autowired
     public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {
@@ -62,9 +67,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS).maximumSessions(1).and().sessionFixation().migrateSession().and()
                 .antMatcher("/**")
-                
-                .httpBasic().authenticationEntryPoint((HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) -> {
+                .httpBasic()
+                .authenticationEntryPoint((HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) -> {
                     String requestedBy = request.getHeader(X_REQUESTED_BY_HEADER);
                     LOG.log(Level.INFO, "X-Requested-By: {0}", requestedBy);
                     if (requestedBy == null || requestedBy.isEmpty()) {
@@ -77,7 +83,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         httpResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, authException.getMessage());
                     }
                 }).and()
-                
                 .authorizeRequests().antMatchers(
                         INDEX_FILE,
                         BOWER_COMPONENTS_DIRECTORY,
@@ -85,7 +90,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         IMAGES_DIRECTORY,
                         MANIFEST_FILE,
                         LOGIN_URL,
-//                        TOKEN_URL,
+                        //                        TOKEN_URL,
                         BASE_URL,
                         SERVICE_WORKER,
                         WEBJARS,
@@ -94,17 +99,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         SWAGGER_UI,
                         SWAGGER_API).permitAll()
                 .anyRequest().authenticated().and()
-                
                 .logout().permitAll().logoutSuccessUrl(BASE_URL).logoutUrl(LOGOUT_URL).deleteCookies(REMEMBER_ME_TOKEN, XXSRFTOKEN2).and()
                 //                .and().formLogin().loginPage("/login-view").loginProcessingUrl(LOGIN_URL).usernameParameter("userName").passwordParameter("password").defaultSuccessUrl(BASE_URL)
-                
+
                 .rememberMe().rememberMeServices(rememberMeServices).and()
                 //                .rememberMeParameter(REMEMBER_ME_TOKEN).rememberMeServices(rememberMeServices).tokenValiditySeconds(3600)
-                
-                .csrf().csrfTokenRepository(csrfTokenRepository()).and()
+
+                .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                .and()
                 .addFilterAfter(new CsrfHeaderFilter(), CsrfFilter.class);
     }
-    private static final String REMEMBER_ME_TOKEN = "remember-me";
+    private static final String REMEMBER_ME_TOKEN = "REMEMBERME";
 
     CsrfTokenRepository csrfTokenRepository() {
         HttpSessionCsrfTokenRepository repository = new HttpSessionCsrfTokenRepository();
@@ -112,6 +117,23 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return repository;
     }
 
+    @Bean
+    public CookieSerializer cookieSerializer() {
+        DefaultCookieSerializer serializer = new DefaultCookieSerializer();
+        serializer.setCookieName("SESSION");
+        serializer.setCookiePath("/");
+        serializer.setDomainNamePattern("^.+?\\.(\\w+\\.[a-z]+)$");
+        return serializer;
+    }
+
+    @Bean
+    public HttpSessionEventPublisher httpSessionEventPublisher() {
+        return new HttpSessionEventPublisher();
+    }
+
+//    PersistentTokenRepository rememberMeTokenRepository() {
+//        return new ;
+//    }
 //    @Bean
 //    public JedisConnectionFactory connectionFactory() {
 //        return new JedisConnectionFactory();
@@ -121,7 +143,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 //    public HttpSessionStrategy httpSessionStrategy() {
 //        return new HeaderHttpSessionStrategy();
 //    }
-
     @Bean
     WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurerAdapter() {
@@ -139,9 +160,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         };
     }
 
-    @Autowired
     @Bean
-    TokenBasedRememberMeServices rememberMeServices(UserDetailsService userDetailsService) {
+    TokenBasedRememberMeServices rememberMeServices() {
         return new TokenBasedRememberMeServices(REMEMBER_ME_TOKEN, userDetailsService);
     }
 
