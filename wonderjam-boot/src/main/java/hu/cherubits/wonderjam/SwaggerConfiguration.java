@@ -40,18 +40,18 @@ public class SwaggerConfiguration {
                 .select()
                 .apis(RequestHandlerSelectors.any())
                 .paths(PathSelectors.any())
-                .build();
-//                .pathMapping(BACKEND_URL)
-//                .directModelSubstitute(
-//                        LocalDate.class,
-//                        String.class)
-//                .genericModelSubstitutes(ResponseEntity.class)
-//                .alternateTypeRules(
-//                        newRule(typeResolver.resolve(DeferredResult.class,
-//                                typeResolver.resolve(ResponseEntity.class, WildcardType.class)),
-//                                typeResolver.resolve(WildcardType.class)))
-//                .useDefaultResponseMessages(true)
-//                .enableUrlTemplating(false);
+                .build()
+                .pathMapping("/")
+                .directModelSubstitute(
+                        LocalDate.class,
+                        String.class)
+                .genericModelSubstitutes(ResponseEntity.class)
+                .alternateTypeRules(
+                        newRule(typeResolver.resolve(DeferredResult.class,
+                                typeResolver.resolve(ResponseEntity.class, WildcardType.class)),
+                                typeResolver.resolve(WildcardType.class)))
+                .useDefaultResponseMessages(true)
+                .enableUrlTemplating(false);
     }
     private static final String BACKEND_URL = "/backend";
 
