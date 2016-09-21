@@ -229,7 +229,7 @@ public class AddressBookService {
             LOG.log(Level.INFO, "\t- Mail-box: {0}", mbEntity.getId());
 
             if (!NetworkNodeType.GROUP.equals(accountRepository.findRoleById(accountEntity.getId()))) {
-                mailSender.sendRegistrationActivationEmail(parentAccountEntity.getName(), accountEntity.getUsername()Email(),
+                mailSender.sendRegistrationActivationEmail(parentAccountEntity.getName(), accountEntity.getEmail(),
                         accountEntity.getName() == null ? "Mr/Ms" : accountEntity.getName(),
                         applicationName,
                         organizationName,

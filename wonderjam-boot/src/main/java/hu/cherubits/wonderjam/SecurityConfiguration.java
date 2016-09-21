@@ -17,6 +17,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.RememberMeAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -24,8 +26,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
-import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
@@ -96,10 +96,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         SWAGGER_UI,
                         SWAGGER_API).permitAll()
                 .anyRequest().authenticated().and()
-                .logout().permitAll().logoutSuccessUrl(BASE_URL).logoutUrl(BACKEND_URL + LOGOUT_URL).deleteCookies(REMEMBER_ME_TOKEN, XXSRFTOKEN2).and()
+                .logout().permitAll().logoutSuccessUrl(BASE_URL).logoutUrl(LOGOUT_URL).deleteCookies(REMEMBER_ME_TOKEN, XXSRFTOKEN2).and()
                 //                .and().formLogin().loginPage("/login-view").loginProcessingUrl(LOGIN_URL).usernameParameter("userName").passwordParameter("password").defaultSuccessUrl(BASE_URL)
 
-                .rememberMe().rememberMeServices(rememberMeServices).and()
+                .rememberMe().key(REMEMBER_ME_KEY).rememberMeServices(rememberMeServices).and()
                 //                .rememberMeParameter(REMEMBER_ME_TOKEN).rememberMeServices(rememberMeServices).tokenValiditySeconds(3600)
 
 //                .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
@@ -107,8 +107,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 //                .and()
 //                .addFilterAfter(new CsrfHeaderFilter(), CsrfFilter.class);
     }
-    private static final String REMEMBER_ME_TOKEN = "REMEMBERME";
-
+    
     CsrfTokenRepository csrfTokenRepository() {
         HttpSessionCsrfTokenRepository repository = new HttpSessionCsrfTokenRepository();
         repository.setHeaderName(XXSRFTOKEN);
@@ -158,11 +157,27 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             }
         };
     }
+    
+//     @Bean()
+//    public AuthenticationProvider rememberMeAuthenticationProvider() {
+//        return new RememberMeAuthenticationProvider("KEY");
+//    }
 
     @Bean
     TokenBasedRememberMeServices rememberMeServices() {
-        return new TokenBasedRememberMeServices(REMEMBER_ME_TOKEN, userDetailsService);
+        BackendTokenBasedRememberMeServices tokenBasedRememberMeServices = new BackendTokenBasedRememberMeServices(REMEMBER_ME_KEY, userDetailsService);
+        tokenBasedRememberMeServices.setCookieName(REMEMBER_ME_TOKEN);
+        tokenBasedRememberMeServices.setParameter(REMEMBER_ME_TOKEN);
+        tokenBasedRememberMeServices.setTokenValiditySeconds(3600);
+        tokenBasedRememberMeServices.setAlwaysRemember(true);
+//        tokenBasedRememberMeServices.set;
+        return tokenBasedRememberMeServices;
     }
+    
+    private static final String REMEMBER_ME_KEY = "KEY";
+    private static final String REMEMBER_ME_TOKEN = "REMEMBERME";
+
+    
 
     private static final String WEBJARS = "/webjars/**";
     private static final String SWAGGER_UI = "/swagger-ui.html";
