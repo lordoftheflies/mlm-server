@@ -41,6 +41,7 @@ public class JpaUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("Account not found.");
         } else {
             SessionDto result = new SessionDto();
+            result.setId(accountEntity.getId());
             result.setAuthorities(new ArrayList<GrantedAuthority>(accountEntity.getAuthorities()));
             result.setUsername(accountEntity.getEmail());
             result.setPassword(accountEntity.getPassword());

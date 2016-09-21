@@ -17,27 +17,24 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.RememberMeAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.web.authentication.RememberMeServices;
+import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-
-import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
-import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 import org.springframework.session.web.http.CookieSerializer;
 import org.springframework.session.web.http.DefaultCookieSerializer;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 /**
  *
@@ -64,7 +61,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(userDetailsService);
     }
 
-    @Override
+//    @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS).maximumSessions(1).and().sessionFixation().migrateSession().and()
@@ -99,18 +96,18 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         SWAGGER_UI,
                         SWAGGER_API).permitAll()
                 .anyRequest().authenticated().and()
-                .logout().permitAll().logoutSuccessUrl(BASE_URL).logoutUrl(BACKEND_URL + LOGOUT_URL).deleteCookies(REMEMBER_ME_TOKEN, XXSRFTOKEN2).and()
+                .logout().permitAll().logoutSuccessUrl(BASE_URL).logoutUrl(LOGOUT_URL).deleteCookies(REMEMBER_ME_TOKEN, XXSRFTOKEN2).and()
                 //                .and().formLogin().loginPage("/login-view").loginProcessingUrl(LOGIN_URL).usernameParameter("userName").passwordParameter("password").defaultSuccessUrl(BASE_URL)
 
-                .rememberMe().rememberMeServices(rememberMeServices).and()
+                .rememberMe().key(REMEMBER_ME_KEY).rememberMeServices(rememberMeServices).and()
                 //                .rememberMeParameter(REMEMBER_ME_TOKEN).rememberMeServices(rememberMeServices).tokenValiditySeconds(3600)
 
-                .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-                .and()
-                .addFilterAfter(new CsrfHeaderFilter(), CsrfFilter.class);
+//                .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
+                .csrf().csrfTokenRepository(BackendCookieCsrfTokenRepository.withHttpOnlyFalse());
+//                .and()
+//                .addFilterAfter(new CsrfHeaderFilter(), CsrfFilter.class);
     }
-    private static final String REMEMBER_ME_TOKEN = "REMEMBERME";
-
+    
     CsrfTokenRepository csrfTokenRepository() {
         HttpSessionCsrfTokenRepository repository = new HttpSessionCsrfTokenRepository();
         repository.setHeaderName(XXSRFTOKEN);
@@ -122,6 +119,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         DefaultCookieSerializer serializer = new DefaultCookieSerializer();
         serializer.setCookieName("SESSION");
         serializer.setCookiePath("/");
+//        serializer.setUseHttpOnlyCookie(false);
         serializer.setDomainNamePattern("^.+?\\.(\\w+\\.[a-z]+)$");
         return serializer;
     }
@@ -152,18 +150,34 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         .allowedOrigins("*")
                         .allowedMethods("POST, GET, OPTIONS, DELETE ,PUT")
                         .allowedHeaders(AUTHORIZATION_HEADER, CONTENT_TYPE_HEADER, X_REQUESTED_WITH_HEADER, ACCEPT_HEADER, ORIGIN_HEADER,
-                                AC_REQUEST_METHOD_HEADER, AC_REQUEST_HEADERS_HEADER, AC_ALLOW_ORIGIN_HEADER, XXSRFTOKEN, XXSRFTOKEN2)
+                                AC_REQUEST_METHOD_HEADER, AC_REQUEST_HEADERS_HEADER, AC_ALLOW_ORIGIN_HEADER, AC_ALLOW_CREDENTIALS_HEADER, XXSRFTOKEN, XXSRFTOKEN2)
                         .exposedHeaders(AUTHORIZATION_HEADER, CONTENT_TYPE_HEADER, X_REQUESTED_WITH_HEADER, ACCEPT_HEADER, ORIGIN_HEADER,
                                 AC_REQUEST_METHOD_HEADER, AC_REQUEST_HEADERS_HEADER, AC_ALLOW_ORIGIN_HEADER, XXSRFTOKEN, XXSRFTOKEN2)
                         .allowCredentials(true).maxAge(3600);
             }
         };
     }
+    
+//     @Bean()
+//    public AuthenticationProvider rememberMeAuthenticationProvider() {
+//        return new RememberMeAuthenticationProvider("KEY");
+//    }
 
     @Bean
     TokenBasedRememberMeServices rememberMeServices() {
-        return new TokenBasedRememberMeServices(REMEMBER_ME_TOKEN, userDetailsService);
+        BackendTokenBasedRememberMeServices tokenBasedRememberMeServices = new BackendTokenBasedRememberMeServices(REMEMBER_ME_KEY, userDetailsService);
+        tokenBasedRememberMeServices.setCookieName(REMEMBER_ME_TOKEN);
+        tokenBasedRememberMeServices.setParameter(REMEMBER_ME_TOKEN);
+        tokenBasedRememberMeServices.setTokenValiditySeconds(3600);
+        tokenBasedRememberMeServices.setAlwaysRemember(true);
+//        tokenBasedRememberMeServices.set;
+        return tokenBasedRememberMeServices;
     }
+    
+    private static final String REMEMBER_ME_KEY = "KEY";
+    private static final String REMEMBER_ME_TOKEN = "REMEMBERME";
+
+    
 
     private static final String WEBJARS = "/webjars/**";
     private static final String SWAGGER_UI = "/swagger-ui.html";

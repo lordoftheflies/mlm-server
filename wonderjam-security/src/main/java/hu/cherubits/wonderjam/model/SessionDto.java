@@ -5,9 +5,13 @@
  */
 package hu.cherubits.wonderjam.model;
 
+import hu.cherubits.wonderjam.entities.AccountEntity;
 import hu.cherubits.wonderjam.entities.NetworkNodeType;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
+import org.hibernate.mapping.Collection;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -20,7 +24,12 @@ public class SessionDto implements Serializable, UserDetails {
     public SessionDto() {
     }
 
-    public SessionDto(UserDetails user) {
+    public SessionDto(AccountEntity user) {
+        this.role = new ArrayList<>(user.getAuthorities()).get(0).getAuthority();
+        this.id = user.getId();
+        this.displayName = user.getName();
+        this.username = user.getEmail();
+        this.preferredLanguage = user.getPreferredLanguage();
     }
 
     public SessionDto(NetworkNodeType nodeType, int unused, String token, String userName, String preferredLanguage) {
@@ -29,7 +38,17 @@ public class SessionDto implements Serializable, UserDetails {
         this.displayName = userName;
         this.preferredLanguage = preferredLanguage;
     }
+    
+    private UUID id;
 
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+    
     private String preferredLanguage;
 
     public String getPreferredLanguage() {
