@@ -30,7 +30,7 @@ import javax.persistence.OneToOne;
 @NamedQueries({
     @NamedQuery(name = "NetworkNodeEntity.findContactsOfRootNodes", query = "SELECT n.contact FROM NetworkNodeEntity n WHERE n.parent IS NULL AND n.active = TRUE"),
     @NamedQuery(name = "NetworkNodeEntity.findContactsOfChildNodes", query = "SELECT n.contact FROM NetworkNodeEntity n WHERE n.parent.contact.id = :accountId AND n.active = TRUE"),
-    @NamedQuery(name = "NetworkNodeEntity.findByAccount", query = "SELECT n FROM NetóworkNodeEntity n WHERE n.contact.id = :accountId"),
+    @NamedQuery(name = "NetworkNodeEntity.findByAccount", query = "SELECT n FROM NetworkNodeEntity n WHERE n.contact.id = :accountId"),
     @NamedQuery(name = "NetworkNodeEntity.findChildrenNodes", query = "SELECT n FROM NetworkNodeEntity n WHERE n.parent.id = :nodeId AND n.active = TRUE"),
     @NamedQuery(name = "NetworkNodeEntity.isRoot", query = "SELECT CASE WHEN (COUNT(n) > 0) THEN TRUE ELSE FALSE END FROM NetworkNodeEntity n WHERE n.parent IS NULL AND n.contact.id = :accountId"),
     @NamedQuery(name = "NetworkNodeEntity.isRootNode", query = "SELECT CASE WHEN (COUNT(n) > 0) THEN TRUE ELSE FALSE END  FROM NetworkNodeEntity n WHERE n.parent.id = :nodeId"),
