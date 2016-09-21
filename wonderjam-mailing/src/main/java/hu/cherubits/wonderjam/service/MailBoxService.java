@@ -182,7 +182,7 @@ public class MailBoxService {
                             LOG.log(Level.WARNING, "Content not added.", ex);
                         }
                     }
-                    message.setSender(sender);
+                        message.setSender(sender);
                     message.setMailBox(recipientMalboxEntity);
                     MessageEntity newMessage = messageRepository.save(message);
                     LOG.log(Level.INFO, "Add message[{0}] to inbox of recipient[{1}]", new Object[]{
