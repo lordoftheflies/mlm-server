@@ -87,16 +87,18 @@ public class MailBoxService {
         UUID id = UUID.fromString(accountId);
         LOG.log(Level.INFO, "Read outbox of recipient[{0}] ...", id);
         return messageRepository.outboxByRecipient(id).stream()
-                .map((MessageEntity e) -> new NotificationDto(
-                        e.getId().toString(),
-                        accountId,
-                        accountRepository.findOne(id).getName(),
-                        e.getMailBox().getOwner().getContact().getName(),
-                        e.getTs(),
-                        e.getText(),
-                        (e.getContent() != null) ? e.getContent().getTitle() : null,
-                        (e.getContent() != null) ? e.getContent().getId().toString() : null,
-                        e.getText()))
+                .map((MessageEntity e) -> {
+                    return new NotificationDto(
+                            e.getId().toString(),
+                            accountId,
+                            accountRepository.findOne(id).getName(),
+                            e.getMailBox().getOwner().getContact().getName(),
+                            e.getTs(),
+                            e.getText(),
+                            (e.getContent() != null) ? e.getContent().getTitle() : null,
+                            (e.getContent() != null) ? e.getContent().getId().toString() : null,
+                            e.getText());
+                })
                 .collect(Collectors.toList());
     }
 
@@ -127,11 +129,11 @@ public class MailBoxService {
             if (model.getAccountId() != null) {
                 account = accountRepository.findOne(model.getAccountId());
             } else if (model.getEmail() != null) {
-                account = accountRepository.findByEmail(model.getEmail());    
+                account = accountRepository.findByEmail(model.getEmail());
             } else {
                 account = new AccountEntity();
             }
-            
+
             String oldSubscriptionId = account.getSubscriptionId();
             account.setSubscriptionId(model.getSubscriptionId());
             accountRepository.save(account);
@@ -171,7 +173,7 @@ public class MailBoxService {
                     message.setNotified(false);
                     message.setText(model.getMessage());
                     message.setTs(new Date());
-                    
+
                     if (model.getContentId() != null) {
                         try {
 
