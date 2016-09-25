@@ -11,7 +11,7 @@ import hu.cherubits.wonderjam.common.ContentType;
  *
  * @author lordoftheflies
  */
-public class SectionDto {
+public class SectionDto extends ContentDto {
 
 
     public SectionDto() {
@@ -40,16 +40,6 @@ public class SectionDto {
 
     public void setContentType(ContentType contentType) {
         this.contentType = contentType;
-    }
-
-    private String title;
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     private String name;

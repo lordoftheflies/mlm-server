@@ -43,7 +43,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @Configuration
 @EnableAutoConfiguration
 @ComponentScan(basePackageClasses = DatabaseConfiguration.class)
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity(debug = false)
 @EnableRedisHttpSession
 @Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {

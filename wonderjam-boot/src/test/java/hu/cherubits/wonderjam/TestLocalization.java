@@ -21,7 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author lordoftheflies
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class TestLocalization  extends ChristeamServerApplicationTests{
+public class TestLocalization  extends ChristeamServerApplicationTests {
 
     @Autowired
     private LocaleRepository localeDao;

@@ -34,20 +34,20 @@ public interface ContainerContentRepository extends PagingAndSortingRepository<C
 //    
 //    public List<ContentEntity> findByChildren(@Param("childId") UUID childId);
     
-    public List<ContentEntity> findRoots();
+    public List<ContainerContentEntity> findRoots();
     
-    public List<ContentEntity> findPublicRoots();
+    public List<ContainerContentEntity> findPublicRoots();
 
-    public List<ContentEntity> findPublishedRoots();
+    public List<ContainerContentEntity> findPublishedRoots();
 
-    public List<ContentEntity> findDraftRoots(@Param("accountId") UUID accountId);
+    public List<ContainerContentEntity> findDraftRoots(@Param("accountId") UUID accountId);
     
     //
 //    public List<ContainerContentEntity> findByParent(@Param("parentId") UUID parentId);
 //    
-    public List<ContentEntity> findPublicByParent(@Param("parentId") UUID parentId);
+    public List<ContainerContentEntity> findPublicByParent(@Param("parentId") UUID parentId);
 //
-    public List<ContentEntity> findPublishedByParent(@Param("parentId") UUID parentId);
+    public List<ContainerContentEntity> findPublishedByParent(@Param("parentId") UUID parentId);
 //
-    public List<ContentEntity> findDraftByParent(@Param("parentId") UUID parentId, @Param("accountId") UUID accountId);
+    public List<ContainerContentEntity> findDraftByParent(@Param("parentId") UUID parentId, @Param("accountId") UUID accountId);
 }

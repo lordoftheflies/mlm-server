@@ -16,9 +16,14 @@ import java.util.UUID;
  *
  * @author lordoftheflies
  */
-public class PageDto {
+public class PageDto extends ContentDto {
 
     public PageDto() {
+    }
+    
+    public PageDto(UUID id, String title) {
+        this.id = id;
+        this.title = title;
     }
 
     public PageDto(String title) {
@@ -28,7 +33,7 @@ public class PageDto {
     public PageDto(UUID id, String title, Collection<SectionDto> sections) {
         this.title = title;
         this.id = id;
-        this.sections = new ArrayList<>(sections);
+        this.sections = new ArrayList<SectionDto>(sections);
     }
 
     public PageDto(UUID id, String title, SectionDto... sections) {
@@ -37,15 +42,7 @@ public class PageDto {
         this.sections = Arrays.asList(sections);
     }
 
-    private String title;
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
+    
 
     private boolean draft;
 
@@ -57,23 +54,15 @@ public class PageDto {
         this.draft = draft;
     }
 
-    private UUID id;
+    
 
-    public UUID getId() {
-        return id;
-    }
+    private List<? extends ContentDto> sections = new ArrayList<>();
 
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    private List<SectionDto> sections = new ArrayList<>();
-
-    public List<SectionDto> getSections() {
+    public List<? extends ContentDto> getSections() {
         return sections;
     }
 
-    public void setSections(List<SectionDto> sections) {
+    public void setSections(List<? extends ContentDto> sections) {
         this.sections = sections;
     }
     

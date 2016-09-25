@@ -27,15 +27,16 @@ import javax.persistence.OneToMany;
 @NamedQueries({
 //    @NamedQuery(name = "ContainerContentEntity.findByParent", query = "SELECT c FROM ContentEntity c WHERE c.parent.id = :parentId"),
 //    @NamedQuery(name = "ContainerContentEntity.findRoots", query = "SELECT c FROM ContentEntity c WHERE c.parent IS NULL"),
-    @NamedQuery(name = "ContainerContentEntity.findByParent", query = "SELECT c FROM ContentEntity c WHERE c.parent.id = :parentId ORDER BY c.title"),
-    @NamedQuery(name = "ContainerContentEntity.findDraftByParent", query = "SELECT c FROM ContentEntity c WHERE c.parent.id = :parentId AND c.parent.node.contact.id = :accountId ORDER BY c.title"),
-    @NamedQuery(name = "ContainerContentEntity.findPublicByParent", query = "SELECT c FROM ContentEntity c WHERE c.parent.id = :parentId AND c.parent.draft = FALSE ORDER BY c.title"),
-    @NamedQuery(name = "ContainerContentEntity.findPublishedByParent", query = "SELECT c FROM ContentEntity c WHERE c.parent.id = :parentId ORDER BY c.title"),
+    @NamedQuery(name = "ContainerContentEntity.findByParent", query = "SELECT c FROM ContainerContentEntity c WHERE c.parent.id = :parentId ORDER BY c.title"),
+    @NamedQuery(name = "ContainerContentEntity.findDraftByParent", query = "SELECT c FROM ContainerContentEntity c WHERE c.parent.id = :parentId AND c.node.contact.id = :accountId ORDER BY c.title"),
+    @NamedQuery(name = "ContainerContentEntity.findPublicByParent", query = "SELECT c FROM ContainerContentEntity c WHERE c.parent.id = :parentId AND c.publicIndicator = TRUE ORDER BY c.title"),
+    @NamedQuery(name = "ContainerContentEntity.findPublishedByParent", query = "SELECT c FROM ContainerContentEntity c WHERE c.parent.id = :parentId AND c.publicIndicator = FALSE ORDER BY c.title"),
 
-    @NamedQuery(name = "ContainerContentEntity.findRoots", query = "SELECT c FROM ContentEntity c WHERE c.parent IS NULL"),
-    @NamedQuery(name = "ContainerContentEntity.findDraftRoots", query = "SELECT c FROM ContentEntity c WHERE c.parent IS NULL AND c.parent.node.contact.id = :accountId"),
-    @NamedQuery(name = "ContainerContentEntity.findPublicRoots", query = "SELECT c FROM ContentEntity c WHERE c.parent IS NULL AND c.parent.draft = FALSE"),
-    @NamedQuery(name = "ContainerContentEntity.findPublishedRoots", query = "SELECT c FROM ContentEntity c WHERE c.parent IS NULL"),})
+    @NamedQuery(name = "ContainerContentEntity.findRoots", query = "SELECT c FROM ContainerContentEntity c WHERE c.parent IS NULL"),
+    @NamedQuery(name = "ContainerContentEntity.findDraftRoots", query = "SELECT c FROM ContainerContentEntity c WHERE c.parent IS NULL AND c.node.contact.id = :accountId ORDER BY c.title"),
+    @NamedQuery(name = "ContainerContentEntity.findPublicRoots", query = "SELECT c FROM ContainerContentEntity c WHERE c.parent IS NULL AND c.publicIndicator = TRUE ORDER BY c.title"),
+    @NamedQuery(name = "ContainerContentEntity.findPublishedRoots", query = "SELECT c FROM ContainerContentEntity c WHERE c.parent IS NULL AND c.publicIndicator = FALSE ORDER BY c.title")
+})
 public class ContainerContentEntity extends UniqueEntity {
 
     public static final String RESOURCE_TYPE = ViewConstants.CONTENT_MANAGEMENT_WIDGET_CONTAINER;
