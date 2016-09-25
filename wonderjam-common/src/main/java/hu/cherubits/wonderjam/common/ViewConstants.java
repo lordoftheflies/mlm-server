@@ -10,9 +10,9 @@ package hu.cherubits.wonderjam.common;
  * @author lordoftheflies
  */
 public class ViewConstants {
-    public static final String CONTENT_MANAGEMENT_WIDGET_VIDEO = "plutonium-cm-editor-video";
-    public static final String CONTENT_MANAGEMENT_WIDGET_CONTAINER = "plutonium-cm-section";
-    public static final String CONTENT_MANAGEMENT_WIDGET_TEXT = "plutonium-cm-editor-text";
-    public static final String CONTENT_MANAGEMENT_WIDGET_LINK = "plutonium-cm-editor-link";
-    public static final String CONTENT_MANAGEMENT_WIDGET_IMAGE = "plutonium-cm-editor-image";
+    public static final String CONTENT_MANAGEMENT_WIDGET_VIDEO = "video";
+    public static final String CONTENT_MANAGEMENT_WIDGET_CONTAINER = "container";
+    public static final String CONTENT_MANAGEMENT_WIDGET_TEXT = "text";
+    public static final String CONTENT_MANAGEMENT_WIDGET_LINK = "link";
+    public static final String CONTENT_MANAGEMENT_WIDGET_IMAGE = "image";
 }

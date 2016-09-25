@@ -39,7 +39,9 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -232,10 +234,10 @@ public class ContentManagementService {
         } else {
 
             UUID pageUuid = UUID.fromString(pageId);
-            if (!contentRepository.exists(pageUuid)) {
+            if (!contentContainerRepository.exists(pageUuid)) {
                 throw new ContentNotFoundException();
             } else {
-                ContentEntity container = contentRepository.findOne(UUID.fromString(pageId));
+                ContainerContentEntity container = contentContainerRepository.findOne(UUID.fromString(pageId));
                 dto.setTitle(container.getTitle());
                 dto.setId(container.getId());
             }
@@ -255,7 +257,7 @@ public class ContentManagementService {
                             entity.getId(),
                             entity.getTitle()))
                     .collect(Collectors.toList()));
-        } else if (!contentRepository.exists(UUID.fromString(pageId))) {
+        } else if (!contentContainerRepository.exists(UUID.fromString(pageId))) {
             throw new ContentNotFoundException();
         } else {
             ContainerContentEntity container = contentContainerRepository.findOne(UUID.fromString(pageId));
@@ -283,6 +285,37 @@ public class ContentManagementService {
         }
     }
 
+    @RequestMapping(path = "/article", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE}, method = RequestMethod.GET)
+    public ResponseEntity articles(@RequestParam(value = "pageId", defaultValue = "ROOT") String pageId) throws ContentNotFoundException {
+
+        PageDto dto = new PageDto();
+
+        ContainerContentEntity container = contentContainerRepository.findOne(UUID.fromString(pageId));
+        dto.setId(container.getId());
+        dto.setContentType(container.getContentType());
+        if (container.getContentType().equals(ContentType.EMBEDDED)) {
+            // Redirect to upload
+        } else {
+            dto.setTitle(container.getTitle());
+            dto.setId(container.getId());
+            dto.setSections(contentRepository
+                    .findByParent(UUID.fromString(pageId))
+                    .stream()
+                    .map((ContentEntity entity) -> new SectionDto(
+                            entity.getId().toString(),
+                            null,
+                            entity.getTitle(),
+                            entity.getResourceType(),
+                            entity.getContent(),
+                            entity.getJustification(),
+                            entity.getFontSize(),
+                            entity.getWidth(),
+                            entity.getHeight()))
+                    .collect(Collectors.toList()));
+        }
+        return new ResponseEntity(dto, HttpStatus.OK);
+    }
+
     private void ownArticles(UUID accountId, String pageId, PageDto dto) throws ContentNotFoundException {
         if (ROOT_PSEUDO_ID.equals(pageId)) {
             dto.setContentType(ContentType.LINKED);
@@ -293,7 +326,7 @@ public class ContentManagementService {
                             entity.getId(),
                             entity.getTitle()))
                     .collect(Collectors.toList()));
-        } else if (!contentRepository.exists(UUID.fromString(pageId))) {
+        } else if (!contentContainerRepository.exists(UUID.fromString(pageId))) {
             throw new ContentNotFoundException();
         } else {
             ContainerContentEntity container = contentContainerRepository.findOne(UUID.fromString(pageId));
@@ -333,7 +366,7 @@ public class ContentManagementService {
                             entity.getId(),
                             entity.getTitle()))
                     .collect(Collectors.toList()));
-        } else if (!contentRepository.exists(UUID.fromString(pageId))) {
+        } else if (!contentContainerRepository.exists(UUID.fromString(pageId))) {
             throw new ContentNotFoundException();
         } else {
             ContainerContentEntity container = contentContainerRepository.findOne(UUID.fromString(pageId));
@@ -402,7 +435,7 @@ public class ContentManagementService {
         if (ROOT_PSEUDO_ID.equals(pageId)) {
             dto.setTitle(ROOT_PLACEHOLDER);
             dto.setSections(Arrays.asList(new PageDto(null, "ROOT")));
-        } else if (!contentRepository.exists(UUID.fromString(pageId))) {
+        } else if (!containerContentRepository.exists(UUID.fromString(pageId))) {
             throw new ContentNotFoundException();
         } else {
             ContentEntity item = contentRepository.findOne(UUID.fromString(pageId));
@@ -420,10 +453,10 @@ public class ContentManagementService {
                         item.getHeight()));
                 item = contentRepository.findByChild(item.getId());
             }
-            
+
             sections.add(new SectionDto("ROOT", ContentType.LINKED, ROOT_PLACEHOLDER, null, "ROOT", null, 0, 0, 0));
             dto.setSections(sections);
-            
+
             Collections.reverse(dto.getSections());
         }
         return dto;
@@ -456,7 +489,7 @@ public class ContentManagementService {
                         ContentEntity ce = null;
                         UUID sectionId = null;
                         try {
-                            
+
                             sectionId = s.getId();
                             LOG.log(Level.INFO, "Section id presented, modify {0} section", s.getType());
                             ContentEntity sectionEntity = contentRepository.findOne(sectionId);
@@ -467,20 +500,20 @@ public class ContentManagementService {
                         } catch (IllegalArgumentException parseEx) {
                             LOG.log(Level.INFO, "Section id not presented, create {0} section", s.getType());
                             switch (s.getType()) {
-                                case "video":
+//                                case "video":
                                 case ViewConstants.CONTENT_MANAGEMENT_WIDGET_VIDEO:
 
                                     ce = factory.createVideo(s, container, sectionId);
                                     break;
-                                case "image":
+//                                case "image":
                                 case ViewConstants.CONTENT_MANAGEMENT_WIDGET_IMAGE:
                                     ce = factory.createImage(s, container, sectionId);
                                     break;
-                                case "link":
+//                                case "link":
                                 case ViewConstants.CONTENT_MANAGEMENT_WIDGET_LINK:
                                     ce = factory.createReference(s, container, sectionId);
                                     break;
-                                case "text":
+//                                case "text":
                                 case ViewConstants.CONTENT_MANAGEMENT_WIDGET_TEXT:
                                 default:
                                     ce = factory.createText(s, container, sectionId);
@@ -571,5 +604,6 @@ public class ContentManagementService {
 
     private static final String ROOT_PLACEHOLDER = "Root";
 
-    private static final Logger LOG = Logger.getLogger(ContentManagementService.class.getName());
+    private static final Logger LOG = Logger.getLogger(ContentManagementService.class
+            .getName());
 }

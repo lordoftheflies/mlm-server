@@ -260,6 +260,29 @@ public class TopFlavonContentTest extends ChristeamServerApplicationTests {
         flavonActiveImage0.setParent(flavonActiveContainer);
         flavonActiveImage0.setWidth(300);
         flavonActiveImage0 = contentRepository.save(flavonActiveImage0);
+        
+        ContainerContentEntity flavonEndActiveContainer = new ContainerContentEntity();
+        flavonEndActiveContainer.setContentType(ContentType.ASSEMBLED);
+        flavonEndActiveContainer.setDraft(false);
+        flavonEndActiveContainer.setNode(heglasNode);
+        flavonEndActiveContainer.setPublicIndicator(true);
+        flavonEndActiveContainer.setTitle("FLAVON ACTIVE (EN)");
+        flavonEndActiveContainer = containerContentRepository.save(flavonEndActiveContainer);
+
+        TextContentEntity flavonEndActiveParagraph0 = new TextContentEntity();
+        flavonEndActiveParagraph0.setContent("If we want to stay on top, to meet the expectations and face the challenges of the 21st century, to keep up with the accelerated pace of the world, we need to live a conscious and active life. This challenge affects all of us.");
+        flavonEndActiveParagraph0.setFontSize(12);
+        flavonEndActiveParagraph0.setOrderIndex(1);
+        flavonEndActiveParagraph0.setParent(flavonEndActiveContainer);
+        flavonEndActiveParagraph0 = contentRepository.save(flavonEndActiveParagraph0);
+
+        ImageContentEntity flavonEndActiveImage0 = new ImageContentEntity();
+        flavonEndActiveImage0.setContent("/data/flavon_active.png");
+        flavonEndActiveImage0.setHeight(300);
+        flavonEndActiveImage0.setOrderIndex(2);
+        flavonEndActiveImage0.setParent(flavonEndActiveContainer);
+        flavonEndActiveImage0.setWidth(300);
+        flavonEndActiveImage0 = contentRepository.save(flavonEndActiveImage0);
     }
 
 }

@@ -33,7 +33,7 @@ public interface ContentRepository extends PagingAndSortingRepository<ContentEnt
 
     public ContentEntity findByChild(@Param("childId") UUID childId);
 
-    public List<ContentEntity> findByParent(UUID fromString);
+    public List<ContentEntity> findByParent(@Param("parentId") UUID fromString);
 
     
 }
