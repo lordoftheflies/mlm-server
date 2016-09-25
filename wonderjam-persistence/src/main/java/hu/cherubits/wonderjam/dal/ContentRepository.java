@@ -29,21 +29,9 @@ public interface ContentRepository extends PagingAndSortingRepository<ContentEnt
     @Override
     public List<ContentEntity> findAll();
 
-    public List<ContentEntity> findByParent(@Param("parentId") UUID parentId);
-    public List<ContentEntity> findPublicByParent(@Param("parentId") UUID parentId);
-
-    public List<ContentEntity> findPublishedByParent(@Param("parentId") UUID parentId);
-
-    public List<ContentEntity> findDraftByParent(@Param("parentId") UUID parentId, @Param("accountId") UUID accountId);
-//    
+    
 
     public ContentEntity findByChild(@Param("childId") UUID childId);
 
-    public List<ContentEntity> findRoots();
     
-    public List<ContentEntity> findPublicRoots();
-
-    public List<ContentEntity> findPublishedRoots();
-
-    public List<ContentEntity> findDraftRoots(@Param("accountId") UUID accountId);
 }

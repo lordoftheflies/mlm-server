@@ -62,6 +62,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
 //    @Override
+    @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS).maximumSessions(1).and().sessionFixation().migrateSession().and()
@@ -96,18 +97,19 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         SWAGGER_UI,
                         SWAGGER_API).permitAll()
                 .anyRequest().authenticated().and()
-                .logout().permitAll().logoutSuccessUrl(BASE_URL).logoutUrl(LOGOUT_URL).deleteCookies(REMEMBER_ME_TOKEN, XXSRFTOKEN2).and()
-                //                .and().formLogin().loginPage("/login-view").loginProcessingUrl(LOGIN_URL).usernameParameter("userName").passwordParameter("password").defaultSuccessUrl(BASE_URL)
-
-                .rememberMe().key(REMEMBER_ME_KEY).rememberMeServices(rememberMeServices).and()
+                .logout().permitAll().logoutSuccessUrl(BASE_URL).logoutUrl(LOGOUT_URL).deleteCookies(REMEMBER_ME_TOKEN, XXSRFTOKEN2)
+                .and().formLogin().loginPage("http://localhost:8080/#/login-view").loginProcessingUrl("http://localhost:8080/backend/login").usernameParameter("userName").passwordParameter("password").defaultSuccessUrl("http://localhost:8080/")
+                .and().rememberMe().key(REMEMBER_ME_KEY).rememberMeServices(rememberMeServices)
+                //        .and()
                 //                .rememberMeParameter(REMEMBER_ME_TOKEN).rememberMeServices(rememberMeServices).tokenValiditySeconds(3600)
 
-//                .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
-                .csrf().csrfTokenRepository(BackendCookieCsrfTokenRepository.withHttpOnlyFalse());
+                //                .and().csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
+                .and().csrf().disable();
+//                .and().csrf().csrfTokenRepository(BackendCookieCsrfTokenRepository.withHttpOnlyFalse());
 //                .and()
 //                .addFilterAfter(new CsrfHeaderFilter(), CsrfFilter.class);
     }
-    
+
     CsrfTokenRepository csrfTokenRepository() {
         HttpSessionCsrfTokenRepository repository = new HttpSessionCsrfTokenRepository();
         repository.setHeaderName(XXSRFTOKEN);
@@ -157,12 +159,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             }
         };
     }
-    
+
 //     @Bean()
 //    public AuthenticationProvider rememberMeAuthenticationProvider() {
 //        return new RememberMeAuthenticationProvider("KEY");
 //    }
-
     @Bean
     TokenBasedRememberMeServices rememberMeServices() {
         BackendTokenBasedRememberMeServices tokenBasedRememberMeServices = new BackendTokenBasedRememberMeServices(REMEMBER_ME_KEY, userDetailsService);
@@ -173,11 +174,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 //        tokenBasedRememberMeServices.set;
         return tokenBasedRememberMeServices;
     }
-    
+
     private static final String REMEMBER_ME_KEY = "KEY";
     private static final String REMEMBER_ME_TOKEN = "REMEMBERME";
-
-    
 
     private static final String WEBJARS = "/webjars/**";
     private static final String SWAGGER_UI = "/swagger-ui.html";

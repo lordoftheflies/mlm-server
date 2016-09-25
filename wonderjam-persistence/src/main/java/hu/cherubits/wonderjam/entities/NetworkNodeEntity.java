@@ -141,13 +141,13 @@ public class NetworkNodeEntity implements Serializable {
     }
 
     @OneToMany(mappedBy = "node")
-    private List<ContentEntity> contents;
+    private List<ContainerContentEntity> contents;
 
-    public List<ContentEntity> getContents() {
+    public List<ContainerContentEntity> getContents() {
         return contents;
     }
 
-    public void setContents(List<ContentEntity> contents) {
+    public void setContents(List<ContainerContentEntity> contents) {
         this.contents = contents;
     }
 

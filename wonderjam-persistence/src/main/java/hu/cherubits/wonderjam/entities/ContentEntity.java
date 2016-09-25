@@ -34,33 +34,18 @@ import org.hibernate.annotations.GenericGenerator;
 @DiscriminatorValue(value = "resource")
 @NamedQueries({
     @NamedQuery(name = "ContentEntity.findByParent", query = "SELECT c FROM ContentEntity c WHERE c.parent.id = :parentId ORDER BY c.orderIndex"),
-    @NamedQuery(name = "ContentEntity.findDraftByParent", query = "SELECT c FROM ContentEntity c WHERE c.parent.id = :parentId AND c.node.contact.id = :accountId ORDER BY c.orderIndex"),
     @NamedQuery(name = "ContentEntity.findPublicByParent", query = "SELECT c FROM ContentEntity c WHERE c.parent.id = :parentId AND c.parent.draft = FALSE ORDER BY c.orderIndex"),
     @NamedQuery(name = "ContentEntity.findPublishedByParent", query = "SELECT c FROM ContentEntity c WHERE c.parent.id = :parentId ORDER BY c.orderIndex"),
     
     @NamedQuery(name = "ContentEntity.findRoots", query = "SELECT c FROM ContentEntity c WHERE c.parent IS NULL"),
-    @NamedQuery(name = "ContentEntity.findDraftRoots", query = "SELECT c FROM ContentEntity c WHERE c.parent IS NULL AND c.node.contact.id = :accountId"),
-    @NamedQuery(name = "ContentEntity.findPublicRoots", query = "SELECT c FROM ContentEntity c WHERE c.parent IS NULL AND c.draft = FALSE"),
     @NamedQuery(name = "ContentEntity.findPublishedRoots", query = "SELECT c FROM ContentEntity c WHERE c.parent IS NULL"),
     
     @NamedQuery(name = "ContentEntity.findByChild", query = "SELECT c.parent FROM ContentEntity c WHERE c.id = :childId AND c.parent IS NOT NULL")
 })
-public class ContentEntity implements Serializable {
+public class ContentEntity extends UniqueEntity {
 
     private static final long serialVersionUID = 1L;
-    @Id
-    @GenericGenerator(name = "uuid-gen", strategy = "uuid2")
-    @GeneratedValue(generator = "uuid-gen")
-    @org.hibernate.annotations.Type(type = "pg-uuid")
-    private UUID id;
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
+    
     
     @Basic(optional = false)
     private Integer orderIndex;
@@ -73,16 +58,7 @@ public class ContentEntity implements Serializable {
         this.orderIndex = orderIndex;
     }
     
-    @Basic
-    private boolean leaf = true;
-
-    public boolean getLeaf() {
-        return leaf;
-    }
-
-    public void setLeaf(boolean leaf) {
-        this.leaf = leaf;
-    }
+    
 
     @Basic
     private int width;
@@ -130,17 +106,6 @@ public class ContentEntity implements Serializable {
     
     
     
-    @Basic
-    private boolean hasEmbeddedFile = false;
-
-    public boolean isHasEmbeddedFile() {
-        return hasEmbeddedFile;
-    }
-
-    public void setHasEmbeddedFile(boolean hasEmbeddedFile) {
-        this.hasEmbeddedFile = hasEmbeddedFile;
-    }
-    
     
 
     @Column(name = "resource", insertable = false, updatable = false)
@@ -155,51 +120,6 @@ public class ContentEntity implements Serializable {
     }
     
     @Basic
-    private Boolean draft = true;
-
-    public boolean isDraft() {
-        return draft;
-    }
-
-    public void setDraft(boolean draft) {
-        this.draft = draft;
-    }
-    
-    @Basic
-    private Boolean publicIndicator = true;
-
-    public Boolean getPublicIndicator() {
-        return publicIndicator;
-    }
-
-    public void setPublicIndicator(Boolean publicIndicator) {
-        this.publicIndicator = publicIndicator;
-    }
-
-    @ManyToOne
-    private NetworkNodeEntity node;
-
-    public NetworkNodeEntity getNode() {
-        return node;
-    }
-
-    public void setNode(NetworkNodeEntity node) {
-        this.node = node;
-    }
-    
-    @Basic
-    @Column(length = 1000)
-    private String title;
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    @Basic
     @Column(length = 100000)
     private String content;
 
@@ -211,63 +131,10 @@ public class ContentEntity implements Serializable {
         this.content = content;
     }
 
-    @OneToMany(mappedBy = "content")
-    private List<MessageEntity> recipients;
-
-    public List<MessageEntity> getRecipients() {
-        return recipients;
-    }
-
-    public void setRecipients(List<MessageEntity> recipients) {
-        this.recipients = recipients;
-    }
-
-    @ManyToOne
-    private ContainerContentEntity parent;
-
-    public ContainerContentEntity getParent() {
-        return parent;
-    }
-
-    public void setParent(ContainerContentEntity parent) {
-        this.parent = parent;
-    }
-
-//    @Basic(optional = false)
-//    private Boolean active = true;
-//
-//    public boolean isActive() {
-//        return active;
-//    }
-//
-//    public void setActive(boolean active) {
-//        this.active = active;
-//    }
-    
-    
-    
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof ContentEntity)) {
-            return false;
-        }
-        ContentEntity other = (ContentEntity) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
-    }
+   
 
     @Override
     public String toString() {
-        return "com.digitaldefense.christeam.entities.ContentEntity[ id=" + id + " ]";
+        return "com.digitaldefense.christeam.entities.ContentEntity[ id=" + getId() + " ]";
     }
 }

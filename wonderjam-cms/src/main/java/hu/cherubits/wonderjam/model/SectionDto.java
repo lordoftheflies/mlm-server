@@ -5,11 +5,14 @@
  */
 package hu.cherubits.wonderjam.model;
 
+import hu.cherubits.wonderjam.common.ContentType;
+
 /**
  *
  * @author lordoftheflies
  */
 public class SectionDto {
+
 
     public SectionDto() {
     }
@@ -18,16 +21,25 @@ public class SectionDto {
         this.type = type;
     }
 
-    public SectionDto(String name, String title, String type, String data, boolean hasEmbeddedFile, String justification, int fontSize, int width, int height) {
+    public SectionDto(String name, ContentType contentType, String title, String type, String data, String justification, int fontSize, int width, int height) {
         this.title = title;
         this.name = name;
         this.type = type;
         this.data = data;
-        this.hasEmbeddedFile = hasEmbeddedFile;
         this.justification = justification;
         this.fontSize = fontSize;
         this.width = width;
         this.height = height;
+    }
+
+    private ContentType contentType = ContentType.ASSEMBLED;
+
+    public ContentType getContentType() {
+        return contentType;
+    }
+
+    public void setContentType(ContentType contentType) {
+        this.contentType = contentType;
     }
 
     private String title;
@@ -70,15 +82,7 @@ public class SectionDto {
         this.data = data;
     }
 
-    private boolean hasEmbeddedFile;
-
-    public boolean isHasEmbeddedFile() {
-        return hasEmbeddedFile;
-    }
-
-    public void setHasEmbeddedFile(boolean hasEmbeddedFile) {
-        this.hasEmbeddedFile = hasEmbeddedFile;
-    }
+    
 
     private String justification;
 

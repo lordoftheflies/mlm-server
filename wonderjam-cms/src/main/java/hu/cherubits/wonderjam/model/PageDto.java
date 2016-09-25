@@ -5,6 +5,7 @@
  */
 package hu.cherubits.wonderjam.model;
 
+import hu.cherubits.wonderjam.common.ContentType;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -46,16 +47,6 @@ public class PageDto {
         this.title = title;
     }
 
-    private boolean leaf;
-
-    public boolean isLeaf() {
-        return leaf;
-    }
-
-    public void setLeaf(boolean leaf) {
-        this.leaf = leaf;
-    }
-    
     private boolean draft;
 
     public boolean isDraft() {
@@ -65,7 +56,7 @@ public class PageDto {
     public void setDraft(boolean draft) {
         this.draft = draft;
     }
-    
+
     private UUID id;
 
     public UUID getId() {
@@ -85,24 +76,27 @@ public class PageDto {
     public void setSections(List<SectionDto> sections) {
         this.sections = sections;
     }
+    
+    private ContentType contentType;
 
-    private boolean hasEmbeddedFile;
-
-    public boolean isHasEmbeddedFile() {
-        return hasEmbeddedFile;
+    public ContentType getContentType() {
+        return contentType;
     }
 
-    public void setHasEmbeddedFile(boolean hasEmbeddedFile) {
-        this.hasEmbeddedFile = hasEmbeddedFile;
+    public void setContentType(ContentType contentType) {
+        this.contentType = contentType;
+    }
+    
+    private String embeddedFile;
+
+    public String getEmbeddedFile() {
+        return embeddedFile;
     }
 
-    private String embeddedFileName;
-
-    public String getEmbeddedFileName() {
-        return embeddedFileName;
+    public void setEmbeddedFile(String embeddedFile) {
+        this.embeddedFile = embeddedFile;
     }
+    
+    
 
-    public void setEmbeddedFileName(String embeddedFileName) {
-        this.embeddedFileName = embeddedFileName;
-    }
 }

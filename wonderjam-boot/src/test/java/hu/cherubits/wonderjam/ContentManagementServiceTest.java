@@ -8,6 +8,7 @@ package hu.cherubits.wonderjam;
 import hu.cherubits.wonderjam.ChristeamServerApplicationTests;
 import hu.cherubits.wonderjam.services.ContentManagementService;
 import hu.cherubits.wonderjam.dal.AccountRepository;
+import hu.cherubits.wonderjam.dal.ContainerContentRepository;
 import hu.cherubits.wonderjam.dal.ContentRepository;
 import hu.cherubits.wonderjam.dal.MailBoxRepository;
 import hu.cherubits.wonderjam.dal.MessageRepository;
@@ -54,6 +55,8 @@ public class ContentManagementServiceTest extends ChristeamServerApplicationTest
 
     @Autowired
     private ContentRepository contentRepository;
+    @Autowired
+    private ContainerContentRepository containerContentRepository;
 
     @Autowired
     private NetworkTreeRepository networkRepo;
@@ -350,13 +353,13 @@ public class ContentManagementServiceTest extends ChristeamServerApplicationTest
 
         ContainerContentEntity contentContainer = new ContainerContentEntity();
         contentContainer.setTitle("Cikk a kacsákról");
-        contentContainer.setLeaf(true);
-        contentContainer.setOrderIndex(0);
-        contentContainer.setHasEmbeddedFile(false);
+//        contentContainer.setLeaf(true);
+//        contentContainer.setOrderIndex(0);
+//        contentContainer.setHasEmbeddedFile(false);
         contentContainer.setNode(heglasNode);
         contentContainer.setDraft(true);
 //        contentContainer.setResourceType(ViewConstants.CONTENT_MANAGEMENT_WIDGET_CONTAINER);
-        containerContentId = contentRepository.save(contentContainer).getId();
+        containerContentId = containerContentRepository.save(contentContainer).getId();
 
         ContentEntity textContentOne = new TextContentEntity();
         textContentOne.setTitle("Mi a kacsa?");
@@ -392,13 +395,13 @@ public class ContentManagementServiceTest extends ChristeamServerApplicationTest
 
         ContainerContentEntity contentContainer2 = new ContainerContentEntity();
         contentContainer2.setTitle("Házi baromfik");
-        contentContainer2.setLeaf(false);
-        contentContainer2.setOrderIndex(1);
+//        contentContainer2.setLeaf(false);
+//        contentContainer2.setOrderIndex(1);
         contentContainer.setNode(balazspeczelyNode);
         contentContainer.setDraft(false);
-        contentContainer2.setHasEmbeddedFile(false);
+//        contentContainer2.setHasEmbeddedFile(false);
 //        contentContainer.setResourceType(ViewConstants.CONTENT_MANAGEMENT_WIDGET_CONTAINER);
-        containerContentId2 = contentRepository.save(contentContainer2).getId();
+        containerContentId2 = containerContentRepository.save(contentContainer2).getId();
 
         ContentEntity duckReference = new ReferenceContentEntity();
         duckReference.setTitle("Kacsa");
@@ -408,15 +411,15 @@ public class ContentManagementServiceTest extends ChristeamServerApplicationTest
         duckReference.setContent(contentContainer.getId().toString());
         duckReferenceId = contentRepository.save(duckReference).getId();
 //
-        ContentEntity libaFile = new ContainerContentEntity();
+        ContainerContentEntity libaFile = new ContainerContentEntity();
         libaFile.setTitle("Liba");
-        libaFile.setContent("pirosfekete.pdf");
-        libaFile.setHasEmbeddedFile(true);
-        libaFile.setLeaf(true);
-        libaFile.setOrderIndex(0);
+        libaFile.setEmbeddedFile("pirosfekete.pdf");
+//        libaFile.setHasEmbeddedFile(true);
+//        libaFile.setLeaf(true);
+//        libaFile.setOrderIndex(0);
         libaFile.setParent(contentContainer2);
 //        imageContent.setResourceType(ViewConstants.CONTENT_MANAGEMENT_WIDGET_IMAGE);
-        libaFileId = contentRepository.save(libaFile).getId();
+        libaFileId = containerContentRepository.save(libaFile).getId();
     }
 
 }
