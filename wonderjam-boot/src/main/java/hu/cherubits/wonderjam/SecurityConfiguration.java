@@ -88,6 +88,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         IMAGES_DIRECTORY,
                         MANIFEST_FILE,
                         LOGIN_URL,
+                        LOGON_URL,
+                        LOGON_PROCESSING_URL,
                         //                        TOKEN_URL,
                         BASE_URL,
                         SERVICE_WORKER,
@@ -98,7 +100,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         SWAGGER_API).permitAll()
                 .anyRequest().authenticated().and()
                 .logout().permitAll().logoutSuccessUrl(BASE_URL).logoutUrl(LOGOUT_URL).deleteCookies(REMEMBER_ME_TOKEN, XXSRFTOKEN2)
-                .and().formLogin().loginPage("http://localhost:8080/#/login-view").loginProcessingUrl("http://localhost:8080/backend/login").usernameParameter("userName").passwordParameter("password").defaultSuccessUrl("http://localhost:8080/")
+//                .and().formLogin().loginPage("http://localhost:8080/#/login-view").loginProcessingUrl("http://localhost:8080/backend/login").usernameParameter("userName").passwordParameter("password").defaultSuccessUrl("http://localhost:8080/")
                 .and().rememberMe().key(REMEMBER_ME_KEY).rememberMeServices(rememberMeServices)
                 //        .and()
                 //                .rememberMeParameter(REMEMBER_ME_TOKEN).rememberMeServices(rememberMeServices).tokenValiditySeconds(3600)
@@ -185,6 +187,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private static final String SWAGGER_API = "/v2/**";
     private static final String BASE_URL = "/";
     private static final String BACKEND_URL = "/backend";
+    private static final String LOGON_PROCESSING_URL = "/authentication/signon";
+    private static final String LOGON_URL = "/addressbook/*/profile";
     private static final String LOGIN_URL = "/login";
     private static final String LOGOUT_URL = "/logout";
     private static final String TOKEN_URL = "/token";
