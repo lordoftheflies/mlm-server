@@ -9,13 +9,16 @@ import hu.cherubits.wonderjam.common.ContentType;
 import hu.cherubits.wonderjam.dal.AccountRepository;
 import hu.cherubits.wonderjam.dal.ContainerContentRepository;
 import hu.cherubits.wonderjam.dal.ContentRepository;
+import hu.cherubits.wonderjam.dal.LocaleRepository;
 import hu.cherubits.wonderjam.dal.MailBoxRepository;
 import hu.cherubits.wonderjam.dal.MessageRepository;
 import hu.cherubits.wonderjam.dal.NetworkTreeRepository;
+import hu.cherubits.wonderjam.dal.ResourceRepository;
 import hu.cherubits.wonderjam.entities.AccountEntity;
 import hu.cherubits.wonderjam.entities.ContainerContentEntity;
 import hu.cherubits.wonderjam.entities.ContentEntity;
 import hu.cherubits.wonderjam.entities.ImageContentEntity;
+import hu.cherubits.wonderjam.entities.LocaleEntity;
 import hu.cherubits.wonderjam.entities.MailBoxEntity;
 import hu.cherubits.wonderjam.entities.NetworkNodeEntity;
 import hu.cherubits.wonderjam.entities.NetworkNodeType;
@@ -56,9 +59,17 @@ public class TopFlavonContentTest extends ChristeamServerApplicationTests {
 
     @Autowired
     private MessageRepository messageRepository;
+    
+    @Autowired
+    private LocaleRepository localeDao;
+    
+    @Autowired
+    private ResourceRepository resourceDao;
 
     @Autowired
     private MailBoxRepository mailBoxRepository;
+    private final String SPOON_ICON = "wonderjam-icons:spoon";
+    private final String CAN_ICON = "wonderjam-icons:can";
 
     @Test
     public void atestCleanUp() {
@@ -73,9 +84,27 @@ public class TopFlavonContentTest extends ChristeamServerApplicationTests {
     private NetworkNodeEntity heglasNode;
 
     private NetworkNodeEntity balazspeczelyNode;
+    
+    @Test
+    public void btestLocale() {
+        LocaleEntity englishLocale = new LocaleEntity();
+        englishLocale.setDisplayName("English");
+        englishLocale.setLanguageCode("en");
+        localeDao.save(englishLocale);
+        
+        LocaleEntity polishLocale = new LocaleEntity();
+        polishLocale.setDisplayName("Polskie");
+        polishLocale.setLanguageCode("po");
+        localeDao.save(polishLocale);
+        
+        LocaleEntity hungarianLocale = new LocaleEntity();
+        hungarianLocale.setDisplayName("Magyar");
+        hungarianLocale.setLanguageCode("hu");
+        localeDao.save(hungarianLocale);
+    }
 
     @Test
-    public void btestNetwork() {
+    public void ctestNetwork() {
 
         AccountEntity heglas = new AccountEntity();
         heglas.setEmail("heglas11@gmail.com");
@@ -235,7 +264,7 @@ public class TopFlavonContentTest extends ChristeamServerApplicationTests {
      * Test of publish method, of class ContentManagementService.
      */
     @Test
-    public void ctestCustomArticle() throws Exception {
+    public void dtestCustomArticle() throws Exception {
         System.out.println("publish");
 
         ContainerContentEntity flavonActiveContainer = new ContainerContentEntity();
@@ -260,29 +289,153 @@ public class TopFlavonContentTest extends ChristeamServerApplicationTests {
         flavonActiveImage0.setParent(flavonActiveContainer);
         flavonActiveImage0.setWidth(300);
         flavonActiveImage0 = contentRepository.save(flavonActiveImage0);
-        
+
         ContainerContentEntity flavonEndActiveContainer = new ContainerContentEntity();
         flavonEndActiveContainer.setContentType(ContentType.ASSEMBLED);
         flavonEndActiveContainer.setDraft(false);
         flavonEndActiveContainer.setNode(heglasNode);
         flavonEndActiveContainer.setPublicIndicator(true);
-        flavonEndActiveContainer.setTitle("FLAVON ACTIVE (EN)");
+        flavonEndActiveContainer.setTitle("FLAVON ACTIVE");
         flavonEndActiveContainer = containerContentRepository.save(flavonEndActiveContainer);
-
+        text(flavonEndActiveContainer, null, FLAVON_ACTIVE_P0_ENG);
+        image(flavonEndActiveContainer, FLAVON_ACTIVE_PNG);
+        oeti(flavonEndActiveContainer, FLAVON_ACTIVE_OETI, FLAVON_ACTIVE_SPOON, FLAVON_ACTIVE_CAN);
+        text(flavonEndActiveContainer, null, FLAVON_ACTIVE_P1_ENG);
+        text(flavonEndActiveContainer, null, FLAVON_ACTIVE_P2_ENG);
+        text(flavonEndActiveContainer, FLAVON_ACTIVE_T3_ENG, "<ul>"
+                + "<li>who has an active, dynamic, sporty lifestyle</li>"
+                + "<li>who craves for healthy stimulation</li>"
+                + "<li>who wants to successfully meet the challenges of the 21st century</li>"
+                + "<li>who would like to enjoy the benefits of today’s super fruits</li>"
+                + "</ul>");
+        
+        ContainerContentEntity flavonGreenContainer = new ContainerContentEntity();
+        flavonGreenContainer.setContentType(ContentType.ASSEMBLED);
+        flavonGreenContainer.setDraft(false);
+        flavonGreenContainer.setNode(heglasNode);
+        flavonGreenContainer.setPublicIndicator(true);
+        flavonGreenContainer.setTitle("FLAVON GREEN");
+        flavonGreenContainer = containerContentRepository.save(flavonGreenContainer);
+        text(flavonGreenContainer, null, FLAVON_GREEN_P0_ENG);
+        image(flavonGreenContainer, FLAVON_GREEN_PNG);
+        oeti(flavonGreenContainer, FLAVON_GREEN_OETI, FLAVON_GREEN_SPOON, FLAVON_GREEN_CAN);
+        text(flavonGreenContainer, null, FLAVON_GREEN_P1_ENG);
+        text(flavonGreenContainer, null, FLAVON_GREEN_P2_ENG);
+        text(flavonGreenContainer, FLAVON_GREEN_T3_ENG, "<ul>"
+                + "<li>who cannot ensure the intake of sufficient vegetables</li>"
+                + "<li>who considers it important to continuously take in vitamins and minerals from a pure source</li>"
+                + "<li>who would like to consume vegetables in a new form they have not tried before</li>"
+                + "<li>who is a conscientious consumer and would like to complete a modern diet</li>"
+                + "</ul>");
+        
+        ContainerContentEntity flavonMaxContainer = new ContainerContentEntity();
+        flavonMaxContainer.setContentType(ContentType.ASSEMBLED);
+        flavonMaxContainer.setDraft(false);
+        flavonMaxContainer.setNode(heglasNode);
+        flavonMaxContainer.setPublicIndicator(true);
+        flavonMaxContainer.setTitle("FLAVON MAX");
+        flavonMaxContainer = containerContentRepository.save(flavonMaxContainer);
+        text(flavonMaxContainer, null, FLAVON_MAX_P0_ENG);
+        image(flavonMaxContainer, FLAVON_MAX_PNG);
+        oeti(flavonMaxContainer, FLAVON_MAX_OETI, FLAVON_MAX_SPOON, FLAVON_MAX_CAN);
+        text(flavonMaxContainer, null, FLAVON_MAX_P1_ENG);
+        text(flavonMaxContainer, null, FLAVON_MAX_P2_ENG);
+        text(flavonMaxContainer, FLAVON_MAX_T3_ENG, "<ul>"
+                + "<li>who does not consume enough fruits</li>"
+                + "<li>who wants to complement their current one-sided nutrition</li>"
+                + "<li>who takes good care of the their own and their family’s health</li>"
+                + "<li>who wants to enjoy and take advantage of an innovative product</li>"
+                + "</ul>");
+        
+        ContainerContentEntity flavonJoyContainer = new ContainerContentEntity();
+        flavonJoyContainer.setContentType(ContentType.ASSEMBLED);
+        flavonJoyContainer.setDraft(false);
+        flavonJoyContainer.setNode(heglasNode);
+        flavonJoyContainer.setPublicIndicator(true);
+        flavonJoyContainer.setTitle("FLAVON JOY");
+        flavonJoyContainer = containerContentRepository.save(flavonJoyContainer);
+        text(flavonJoyContainer, null, FLAVON_JOY_P0_ENG);
+        image(flavonJoyContainer, FLAVON_JOY_PNG);
+        oeti(flavonJoyContainer, FLAVON_JOY_OETI, FLAVON_JOY_SPOON, FLAVON_JOY_CAN);
+        text(flavonJoyContainer, null, FLAVON_JOY_P1_ENG);
+        text(flavonJoyContainer, null, FLAVON_JOY_P2_ENG);
+        text(flavonJoyContainer, FLAVON_JOY_T3_ENG, "<ul>"
+                + "<li>who is exposed to constant stress, does sport regularly</li>"
+                + "<li>who needs more mental energy</li>"
+                + "<li>who would like to satisfy their desire for sweets in a healthy way</li>"
+                + "<li>who wants to make a conscious choice of cocoa bean, ancient spices and the synergy of super fruits and vegetables</li>"
+                + "</ul>");
+    }
+    private TextContentEntity text(ContainerContentEntity container, String title, String content) {
         TextContentEntity flavonEndActiveParagraph0 = new TextContentEntity();
-        flavonEndActiveParagraph0.setContent("If we want to stay on top, to meet the expectations and face the challenges of the 21st century, to keep up with the accelerated pace of the world, we need to live a conscious and active life. This challenge affects all of us.");
+        flavonEndActiveParagraph0.setTitle(title);
+        flavonEndActiveParagraph0.setContent(content);
         flavonEndActiveParagraph0.setFontSize(12);
         flavonEndActiveParagraph0.setOrderIndex(1);
-        flavonEndActiveParagraph0.setParent(flavonEndActiveContainer);
+        flavonEndActiveParagraph0.setParent(container);
         flavonEndActiveParagraph0 = contentRepository.save(flavonEndActiveParagraph0);
-
-        ImageContentEntity flavonEndActiveImage0 = new ImageContentEntity();
-        flavonEndActiveImage0.setContent("/data/flavon_active.png");
-        flavonEndActiveImage0.setHeight(300);
-        flavonEndActiveImage0.setOrderIndex(2);
-        flavonEndActiveImage0.setParent(flavonEndActiveContainer);
-        flavonEndActiveImage0.setWidth(300);
-        flavonEndActiveImage0 = contentRepository.save(flavonEndActiveImage0);
+        return flavonEndActiveParagraph0;
     }
+
+    private ImageContentEntity image(ContainerContentEntity container, String image) {
+        ImageContentEntity p = new ImageContentEntity();
+        p.setContent("/data/" + image);
+        p.setHeight(300);
+        p.setOrderIndex(2);
+        p.setParent(container);
+        p.setWidth(300);
+        p = contentRepository.save(p);
+        return p;
+    }
+
+    private TextContentEntity oeti(ContainerContentEntity container, String oeti, int spoon, int can) {
+
+        TextContentEntity p = new TextContentEntity();
+        p.setTitle(FLAVON_ACTIVE_OETI);
+        p.setContent("<ul>"
+                + "<li><span>1</span> x <iron-icon icon=\"" + SPOON_ICON + "\"></iron-icon>=<span>" + spoon + "</span><label>T-ORAC</label></li>"
+                + "<li><span>1</span> x <iron-icon icon=\"" + CAN_ICON + "\"></iron-icon>=<span>" + can + "</span><label>T-ORAC</label></li>"
+                + "</ul>");
+        p.setFontSize(12);
+        p.setOrderIndex(1);
+        p.setParent(container);
+        p = contentRepository.save(p);
+        return p;
+    }
+    private static final String FLAVON_ACTIVE_OETI = "OÉTI notification number: 10026/2011";
+    private static final String FLAVON_ACTIVE_T3_ENG = "The consumption of Flavon Active is recommended for everyone";
+    private static final String FLAVON_ACTIVE_P2_ENG = "The fifth member of our product line is again the result of serious innovation. The product is a possible solution to the challenges of present times. It helps us every day to do our best even when we are under high pressure.";
+    private static final String FLAVON_ACTIVE_P1_ENG = "We often hear that this accelerated rhythm calls for some response. What can we do? We should not react to challenges by ruining our body! Both our body and soul need to stay healthy because they are indispensable for an active life.";
+    private static final String FLAVON_ACTIVE_P0_ENG = "If we want to stay on top, to meet the expectations and face the challenges of the 21st century, to keep up with the accelerated pace of the world, we need to live a conscious and active life. This challenge affects all of us.";
+    private static final String FLAVON_ACTIVE_PNG = "flavon_active.png";
+    private static final int FLAVON_ACTIVE_CAN = 1523760;
+    private static final int FLAVON_ACTIVE_SPOON = 38094;
+    
+    private static final String FLAVON_GREEN_OETI = "OÉTI notification number: 10027/2011";
+    private static final String FLAVON_GREEN_T3_ENG = "The consumption of Flavon Green is recommended for adults";
+    private static final String FLAVON_GREEN_P2_ENG = "Although numerous researches prove that regular vegetable consumption protects our health, only a few people consume the required amount day by day. Flavon Green can be the solution, because we can cover the significant part of the daily vegetable intake with a product constituted of only well-selected ingredients of high quality.";
+    private static final String FLAVON_GREEN_P1_ENG = "Flavon Green provides the positive physiological effects of vegetables in a complex way. The included vegetables help us maintain a balanced diet rich in vitamins, minerals, antioxidants and fibres.";
+    private static final String FLAVON_GREEN_P0_ENG = "Regular vegetable consumption is a significant and inevitable part of healthy nutrition. Vegetables supply our body with essential nutrients, fibre and vitamins and have a beneficial effect on our general well-being. Flavon Green is a revolutionary product, a true innovation for vegetable consumption that reshapes previous habits.";
+    private static final String FLAVON_GREEN_PNG = "flavon_green.png";
+    private static final int FLAVON_GREEN_CAN = 482880;
+    private static final int FLAVON_GREEN_SPOON = 12072;
+    
+    private static final String FLAVON_MAX_OETI = "OÉTI notification number: 10029/2011";
+    private static final String FLAVON_MAX_T3_ENG = "The consumption of Flavon Max is recommended for everybody";
+    private static final String FLAVON_MAX_P2_ENG = "Flavon max was created for the people of the 21st century. It is a health-conscious product that supports life quality and its plant ingredients help the proper function of the antioxidant defence system and suitably support the function of the immune system.";
+    private static final String FLAVON_MAX_P1_ENG = "High quality dietary supplements play a major role in one’s nutrition today. By constantly consuming them we might prevent the occurrence of deficiency symptoms caused by inadequate nutrition. Flavon broke with previous methods! Instead of pills and powder, it created a delicious and easily consumable gel-consistency form which makes it possible for its product to supply the human body with the necessary active substances.";
+    private static final String FLAVON_MAX_P0_ENG = "The lifestyle of the 21st century including increasing daily stress, polluted environment, and nutrition deficiencies has extremely bad effects on our body and organism. Our body needs help to be able to win over these negative effects.";
+    private static final String FLAVON_MAX_PNG = "flavon_max.png";
+    private static final int FLAVON_MAX_CAN = 435840;
+    private static final int FLAVON_MAX_SPOON = 10896;
+    
+    private static final String FLAVON_JOY_OETI = "OÉTI notification number: 16853/2015";
+    private static final String FLAVON_JOY_T3_ENG = "The consumption of Flavon Joy is recommended for everyone";
+    private static final String FLAVON_JOY_P2_ENG = "Flavon Joy delivers polyphenols to our body in a complex way to keep it healthy, and in case of health conscious consuming, not only does it protect the health of our organism, it may also boost our mental/psychical characteristics, learning skills and shock absorbing capacity.";
+    private static final String FLAVON_JOY_P1_ENG = "From children, through pregnant women and adults exposed to stronger oxidative stress, up to the older generation, anyone can consume it who craves for a tasty, sweet dietary supplement that has unique physiological effects at the same time.";
+    private static final String FLAVON_JOY_P0_ENG = "Premium category Flavon Joy includes one of the ancient natural treasures, the fruit of cocoa tree due to which it has become a curio on the market of dietary supplements. Keeping the gel-consistency that is beneficial regarding bioavailability, we combined such fruit and vegetable ingredients and spices that have strong synergetic interactions, thus by enhancing each other’s effects. Therefore, it protects and pampers our body in all age group.";
+    private static final String FLAVON_JOY_PNG = "flavon_green.png";
+    private static final int FLAVON_JOY_CAN = 2424240;
+    private static final int FLAVON_JOY_SPOON = 60606;
 
 }
