@@ -21,25 +21,29 @@ public class PageDto extends ContentDto {
     public PageDto() {
     }
     
-    public PageDto(UUID id, String title) {
+    public PageDto(UUID id, String title, ContentType ct) {
         this.id = id;
         this.title = title;
+        this.contentType = ct;
     }
 
-    public PageDto(String title) {
+    public PageDto(String title, ContentType ct) {
         this.title = title;
+        this.contentType = ct;
     }
 
-    public PageDto(UUID id, String title, Collection<SectionDto> sections) {
+    public PageDto(UUID id, String title, Collection<SectionDto> sections, ContentType ct) {
         this.title = title;
         this.id = id;
         this.sections = new ArrayList<SectionDto>(sections);
+        this.contentType = ct;
     }
 
-    public PageDto(UUID id, String title, SectionDto... sections) {
+    public PageDto(UUID id, String title, ContentType ct, SectionDto... sections) {
         this.title = title;
         this.id = id;
         this.sections = Arrays.asList(sections);
+        this.contentType = ct;
     }
 
     
@@ -53,8 +57,6 @@ public class PageDto extends ContentDto {
     public void setDraft(boolean draft) {
         this.draft = draft;
     }
-
-    
 
     private List<? extends ContentDto> sections = new ArrayList<>();
 

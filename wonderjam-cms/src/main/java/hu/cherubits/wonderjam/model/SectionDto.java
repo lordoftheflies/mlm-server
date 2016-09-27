@@ -6,13 +6,13 @@
 package hu.cherubits.wonderjam.model;
 
 import hu.cherubits.wonderjam.common.ContentType;
+import java.util.UUID;
 
 /**
  *
  * @author lordoftheflies
  */
 public class SectionDto extends ContentDto {
-
 
     public SectionDto() {
     }
@@ -21,9 +21,10 @@ public class SectionDto extends ContentDto {
         this.type = type;
     }
 
-    public SectionDto(String name, ContentType contentType, String title, String type, String data, String justification, int fontSize, int width, int height) {
+    public SectionDto(UUID id, ContentType contentType, String title, String type, String data, String justification, int fontSize, int width, int height) {
         this.title = title;
-        this.name = name;
+        this.name = (id == null) ? "ROOT" : id.toString();
+        this.id = id;
         this.type = type;
         this.data = data;
         this.justification = justification;
@@ -71,8 +72,6 @@ public class SectionDto extends ContentDto {
     public void setData(String data) {
         this.data = data;
     }
-
-    
 
     private String justification;
 

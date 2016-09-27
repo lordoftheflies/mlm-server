@@ -30,7 +30,7 @@ public interface ContainerContentRepository extends PagingAndSortingRepository<C
     @Override
     public List<ContainerContentEntity> findAll();
 
-    public List<ContentEntity> findByParent(@Param("parentId") UUID parentId);
+    public List<ContainerContentEntity> findByParent(@Param("parentId") UUID parentId);
 //    
 //    public List<ContentEntity> findByChildren(@Param("childId") UUID childId);
     

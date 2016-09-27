@@ -55,6 +55,16 @@ public class ContentDto {
         this.data = data;
     }
     
+    private boolean leaf;
+
+    public boolean isLeaf() {
+        return leaf;
+    }
+
+    public void setLeaf(boolean leaf) {
+        this.leaf = leaf;
+    }
+    
     private Map<String, String> properties;
 
     public Map<String, String> getProperties() {

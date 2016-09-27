@@ -267,47 +267,34 @@ public class TopFlavonContentTest extends ChristeamServerApplicationTests {
     public void dtestCustomArticle() throws Exception {
         System.out.println("publish");
 
-        ContainerContentEntity flavonActiveContainer = new ContainerContentEntity();
-        flavonActiveContainer.setContentType(ContentType.ASSEMBLED);
-        flavonActiveContainer.setDraft(false);
-        flavonActiveContainer.setNode(heglasNode);
-        flavonActiveContainer.setPublicIndicator(true);
-        flavonActiveContainer.setTitle("FLAVON ACTIVE (HU)");
-        flavonActiveContainer = containerContentRepository.save(flavonActiveContainer);
-
-        TextContentEntity flavonActiveParagraph0 = new TextContentEntity();
-        flavonActiveParagraph0.setContent("Ha talpon akarunk maradni, ha meg akarunk felelni a XXI. század elvárásainak és kihívásainak, ha lépést szeretnénk tartani a rohanó mindennapokkal, akkor mindenképpen tudatosan és aktívan kell élnünk. Ez a kihívás mindannyiunkat érint.");
-        flavonActiveParagraph0.setFontSize(12);
-        flavonActiveParagraph0.setOrderIndex(1);
-        flavonActiveParagraph0.setParent(flavonActiveContainer);
-        flavonActiveParagraph0 = contentRepository.save(flavonActiveParagraph0);
-
-        ImageContentEntity flavonActiveImage0 = new ImageContentEntity();
-        flavonActiveImage0.setContent("/data/flavon_active.png");
-        flavonActiveImage0.setHeight(300);
-        flavonActiveImage0.setOrderIndex(2);
-        flavonActiveImage0.setParent(flavonActiveContainer);
-        flavonActiveImage0.setWidth(300);
-        flavonActiveImage0 = contentRepository.save(flavonActiveImage0);
-
+        ContainerContentEntity productsContainer = new ContainerContentEntity();
+        productsContainer.setContentType(ContentType.LINKED);
+        productsContainer.setNode(heglasNode);
+        productsContainer.setPublicIndicator(true);
+        productsContainer.setTitle("Products");
+        productsContainer = containerContentRepository.save(productsContainer);
+        
+        
+        
         ContainerContentEntity flavonEndActiveContainer = new ContainerContentEntity();
         flavonEndActiveContainer.setContentType(ContentType.ASSEMBLED);
         flavonEndActiveContainer.setDraft(false);
         flavonEndActiveContainer.setNode(heglasNode);
         flavonEndActiveContainer.setPublicIndicator(true);
         flavonEndActiveContainer.setTitle("FLAVON ACTIVE");
+        flavonEndActiveContainer.setParent(productsContainer);
         flavonEndActiveContainer = containerContentRepository.save(flavonEndActiveContainer);
-        text(flavonEndActiveContainer, null, FLAVON_ACTIVE_P0_ENG);
-        image(flavonEndActiveContainer, FLAVON_ACTIVE_PNG);
-        oeti(flavonEndActiveContainer, FLAVON_ACTIVE_OETI, FLAVON_ACTIVE_SPOON, FLAVON_ACTIVE_CAN);
-        text(flavonEndActiveContainer, null, FLAVON_ACTIVE_P1_ENG);
-        text(flavonEndActiveContainer, null, FLAVON_ACTIVE_P2_ENG);
+        text(flavonEndActiveContainer, null, FLAVON_ACTIVE_P0_ENG, 0);
+        image(flavonEndActiveContainer, FLAVON_ACTIVE_PNG, 1);
+        oeti(flavonEndActiveContainer, FLAVON_ACTIVE_OETI, FLAVON_ACTIVE_SPOON, FLAVON_ACTIVE_CAN, 2);
+        text(flavonEndActiveContainer, null, FLAVON_ACTIVE_P1_ENG, 3);
+        text(flavonEndActiveContainer, null, FLAVON_ACTIVE_P2_ENG, 4);
         text(flavonEndActiveContainer, FLAVON_ACTIVE_T3_ENG, "<ul>"
                 + "<li>who has an active, dynamic, sporty lifestyle</li>"
                 + "<li>who craves for healthy stimulation</li>"
                 + "<li>who wants to successfully meet the challenges of the 21st century</li>"
                 + "<li>who would like to enjoy the benefits of today’s super fruits</li>"
-                + "</ul>");
+                + "</ul>", 5);
         
         ContainerContentEntity flavonGreenContainer = new ContainerContentEntity();
         flavonGreenContainer.setContentType(ContentType.ASSEMBLED);
@@ -315,18 +302,19 @@ public class TopFlavonContentTest extends ChristeamServerApplicationTests {
         flavonGreenContainer.setNode(heglasNode);
         flavonGreenContainer.setPublicIndicator(true);
         flavonGreenContainer.setTitle("FLAVON GREEN");
+        flavonGreenContainer.setParent(productsContainer);
         flavonGreenContainer = containerContentRepository.save(flavonGreenContainer);
-        text(flavonGreenContainer, null, FLAVON_GREEN_P0_ENG);
-        image(flavonGreenContainer, FLAVON_GREEN_PNG);
-        oeti(flavonGreenContainer, FLAVON_GREEN_OETI, FLAVON_GREEN_SPOON, FLAVON_GREEN_CAN);
-        text(flavonGreenContainer, null, FLAVON_GREEN_P1_ENG);
-        text(flavonGreenContainer, null, FLAVON_GREEN_P2_ENG);
+        text(flavonGreenContainer, null, FLAVON_GREEN_P0_ENG, 0);
+        image(flavonGreenContainer, FLAVON_GREEN_PNG, 1);
+        oeti(flavonGreenContainer, FLAVON_GREEN_OETI, FLAVON_GREEN_SPOON, FLAVON_GREEN_CAN, 2);
+        text(flavonGreenContainer, null, FLAVON_GREEN_P1_ENG, 3);
+        text(flavonGreenContainer, null, FLAVON_GREEN_P2_ENG, 4);
         text(flavonGreenContainer, FLAVON_GREEN_T3_ENG, "<ul>"
                 + "<li>who cannot ensure the intake of sufficient vegetables</li>"
                 + "<li>who considers it important to continuously take in vitamins and minerals from a pure source</li>"
                 + "<li>who would like to consume vegetables in a new form they have not tried before</li>"
                 + "<li>who is a conscientious consumer and would like to complete a modern diet</li>"
-                + "</ul>");
+                + "</ul>", 5);
         
         ContainerContentEntity flavonMaxContainer = new ContainerContentEntity();
         flavonMaxContainer.setContentType(ContentType.ASSEMBLED);
@@ -334,18 +322,19 @@ public class TopFlavonContentTest extends ChristeamServerApplicationTests {
         flavonMaxContainer.setNode(heglasNode);
         flavonMaxContainer.setPublicIndicator(true);
         flavonMaxContainer.setTitle("FLAVON MAX");
+        flavonMaxContainer.setParent(productsContainer);
         flavonMaxContainer = containerContentRepository.save(flavonMaxContainer);
-        text(flavonMaxContainer, null, FLAVON_MAX_P0_ENG);
-        image(flavonMaxContainer, FLAVON_MAX_PNG);
-        oeti(flavonMaxContainer, FLAVON_MAX_OETI, FLAVON_MAX_SPOON, FLAVON_MAX_CAN);
-        text(flavonMaxContainer, null, FLAVON_MAX_P1_ENG);
-        text(flavonMaxContainer, null, FLAVON_MAX_P2_ENG);
+        text(flavonMaxContainer, null, FLAVON_MAX_P0_ENG, 0);
+        image(flavonMaxContainer, FLAVON_MAX_PNG, 1);
+        oeti(flavonMaxContainer, FLAVON_MAX_OETI, FLAVON_MAX_SPOON, FLAVON_MAX_CAN, 2);
+        text(flavonMaxContainer, null, FLAVON_MAX_P1_ENG, 3);
+        text(flavonMaxContainer, null, FLAVON_MAX_P2_ENG, 4);
         text(flavonMaxContainer, FLAVON_MAX_T3_ENG, "<ul>"
                 + "<li>who does not consume enough fruits</li>"
                 + "<li>who wants to complement their current one-sided nutrition</li>"
                 + "<li>who takes good care of the their own and their family’s health</li>"
                 + "<li>who wants to enjoy and take advantage of an innovative product</li>"
-                + "</ul>");
+                + "</ul>", 5);
         
         ContainerContentEntity flavonJoyContainer = new ContainerContentEntity();
         flavonJoyContainer.setContentType(ContentType.ASSEMBLED);
@@ -353,42 +342,99 @@ public class TopFlavonContentTest extends ChristeamServerApplicationTests {
         flavonJoyContainer.setNode(heglasNode);
         flavonJoyContainer.setPublicIndicator(true);
         flavonJoyContainer.setTitle("FLAVON JOY");
+        flavonJoyContainer.setParent(productsContainer);
         flavonJoyContainer = containerContentRepository.save(flavonJoyContainer);
-        text(flavonJoyContainer, null, FLAVON_JOY_P0_ENG);
-        image(flavonJoyContainer, FLAVON_JOY_PNG);
-        oeti(flavonJoyContainer, FLAVON_JOY_OETI, FLAVON_JOY_SPOON, FLAVON_JOY_CAN);
-        text(flavonJoyContainer, null, FLAVON_JOY_P1_ENG);
-        text(flavonJoyContainer, null, FLAVON_JOY_P2_ENG);
+        text(flavonJoyContainer, null, FLAVON_JOY_P0_ENG, 0);
+        image(flavonJoyContainer, FLAVON_JOY_PNG, 1);
+        oeti(flavonJoyContainer, FLAVON_JOY_OETI, FLAVON_JOY_SPOON, FLAVON_JOY_CAN, 2);
+        text(flavonJoyContainer, null, FLAVON_JOY_P1_ENG, 3);
+        text(flavonJoyContainer, null, FLAVON_JOY_P2_ENG, 4);
         text(flavonJoyContainer, FLAVON_JOY_T3_ENG, "<ul>"
                 + "<li>who is exposed to constant stress, does sport regularly</li>"
                 + "<li>who needs more mental energy</li>"
                 + "<li>who would like to satisfy their desire for sweets in a healthy way</li>"
                 + "<li>who wants to make a conscious choice of cocoa bean, ancient spices and the synergy of super fruits and vegetables</li>"
-                + "</ul>");
+                + "</ul>", 5);
+    
+        ContainerContentEntity videosContainer = new ContainerContentEntity();
+        videosContainer.setContentType(ContentType.LINKED);
+        videosContainer.setNode(heglasNode);
+        videosContainer.setPublicIndicator(true);
+        videosContainer.setTitle("Medical presentations");
+        videosContainer = containerContentRepository.save(videosContainer);
+        
+        ContainerContentEntity video1Container = new ContainerContentEntity();
+        video1Container.setContentType(ContentType.LINKED);
+        video1Container.setParent(videosContainer);
+        video1Container.setNode(heglasNode);
+        video1Container.setPublicIndicator(true);
+        video1Container.setTitle("Lisa Ann Robinson");
+        video1Container = containerContentRepository.save(video1Container);
+        video(video1Container, null,         "https://drive.google.com/open?id=0B5g1EuYKxEL0R01VNkRKU2h1dVU", 0);
+        
+        ContainerContentEntity video2Container = new ContainerContentEntity();
+        video2Container.setContentType(ContentType.LINKED);
+        video2Container.setParent(videosContainer);
+        video2Container.setNode(heglasNode);
+        video2Container.setPublicIndicator(true);
+        video2Container.setTitle("Dr. Leonard Ariel Lado");
+        video2Container = containerContentRepository.save(video2Container);
+        video(video2Container, null,    "https://drive.google.com/open?id=0B5g1EuYKxEL0ak84aUNJRFFha2c", 1);
+        
+        ContainerContentEntity video3Container = new ContainerContentEntity();
+        video3Container.setContentType(ContentType.LINKED);
+        video3Container.setParent(videosContainer);
+        video3Container.setNode(heglasNode);
+        video3Container.setPublicIndicator(true);
+        video3Container.setTitle("Dr. Brian Thornburg");
+        video3Container = containerContentRepository.save(video3Container);
+        video(video3Container, null, "https://drive.google.com/open?id=0B5g1EuYKxEL0TV9LVF9sclBZME0", 2);
+        
+        ContainerContentEntity video4Container = new ContainerContentEntity();
+        video4Container.setContentType(ContentType.LINKED);
+        video4Container.setParent(videosContainer);
+        video4Container.setNode(heglasNode);
+        video4Container.setPublicIndicator(true);
+        video4Container.setTitle("Test video");
+        video4Container = containerContentRepository.save(video4Container);
+        video(video4Container, null, "https://www.youtube.com/watch?v=iB3tg6AZkGw", 3);
+    
     }
-    private TextContentEntity text(ContainerContentEntity container, String title, String content) {
+    private VideoContentEntity video(ContainerContentEntity container, String title, String content, int index) {
+        VideoContentEntity flavonEndActiveParagraph0 = new VideoContentEntity();
+        flavonEndActiveParagraph0.setTitle(title);
+        flavonEndActiveParagraph0.setContent(content);
+        flavonEndActiveParagraph0.setFontSize(12);
+        flavonEndActiveParagraph0.setOrderIndex(index);
+        flavonEndActiveParagraph0.setParent(container);
+        flavonEndActiveParagraph0.setWidth(300);
+        flavonEndActiveParagraph0.setHeight(200);
+        flavonEndActiveParagraph0 = contentRepository.save(flavonEndActiveParagraph0);
+        return flavonEndActiveParagraph0;
+    }
+    private TextContentEntity text(ContainerContentEntity container, String title, String content, int index) {
         TextContentEntity flavonEndActiveParagraph0 = new TextContentEntity();
         flavonEndActiveParagraph0.setTitle(title);
         flavonEndActiveParagraph0.setContent(content);
         flavonEndActiveParagraph0.setFontSize(12);
-        flavonEndActiveParagraph0.setOrderIndex(1);
+        flavonEndActiveParagraph0.setOrderIndex(index);
         flavonEndActiveParagraph0.setParent(container);
         flavonEndActiveParagraph0 = contentRepository.save(flavonEndActiveParagraph0);
         return flavonEndActiveParagraph0;
     }
 
-    private ImageContentEntity image(ContainerContentEntity container, String image) {
+    private ImageContentEntity image(ContainerContentEntity container, String image, int index) {
         ImageContentEntity p = new ImageContentEntity();
         p.setContent("/data/" + image);
         p.setHeight(300);
-        p.setOrderIndex(2);
+        p.setOrderIndex(index);
         p.setParent(container);
         p.setWidth(300);
         p = contentRepository.save(p);
         return p;
     }
 
-    private TextContentEntity oeti(ContainerContentEntity container, String oeti, int spoon, int can) {
+    private TextContentEntity oeti(ContainerContentEntity container, String oeti, int spoon, int can, int index) {
 
         TextContentEntity p = new TextContentEntity();
         p.setTitle(FLAVON_ACTIVE_OETI);
@@ -397,7 +443,7 @@ public class TopFlavonContentTest extends ChristeamServerApplicationTests {
                 + "<li><span>1</span> x <iron-icon icon=\"" + CAN_ICON + "\"></iron-icon>=<span>" + can + "</span><label>T-ORAC</label></li>"
                 + "</ul>");
         p.setFontSize(12);
-        p.setOrderIndex(1);
+        p.setOrderIndex(index);
         p.setParent(container);
         p = contentRepository.save(p);
         return p;

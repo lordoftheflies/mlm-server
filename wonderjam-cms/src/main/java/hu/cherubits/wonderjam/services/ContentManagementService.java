@@ -198,11 +198,11 @@ public class ContentManagementService {
             dto.setTitle(container.getTitle());
             dto.setId(container.getId());
             if (ContainerContentEntity.RESOURCE_TYPE.equals(container.getResourceType())) {
-                dto.setSections(contentContainerRepository
+                dto.setSections(contentRepository
                         .findByParent(UUID.fromString(pageId))
                         .stream()
                         .map((ContentEntity entity) -> new SectionDto(
-                                entity.getId().toString(),
+                                entity.getId(),
                                 null,
                                 entity.getTitle(),
                                 entity.getResourceType(),
@@ -255,7 +255,8 @@ public class ContentManagementService {
                     .stream()
                     .map((ContainerContentEntity entity) -> new PageDto(
                             entity.getId(),
-                            entity.getTitle()))
+                            entity.getTitle(),
+                            entity.getContentType()))
                     .collect(Collectors.toList()));
         } else if (!contentContainerRepository.exists(UUID.fromString(pageId))) {
             throw new ContentNotFoundException();
@@ -266,20 +267,21 @@ public class ContentManagementService {
             } else {
                 dto.setTitle(container.getTitle());
                 dto.setId(container.getId());
-                dto.setSections(contentRepository
-                        .findByParent(UUID.fromString(pageId))
-                        .stream()
-                        .map((ContentEntity entity) -> new SectionDto(
-                                entity.getId().toString(),
-                                null,
-                                entity.getTitle(),
-                                entity.getResourceType(),
-                                entity.getContent(),
-                                entity.getJustification(),
-                                entity.getFontSize(),
-                                entity.getWidth(),
-                                entity.getHeight()))
-                        .collect(Collectors.toList()));
+//                dto.setSections(contentRepository
+//                        .findByParent(UUID.fromString(pageId))
+//                        .stream()
+//                        .map((ContentEntity entity) -> new SectionDto(
+//                                entity.getId().toString(),
+//                                null,
+//                                entity.getTitle(),
+//                                entity.getResourceType(),
+//                                entity.getContent(),
+//                                entity.getJustification(),
+//                                entity.getFontSize(),
+//                                entity.getWidth(),
+//                                entity.getHeight()))
+//                        .collect(Collectors.toList()));
+                setSections(pageId, dto);
             }
 
         }
@@ -302,7 +304,7 @@ public class ContentManagementService {
                     .findByParent(UUID.fromString(pageId))
                     .stream()
                     .map((ContentEntity entity) -> new SectionDto(
-                            entity.getId().toString(),
+                            entity.getId(),
                             null,
                             entity.getTitle(),
                             entity.getResourceType(),
@@ -324,7 +326,8 @@ public class ContentManagementService {
                     .stream()
                     .map((ContainerContentEntity entity) -> new PageDto(
                             entity.getId(),
-                            entity.getTitle()))
+                            entity.getTitle(),
+                            entity.getContentType()))
                     .collect(Collectors.toList()));
         } else if (!contentContainerRepository.exists(UUID.fromString(pageId))) {
             throw new ContentNotFoundException();
@@ -337,23 +340,44 @@ public class ContentManagementService {
             } else {
                 dto.setTitle(container.getTitle());
                 dto.setId(container.getId());
-                dto.setSections(contentRepository
-                        .findByParent(UUID.fromString(pageId))
-                        .stream()
-                        .map((ContentEntity entity) -> new SectionDto(
-                                entity.getId().toString(),
-                                null,
-                                entity.getTitle(),
-                                entity.getResourceType(),
-                                entity.getContent(),
-                                entity.getJustification(),
-                                entity.getFontSize(),
-                                entity.getWidth(),
-                                entity.getHeight()))
-                        .collect(Collectors.toList()));
+                setSections(pageId, dto);
             }
 
         }
+    }
+
+    private void setSections(String pageId, PageDto dto) {
+        List<SectionDto> files = contentRepository
+                .findByParent(UUID.fromString(pageId))
+                .stream()
+                .map((ContentEntity entity) -> new SectionDto(
+                        entity.getId(),
+                        null,
+                        entity.getTitle(),
+                        entity.getResourceType(),
+                        entity.getContent(),
+                        entity.getJustification(),
+                        entity.getFontSize(),
+                        entity.getWidth(),
+                        entity.getHeight()))
+                .collect(Collectors.toList());
+        List<SectionDto> folders = contentContainerRepository
+                .findByParent(UUID.fromString(pageId))
+                .stream()
+                .map((ContainerContentEntity entity) -> new SectionDto(
+                        entity.getId(),
+                        ContentType.LINKED,
+                        entity.getTitle(),
+                        ContentType.LINKED.toString(),
+                        null,
+                        null,
+                        0,
+                        0,
+                        0))
+                .collect(Collectors.toList());
+        List<SectionDto> result = new ArrayList<>(folders);
+        result.addAll(files);
+        dto.setSections(result);
     }
 
     private void publishedArticles(String pageId, PageDto dto) throws ContentNotFoundException {
@@ -364,7 +388,8 @@ public class ContentManagementService {
                     .stream()
                     .map((ContainerContentEntity entity) -> new PageDto(
                             entity.getId(),
-                            entity.getTitle()))
+                            entity.getTitle(),
+                            entity.getContentType()))
                     .collect(Collectors.toList()));
         } else if (!contentContainerRepository.exists(UUID.fromString(pageId))) {
             throw new ContentNotFoundException();
@@ -377,20 +402,21 @@ public class ContentManagementService {
                 dto.setTitle(container.getTitle());
                 dto.setId(container.getId());
                 dto.setContentType(container.getContentType());
-                dto.setSections(contentRepository
-                        .findByParent(UUID.fromString(pageId))
-                        .stream()
-                        .map((ContentEntity entity) -> new SectionDto(
-                                entity.getId().toString(),
-                                null,
-                                entity.getTitle(),
-                                entity.getResourceType(),
-                                entity.getContent(),
-                                entity.getJustification(),
-                                entity.getFontSize(),
-                                entity.getWidth(),
-                                entity.getHeight()))
-                        .collect(Collectors.toList()));
+//                dto.setSections(contentRepository
+//                        .findByParent(UUID.fromString(pageId))
+//                        .stream()
+//                        .map((ContentEntity entity) -> new SectionDto(
+//                                entity.getId().toString(),
+//                                null,
+//                                entity.getTitle(),
+//                                entity.getResourceType(),
+//                                entity.getContent(),
+//                                entity.getJustification(),
+//                                entity.getFontSize(),
+//                                entity.getWidth(),
+//                                entity.getHeight()))
+//                        .collect(Collectors.toList()));
+                setSections(pageId, dto);
             }
 
         }
@@ -434,7 +460,7 @@ public class ContentManagementService {
 
         if (ROOT_PSEUDO_ID.equals(pageId)) {
             dto.setTitle(ROOT_PLACEHOLDER);
-            dto.setSections(Arrays.asList(new PageDto(null, "ROOT")));
+            dto.setSections(Arrays.asList(new PageDto(null, "ROOT", ContentType.LINKED)));
         } else if (!containerContentRepository.exists(UUID.fromString(pageId))) {
             throw new ContentNotFoundException();
         } else {
@@ -442,7 +468,7 @@ public class ContentManagementService {
             List<SectionDto> sections = new ArrayList<>();
             while (item != null) {
                 sections.add(new SectionDto(
-                        item.getId().toString(),
+                        item.getId(),
                         null,
                         item.getTitle(),
                         null,
@@ -454,7 +480,7 @@ public class ContentManagementService {
                 item = contentRepository.findByChild(item.getId());
             }
 
-            sections.add(new SectionDto("ROOT", ContentType.LINKED, ROOT_PLACEHOLDER, null, "ROOT", null, 0, 0, 0));
+            sections.add(new SectionDto(null, ContentType.LINKED, ROOT_PLACEHOLDER, null, "ROOT", null, 0, 0, 0));
             dto.setSections(sections);
 
             Collections.reverse(dto.getSections());
@@ -581,9 +607,9 @@ public class ContentManagementService {
         List<PageDto> pages = containerContentRepository.findAll()
                 .stream()
                 .filter(e -> ContentType.LINKED.equals(e.getContentType()))
-                .map((ContainerContentEntity e) -> new PageDto(e.getId(), e.getTitle()))
+                .map((ContainerContentEntity e) -> new PageDto(e.getId(), e.getTitle(), e.getContentType()))
                 .collect(Collectors.toList());
-        pages.add(new PageDto(null, ROOT_PLACEHOLDER));
+        pages.add(new PageDto(null, ROOT_PLACEHOLDER, ContentType.LINKED));
         return pages;
     }
 
@@ -597,7 +623,7 @@ public class ContentManagementService {
         List<PageDto> pages = containerContentRepository.findAll()
                 .stream()
                 .filter(e -> ContentType.LINKED.equals(e.getContentType()))
-                .map((ContainerContentEntity e) -> new PageDto(e.getId(), e.getTitle()))
+                .map((ContainerContentEntity e) -> new PageDto(e.getId(), e.getTitle(), e.getContentType()))
                 .collect(Collectors.toList());
         return pages;
     }
