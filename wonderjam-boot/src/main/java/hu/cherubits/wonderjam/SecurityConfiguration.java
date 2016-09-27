@@ -73,11 +73,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     LOG.log(Level.INFO, "X-Requested-By: {0}", requestedBy);
                     if (requestedBy == null || requestedBy.isEmpty()) {
                         HttpServletResponse httpResponse = (HttpServletResponse) response;
-                        httpResponse.addHeader(AUTHENTICATION_HEADER, "Basic realm");
+//                        httpResponse.addHeader(AUTHENTICATION_HEADER, "Basic realm");
                         httpResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, authException.getMessage());
                     } else {
                         HttpServletResponse httpResponse = (HttpServletResponse) response;
-                        httpResponse.addHeader(AUTHENTICATION_HEADER, "Application driven");
+//                        httpResponse.addHeader(AUTHENTICATION_HEADER, "Application driven");
                         httpResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, authException.getMessage());
                     }
                 }).and()
